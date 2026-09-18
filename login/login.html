@@ -154,7 +154,8 @@
                 <!-- Login Form -->
                 <div class="tab-content active" id="login-form">
                     <h2 class="font-headline-md text-headline-md text-on-surface mb-6">Bienvenido de nuevo</h2>
-                    <form class="space-y-6" onsubmit="event.preventDefault();">
+                    <div class="hidden" id="login-msg"></div>
+                    <form class="space-y-6" id="form-login" novalidate>
                         <div>
                             <label class="input-label" for="login-email">Correo Electrónico</label>
                             <div class="relative">
@@ -180,7 +181,8 @@
             <!-- Register Form -->
             <div class="tab-content" id="register-form">
                 <h2 class="font-headline-md text-headline-md text-on-surface mb-6">Únete a la comunidad</h2>
-                <form class="space-y-5" onsubmit="event.preventDefault();">
+                <div class="hidden" id="registro-msg"></div>
+                <form class="space-y-5" id="form-registro" novalidate>
                     <div>
                         <label class="input-label" for="reg-name">Nombre Completo</label>
                         <div class="relative">
@@ -260,5 +262,7 @@
                 }
             }
         </script>
+        <!-- Firebase Authentication -->
+        <script type="module" src="auth.js"></script>
     </body>
 </html>
