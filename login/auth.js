@@ -1,10 +1,10 @@
 // login/auth.js
-// Conecta el formulario de registro con Firebase Authentication.
-// (El login se resuelve en otro ticket/branch aparte.)
+// Conecta los formularios de registro e inicio de sesión con Firebase Authentication.
 
 import { auth, db } from "../firebase-config.js";
 import {
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   updateProfile
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 import {
@@ -60,6 +60,12 @@ function traducirError(codigo) {
       return "La contraseña es demasiado débil (mínimo 6 caracteres).";
     case "auth/missing-password":
       return "Ingresá una contraseña.";
+    case "auth/invalid-credential":
+    case "auth/wrong-password":
+    case "auth/user-not-found":
+      return "Correo o contraseña incorrectos.";
+    case "auth/user-disabled":
+      return "Esta cuenta fue deshabilitada. Contactá a un administrador.";
     case "auth/too-many-requests":
       return "Demasiados intentos fallidos. Esperá unos minutos e intentá de nuevo.";
     case "auth/network-request-failed":
@@ -136,7 +142,7 @@ if (formRegistro) {
       );
 
       setTimeout(() => {
-        window.location.href = "../home.html";
+        window.location.href = "../dashboard.html";
       }, 1500);
     } catch (error) {
       console.error("Error en el registro:", error.code, error.message);
@@ -147,6 +153,39 @@ if (formRegistro) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Inicio de sesión: fuera de alcance de este ticket.                  */
-/* Se resuelve en otra branch/issue aparte.                            */
+/* Inicio de sesión                                                    */
 /* ------------------------------------------------------------------ */
+
+const formLogin = document.getElementById("form-login");
+
+if (formLogin) {
+  formLogin.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    limpiarMensaje("login-msg");
+
+    const boton = formLogin.querySelector('button[type="submit"]');
+    const textoBoton = "Iniciar Sesión";
+
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value;
+
+    if (!email || !password) {
+      mostrarMensaje("login-msg", "Completá correo y contraseña.");
+      return;
+    }
+
+    cargando(boton, true, textoBoton);
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      mostrarMensaje("login-msg", "Sesión iniciada. Redirigiendo...", "exito");
+      setTimeout(() => {
+        window.location.href = "../dashboard.html";
+      }, 1000);
+    } catch (error) {
+      console.error("Error en el login:", error.code, error.message);
+      mostrarMensaje("login-msg", traducirError(error.code));
+      cargando(boton, false, textoBoton);
+    }
+  });
+}
