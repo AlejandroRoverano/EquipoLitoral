@@ -6,7 +6,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
-  updateProfile
+  updateProfile,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 import {
   doc,
@@ -253,3 +254,62 @@ if (btnReset) {
     }
   });
 }
+
+/* ------------------------------------------------------------------ */
+/* Redirigir si ya hay sesión activa / arreglar el "botón atrás"       */
+/* ------------------------------------------------------------------ */
+
+// Deja el formulario de login y de registro como recién cargados:
+// reactiva los botones, borra mensajes y vuelve a mostrar el form de login
+// (por si había quedado abierto el panel de recuperar contraseña).
+function resetearFormularios() {
+  if (formLogin) {
+    const botonLogin = formLogin.querySelector('button[type="submit"]');
+    cargando(botonLogin, false, "Iniciar Sesión");
+    formLogin.classList.remove("hidden");
+  }
+  if (formRegistro) {
+    const botonRegistro = formRegistro.querySelector('button[type="submit"]');
+    cargando(botonRegistro, false, "Crear Cuenta");
+  }
+  if (forgotBox) {
+    forgotBox.classList.add("hidden");
+  }
+  limpiarMensaje("login-msg");
+  limpiarMensaje("registro-msg");
+  limpiarMensaje("reset-msg");
+}
+
+// Caso 1: el usuario entra a login/registro y YA tiene sesión activa
+// (por ejemplo, escribió la URL a mano estando logueado). Lo mandamos
+// directo al panel sin mostrarle el formulario.
+// Solo actuamos en la PRIMERA verificación de la página (la que refleja
+// el estado al cargar), para no interferir con el login/registro que el
+// usuario está haciendo en ese mismo momento desde el formulario.
+let primeraVerificacion = true;
+onAuthStateChanged(auth, (user) => {
+  if (primeraVerificacion) {
+    primeraVerificacion = false;
+    if (user) {
+      window.location.href = "../gestion/detalle-gestion.html";
+    }
+  }
+});
+
+// Caso 2: el usuario aprieta "atrás" en el navegador y vuelve a esta
+// página desde el caché (bfcache). En ese caso el script NO se vuelve a
+// ejecutar solo, así que la página puede quedar "congelada" mostrando
+// el último estado (botón en "Procesando...", mensaje de éxito, etc).
+// El evento "pageshow" sí se dispara en ese caso, y event.persisted
+// nos dice si la página vino del caché.
+window.addEventListener("pageshow", (event) => {
+  if (!event.persisted) return; // carga normal, no hace falta nada
+
+  if (auth.currentUser) {
+    // Ya hay sesión: no tiene sentido quedarse en el login.
+    window.location.href = "../gestion/detalle-gestion.html";
+  } else {
+    // No hay sesión: reseteamos el formulario para que se pueda usar de nuevo.
+    resetearFormularios();
+  }
+});
