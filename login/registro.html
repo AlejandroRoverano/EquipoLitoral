@@ -166,7 +166,7 @@
                         <div>
                             <label class="input-label flex justify-between" for="login-password">
                                                         Contraseña
-                                                        <a class="text-secondary hover:underline font-label-sm text-label-sm" href="#">¿Olvidaste tu contraseña?</a>
+                                                        <a class="text-secondary hover:underline font-label-sm text-label-sm" href="#" id="link-forgot-password">¿Olvidaste tu contraseña?</a>
                             </label>
                             <div class="relative">
                                 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">lock</span>
@@ -177,6 +177,23 @@
                             Iniciar Sesión
                         </button>
                     </form>
+
+                    <!-- Recuperación de contraseña -->
+                    <div class="hidden mt-6 pt-6 border-t border-outline-variant" id="forgot-box">
+                        <h3 class="font-label-md text-label-md text-on-surface mb-1">Recuperar contraseña</h3>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Ingresá tu correo y te enviamos un enlace para restablecerla.</p>
+                        <div class="hidden" id="reset-msg"></div>
+                        <div class="relative mb-4">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">mail</span>
+                            <input class="input-field pl-12" id="reset-email" placeholder="ejemplo@correo.com" type="email"/>
+                        </div>
+                        <button class="w-full bg-secondary hover:bg-secondary-container text-on-secondary-fixed-variant font-label-md text-label-md py-3 rounded-lg transition-colors shadow-sm active:scale-[0.98]" id="btn-reset" type="button">
+                            Enviar enlace de recuperación
+                        </button>
+                        <button class="w-full text-on-surface-variant font-label-sm text-label-sm py-3 hover:underline" id="btn-cancel-reset" type="button">
+                            Volver a iniciar sesión
+                        </button>
+                    </div>
                 </div>
             <!-- Register Form -->
             <div class="tab-content" id="register-form">
