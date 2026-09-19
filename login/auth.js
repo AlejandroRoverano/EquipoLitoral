@@ -144,7 +144,7 @@ if (formRegistro) {
       );
 
       setTimeout(() => {
-        window.location.href = "../dashboard.html";
+        window.location.href = "../gestion/detalle-gestion.html";
       }, 1500);
     } catch (error) {
       console.error("Error en el registro:", error.code, error.message);
@@ -182,7 +182,7 @@ if (formLogin) {
       await signInWithEmailAndPassword(auth, email, password);
       mostrarMensaje("login-msg", "Sesión iniciada. Redirigiendo...", "exito");
       setTimeout(() => {
-        window.location.href = "../dashboard.html";
+        window.location.href = "../gestion/detalle-gestion.html";
       }, 1000);
     } catch (error) {
       console.error("Error en el login:", error.code, error.message);
