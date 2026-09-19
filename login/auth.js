@@ -5,6 +5,7 @@ import { auth, db } from "../firebase-config.js";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
   updateProfile
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 import {
@@ -62,10 +63,11 @@ function traducirError(codigo) {
       return "Ingresá una contraseña.";
     case "auth/invalid-credential":
     case "auth/wrong-password":
-    case "auth/user-not-found":
       return "Correo o contraseña incorrectos.";
     case "auth/user-disabled":
       return "Esta cuenta fue deshabilitada. Contactá a un administrador.";
+    case "auth/user-not-found":
+      return "No encontramos ninguna cuenta con ese correo.";
     case "auth/too-many-requests":
       return "Demasiados intentos fallidos. Esperá unos minutos e intentá de nuevo.";
     case "auth/network-request-failed":
@@ -142,7 +144,7 @@ if (formRegistro) {
       );
 
       setTimeout(() => {
-        window.location.href = "../dashboard.html";
+        window.location.href = "../gestion/detalle-gestion.html";
       }, 1500);
     } catch (error) {
       console.error("Error en el registro:", error.code, error.message);
@@ -180,12 +182,74 @@ if (formLogin) {
       await signInWithEmailAndPassword(auth, email, password);
       mostrarMensaje("login-msg", "Sesión iniciada. Redirigiendo...", "exito");
       setTimeout(() => {
-        window.location.href = "../dashboard.html";
+        window.location.href = "../gestion/detalle-gestion.html";
       }, 1000);
     } catch (error) {
       console.error("Error en el login:", error.code, error.message);
       mostrarMensaje("login-msg", traducirError(error.code));
       cargando(boton, false, textoBoton);
+    }
+  });
+}
+
+/* ------------------------------------------------------------------ */
+/* Recuperación de contraseña                                          */
+/* ------------------------------------------------------------------ */
+
+const linkForgotPassword = document.getElementById("link-forgot-password");
+const forgotBox = document.getElementById("forgot-box");
+const btnReset = document.getElementById("btn-reset");
+const btnCancelReset = document.getElementById("btn-cancel-reset");
+
+if (linkForgotPassword && forgotBox && formLogin) {
+  linkForgotPassword.addEventListener("click", (e) => {
+    e.preventDefault();
+    limpiarMensaje("reset-msg");
+    forgotBox.classList.remove("hidden");
+    formLogin.classList.add("hidden");
+    // Precarga el correo si el usuario ya lo había escrito en el login
+    const emailLogin = document.getElementById("login-email").value.trim();
+    if (emailLogin) {
+      document.getElementById("reset-email").value = emailLogin;
+    }
+  });
+}
+
+if (btnCancelReset && forgotBox && formLogin) {
+  btnCancelReset.addEventListener("click", () => {
+    forgotBox.classList.add("hidden");
+    formLogin.classList.remove("hidden");
+    limpiarMensaje("reset-msg");
+  });
+}
+
+if (btnReset) {
+  btnReset.addEventListener("click", async () => {
+    limpiarMensaje("reset-msg");
+
+    const email = document.getElementById("reset-email").value.trim();
+    if (!email) {
+      mostrarMensaje("reset-msg", "Ingresá tu correo electrónico.");
+      return;
+    }
+
+    btnReset.disabled = true;
+    const textoOriginal = btnReset.textContent;
+    btnReset.textContent = "Enviando...";
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      mostrarMensaje(
+        "reset-msg",
+        "Listo, revisá tu correo (y la carpeta de spam) para restablecer tu contraseña.",
+        "exito"
+      );
+    } catch (error) {
+      console.error("Error al enviar recuperación:", error.code, error.message);
+      mostrarMensaje("reset-msg", traducirError(error.code));
+    } finally {
+      btnReset.disabled = false;
+      btnReset.textContent = textoOriginal;
     }
   });
 }

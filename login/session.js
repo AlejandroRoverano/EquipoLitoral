@@ -41,9 +41,9 @@ if (btnLogout) {
     btnLogout.disabled = true;
     try {
       await signOut(auth);
-      // onAuthStateChanged ya actualiza la interfaz solo,
-      // pero además volvemos a la portada.
-      window.location.href = "index.html";
+      // Ruta absoluta (con "/" inicial) para que funcione sin importar
+      // desde qué profundidad de carpeta se llame (raíz, catalogo/, gestion/, etc).
+      window.location.href = "/index.html";
     } catch (error) {
       console.error("Error al cerrar sesión:", error.code, error.message);
       btnLogout.disabled = false;
