@@ -188,6 +188,14 @@
                                 <h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-on-primary-container">Mi Panel</h1>
                                 <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Gestión Educativa</p>
                         </div>
+                        <div class="hidden mb-4 px-4" id="nav-guest">
+                                <p class="font-body-sm text-body-sm text-on-surface-variant mb-2">No iniciaste sesión.</p>
+                                <a class="font-label-md text-label-md text-primary underline" href="../login/login.html">Iniciar sesión</a>
+                        </div>
+                        <div class="hidden mb-4 px-4" id="nav-user">
+                                <p class="font-body-sm text-body-sm text-on-surface-variant" id="nav-user-name"></p>
+                                <button class="font-label-md text-label-md text-primary underline mt-1" id="btn-logout">Cerrar sesión</button>
+                        </div>
                         <ul class="flex flex-col gap-2 flex-grow">
                                 <li>
                                 <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-primary-fixed-dim rounded-full transition-all hover:bg-surface-container-highest dark:hover:bg-primary-fixed" href="#">
@@ -332,5 +340,6 @@
                                 </div>
                         </section>
                 </main>
+        <script type="module" src="../session.js"></script>
         </body>
 </html>

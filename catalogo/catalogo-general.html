@@ -188,9 +188,13 @@
 <a class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary dark:border-primary-fixed-dim pb-1 hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-200 ease-in-out" href="#">Catalog</a>
 <a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-200 ease-in-out" href="#">About Us</a>
 </nav>
-<div class="flex items-center gap-unit-2">
-<button class="font-label-md text-label-md text-primary bg-transparent border border-primary px-4 py-2 rounded-full hover:bg-surface-container-low transition-colors">Login</button>
-<button class="font-label-md text-label-md text-on-primary bg-primary px-4 py-2 rounded-full hover:bg-primary-container transition-colors shadow-sm">Register</button>
+<div class="flex items-center gap-unit-2 hidden" id="nav-guest">
+<a href="../login/login.html"><button class="font-label-md text-label-md text-primary bg-transparent border border-primary px-4 py-2 rounded-full hover:bg-surface-container-low transition-colors">Login</button></a>
+<a href="../login/registro.html"><button class="font-label-md text-label-md text-on-primary bg-primary px-4 py-2 rounded-full hover:bg-primary-container transition-colors shadow-sm">Register</button></a>
+</div>
+<div class="hidden items-center gap-unit-2" id="nav-user">
+<span class="hidden md:inline font-label-md text-label-md text-on-surface-variant" id="nav-user-name"></span>
+<button class="font-label-md text-label-md text-primary bg-transparent border border-primary px-4 py-2 rounded-full hover:bg-surface-container-low transition-colors" id="btn-logout">Cerrar sesión</button>
 </div>
 </div>
 </header>
@@ -352,4 +356,5 @@
 </div>
 </div>
 </footer>
+<script type="module" src="../session.js"></script>
 </body></html>

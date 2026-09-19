@@ -113,8 +113,14 @@
                     <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 ease-in-out" href="#">About Us</a>
                 </div>
                 <div class="hidden md:flex gap-4 items-center">
-                    <button class="font-label-md text-label-md text-primary hover:bg-surface-container-low px-4 py-2 rounded-full transition-colors duration-200 ease-in-out">Login</button>
-                    <button class="font-label-md text-label-md bg-primary text-on-primary px-4 py-2 rounded-full hover:bg-primary-container transition-colors duration-200 ease-in-out">Register</button>
+                    <div class="flex gap-4 items-center hidden" id="nav-guest">
+                        <a href="../login/login.html"><button class="font-label-md text-label-md text-primary hover:bg-surface-container-low px-4 py-2 rounded-full transition-colors duration-200 ease-in-out">Login</button></a>
+                        <a href="../login/registro.html"><button class="font-label-md text-label-md bg-primary text-on-primary px-4 py-2 rounded-full hover:bg-primary-container transition-colors duration-200 ease-in-out">Register</button></a>
+                    </div>
+                    <div class="hidden gap-4 items-center" id="nav-user">
+                        <span class="text-on-surface-variant font-label-md text-label-md" id="nav-user-name"></span>
+                        <button class="font-label-md text-label-md text-primary hover:bg-surface-container-low px-4 py-2 rounded-full transition-colors duration-200 ease-in-out" id="btn-logout">Cerrar sesión</button>
+                    </div>
                 </div>
                 <!-- Mobile Menu Toggle -->
                 <button class="md:hidden text-primary">
@@ -306,5 +312,6 @@
                 </div>
             </div>
         </footer>
+        <script type="module" src="../session.js"></script>
     </body>
 </html>
