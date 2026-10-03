@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <title>Equipo Litoral - Taller de Robótica Educativa</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+        <script id="tailwind-config">
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        "colors": {
+                            "surface-container-highest": "#d3e4fe",
+                            "on-secondary": "#ffffff",
+                            "surface-tint": "#405f91",
+                            "surface-container-low": "#eff4ff",
+                            "surface-container-lowest": "#ffffff",
+                            "surface-dim": "#cbdbf5",
+                            "on-tertiary-fixed-variant": "#004883",
+                            "secondary-container": "#54f8d7",
+                            "outline-variant": "#c4c6d0",
+                            "on-tertiary": "#ffffff",
+                            "primary-fixed-dim": "#a9c7ff",
+                            "error-container": "#ffdad6",
+                            "surface-variant": "#d3e4fe",
+                            "on-error-container": "#93000a",
+                            "primary-container": "#002b5b",
+                            "on-primary-fixed": "#001b3d",
+                            "secondary-fixed": "#58fbda",
+                            "surface-bright": "#f8f9ff",
+                            "tertiary-fixed-dim": "#a4c9ff",
+                            "on-secondary-fixed-variant": "#005143",
+                            "tertiary": "#001731",
+                            "surface": "#f8f9ff",
+                            "on-primary": "#ffffff",
+                            "primary-fixed": "#d6e3ff",
+                            "secondary-fixed-dim": "#2cdebf",
+                            "inverse-primary": "#a9c7ff",
+                            "error": "#ba1a1a",
+                            "on-tertiary-fixed": "#001c39",
+                            "surface-container": "#e5eeff",
+                            "on-surface-variant": "#43474f",
+                            "background": "#f8f9ff",
+                            "tertiary-container": "#002c54",
+                            "surface-container-high": "#dce9ff",
+                            "on-secondary-fixed": "#00201a",
+                            "on-surface": "#0b1c30",
+                            "on-primary-fixed-variant": "#264778",
+                            "on-primary-container": "#7594ca",
+                            "primary": "#001736",
+                            "outline": "#747780",
+                            "on-tertiary-container": "#5095e7",
+                            "secondary": "#006b5a",
+                            "on-error": "#ffffff",
+                            "tertiary-fixed": "#d4e3ff",
+                            "on-background": "#0b1c30",
+                            "inverse-on-surface": "#eaf1ff",
+                            "inverse-surface": "#213145",
+                            "on-secondary-container": "#00705e"
+                        },
+                        "borderRadius": {
+                            "DEFAULT": "0.125rem",
+                            "lg": "0.25rem",
+                            "xl": "0.5rem",
+                            "full": "0.75rem"
+                        },
+                        "spacing": {
+                            "unit": "4px",
+                            "margin-desktop": "48px",
+                            "margin-mobile": "16px",
+                            "gutter": "24px",
+                            "container-max": "1280px"
+                        },
+                        "fontFamily": {
+                            "headline-lg-mobile": ["Montserrat"],
+                            "body-md": ["Inter"],
+                            "headline-xl": ["Montserrat"],
+                            "headline-md": ["Montserrat"],
+                            "headline-lg": ["Montserrat"],
+                            "body-lg": ["Inter"],
+                            "label-sm": ["Inter"],
+                            "label-md": ["Inter"],
+                            "body-sm": ["Inter"]
+                        },
+                        "fontSize": {
+                            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                            "headline-xl": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                            "label-sm": ["12px", { "lineHeight": "14px", "fontWeight": "500" }],
+                            "label-md": ["14px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                            "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                        }
+                    }
+                }
+            }
+        </script>
+    </head>
+    <body class="bg-background text-on-background min-h-screen flex flex-col font-body-md text-body-md pt-16">
+        <!-- TopNavBar -->
+        <nav class="bg-surface shadow-sm fixed top-0 w-full z-50">
+            <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 w-full max-w-container-max mx-auto">
+                <a class="font-headline-md text-headline-md font-bold text-primary" href="#">Equipo Litoral</a>
+                <div class="hidden md:flex gap-8">
+                    <a class="text-primary font-bold border-b-2 border-primary pb-1" href="#">Catalog</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 ease-in-out" href="#">About Us</a>
+                </div>
+                <div class="hidden md:flex gap-4 items-center">
+                    <button class="font-label-md text-label-md text-primary hover:bg-surface-container-low px-4 py-2 rounded-full transition-colors duration-200 ease-in-out">Login</button>
+                    <button class="font-label-md text-label-md bg-primary text-on-primary px-4 py-2 rounded-full hover:bg-primary-container transition-colors duration-200 ease-in-out">Register</button>
+                </div>
+                <!-- Mobile Menu Toggle -->
+                <button class="md:hidden text-primary">
+                    <span class="material-symbols-outlined" data-icon="menu">menu</span>
+                </button>
+            </div>
+        </nav>
+        <!-- Main Content -->
+        <main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12 md:py-20 flex flex-col gap-16">
+            <!-- Hero / Product Overview -->
+            <section class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-start">
+                <!-- Image Gallery (Bento style) -->
+                <div class="md:col-span-7 flex flex-col gap-4">
+                    <div class="rounded-xl overflow-hidden shadow-sm bg-surface-container-lowest border border-outline-variant aspect-video">
+                        <img alt="Robotics Kit" class="w-full h-full object-cover" data-alt="High-resolution, brightly lit macro photography of a sophisticated educational robotics kit spread on a clean white desk. The kit features sleek metal chassis pieces, vibrant blue microcontrollers, precision gears, and neatly coiled wiring. The lighting is soft and even, highlighting the modern, academic quality of the components. Depth of field is shallow, focusing on the intricate details of the main processor board." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2h3-XuVjsQkG5gUeYvi4S51NCGUne3B2fP4hKH6oPrhybdId9zVae4FIw78jgwvoykRrk-3HsKT_I9homWWmjc5PtEz9weyAnY_b_8Cv2cOBA_XK9Kqrt6xAnsbPXRBrVcZy4R8DxjIP6l1YjP9rmwkiFFv4Lcc0pfQYUFvphZ204AMo4u4xfAK9c4Lgvm5MgXK1Fav-c2Od73V8KOeF1BBlulFpEl0Aztf_78OPF0_I-CqRsIeE5"/>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4 h-32">
+                        <div class="rounded-lg overflow-hidden border border-outline-variant"><img alt="Detail 1" class="w-full h-full object-cover" data-alt="A close-up shot of a small DC motor with a yellow plastic wheel attached, resting on a blueprint-style grid mat. The lighting is crisp and technical, emphasizing the engineering aspect. Minimalist and academic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtrWKaltQheu55hB_BF2G5EiO_2xGWdIuNZoIrOa4PHbKLpsGoST3EdshLk4osxb22mcV73OVj4mZ2f-ecnAdhV0wLb8whMfSIyWmUWEQpvZC-3ODpUKCtESNgnDdDcygAejNqoMZYGY2-H-nXedoZxOYsgH9F-im2fyTMwXIeurWbHk3VddnnDDKmXdPh-G21-BRAcw8NgsEx7rrZAgrq7mGKhy44M7HiMw61uNHEB1QKDxhDNMWG"/></div>
+                        <div class="rounded-lg overflow-hidden border border-outline-variant"><img alt="Detail 2" class="w-full h-full object-cover" data-alt="A student's hands carefully connecting jumper wires to a breadboard on a bright, modern lab table. The focus is on the action of learning and assembly, with a clean, well-organized background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2VVO1OJeTJcPWQwK21iiT07xQCYioQ05YD5LygOYjKn-_tiLmH3YbXORnesGzPZaEpgZEYq62LfU0LSNybNieTlO2e916ZOPrZc5DR0_pb2gtHfDl7_juh4ozAiOXXkVWLX5eaTOjj5qZR0MB-e90ADuuWPb_8XQegQQ73Dnh5q3ucpAU4ZDmbs5v_2wzI_Xu6EJUEAva89GNb_ycCBMv4-asWK_m44Mzbp_FVjLAAzl96yTqCBt-"/></div>
+                        <div class="rounded-lg overflow-hidden border border-outline-variant bg-surface-container flex items-center justify-center text-primary cursor-pointer hover:bg-surface-container-high transition-colors">
+                            <span class="material-symbols-outlined text-4xl" data-icon="play_circle">play_circle</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Details -->
+                <div class="md:col-span-5 flex flex-col gap-6 md:pl-8">
+                    <div class="flex gap-2 items-center">
+                        <span class="bg-surface-container-highest text-on-surface px-3 py-1 rounded-full font-label-sm text-label-sm border border-outline-variant">Presencial</span>
+                        <span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-sm text-label-sm">Certificado</span>
+                    </div>
+                    <h1 class="font-headline-xl text-headline-xl text-on-background">Taller de Robótica Educativa</h1>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant">Aprende los fundamentos de la electrónica, mecánica y programación construyendo tus propios robots desde cero.</p>
+                    <div class="flex items-end gap-3 py-4 border-b border-outline-variant">
+                        <span class="font-headline-xl text-headline-xl text-primary">$4,500</span>
+                        <span class="font-body-md text-body-md text-on-surface-variant mb-2">UYU / mes</span>
+                    </div>
+                    <div class="flex flex-col gap-3 py-4">
+                        <div class="flex items-center gap-3 text-on-surface">
+                            <span class="material-symbols-outlined text-outline" data-icon="schedule">schedule</span>
+                            <span class="font-body-md text-body-md">12 Semanas • 4hs / semana</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-on-surface">
+                            <span class="material-symbols-outlined text-outline" data-icon="group">group</span>
+                            <span class="font-body-md text-body-md">Máximo 15 estudiantes</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-on-surface">
+                            <span class="material-symbols-outlined text-outline" data-icon="calendar_month">calendar_month</span>
+                            <span class="font-body-md text-body-md">Inicia: 15 de Marzo, 2024</span>
+                        </div>
+                    </div>
+                    <button class="w-full bg-secondary text-on-secondary font-label-md text-label-md py-4 rounded-xl hover:bg-on-secondary-container transition-colors shadow-sm hover:shadow-md mt-4">
+                        Adquirir Servicio
+                    </button>
+                </div>
+            </section>
+            <!-- Information Tabs/Sections (Glassmorphism inspired layout) -->
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+                <!-- Sticky Navigation for sections (Desktop) -->
+                <div class="hidden md:block col-span-1">
+                    <div class="sticky top-24 flex flex-col gap-2 p-6 bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm">
+                        <a class="font-label-md text-label-md text-primary bg-surface-container px-4 py-3 rounded-lg border-l-4 border-primary" href="#descripcion">Descripción</a>
+                        <a class="font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low px-4 py-3 rounded-lg border-l-4 border-transparent transition-colors" href="#objetivos">Objetivos</a>
+                        <a class="font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low px-4 py-3 rounded-lg border-l-4 border-transparent transition-colors" href="#requisitos">Requisitos</a>
+                        <a class="font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low px-4 py-3 rounded-lg border-l-4 border-transparent transition-colors" href="#prestador">Prestador</a>
+                    </div>
+                </div>
+                <!-- Content Area -->
+                <div class="col-span-1 md:col-span-2 flex flex-col gap-12">
+                    <!-- Descripción -->
+                    <div class="scroll-mt-24" id="descripcion">
+                        <h2 class="font-headline-md text-headline-md text-on-background mb-6">Descripción del Taller</h2>
+                        <div class="prose max-w-none font-body-md text-body-md text-on-surface-variant space-y-4">
+                            <p>El Taller de Robótica Educativa está diseñado para introducir a los participantes en el fascinante mundo de la automatización y la programación física. A través de un enfoque "hands-on" (aprender haciendo), los estudiantes ensamblarán y programarán diferentes tipos de robots utilizando placas de desarrollo estándar de la industria.</p>
+                            <p>Durante el curso, se proveerán todos los materiales necesarios, incluyendo el kit de robótica que el estudiante podrá llevarse al finalizar el programa. Las clases combinan teoría fundamental con extensas sesiones prácticas de resolución de problemas reales.</p>
+                        </div>
+                    </div>
+                    <!-- Objetivos -->
+                    <div class="scroll-mt-24 p-8 bg-surface-container-low rounded-xl border border-outline-variant" id="objetivos">
+                        <h2 class="font-headline-md text-headline-md text-on-background mb-6">Objetivos de Aprendizaje</h2>
+                        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <li class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-secondary mt-1" data-icon="check_circle">check_circle</span>
+                                <span class="font-body-md text-body-md text-on-surface-variant">Comprender los principios básicos de la electrónica y circuitos.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-secondary mt-1" data-icon="check_circle">check_circle</span>
+                                <span class="font-body-md text-body-md text-on-surface-variant">Programar microcontroladores usando C++ y lenguajes de bloques.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-secondary mt-1" data-icon="check_circle">check_circle</span>
+                                <span class="font-body-md text-body-md text-on-surface-variant">Diseñar algoritmos para la toma de decisiones autónomas del robot.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-secondary mt-1" data-icon="check_circle">check_circle</span>
+                                <span class="font-body-md text-body-md text-on-surface-variant">Integrar sensores (ultrasonido, infrarrojo) y actuadores (motores, servos).</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Requisitos -->
+                    <div class="scroll-mt-24" id="requisitos">
+                        <h2 class="font-headline-md text-headline-md text-on-background mb-6">Requisitos Previos</h2>
+                        <div class="flex flex-col gap-4">
+                            <div class="flex items-center gap-4 p-4 border border-outline-variant rounded-lg bg-surface-container-lowest">
+                                <div class="bg-surface-container-highest p-3 rounded-full text-primary">
+                                    <span class="material-symbols-outlined" data-icon="computer">computer</span>
+                                </div>
+                                <div>
+                                <h3 class="font-label-md text-label-md text-on-background">Equipo</h3>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant">Notebook propia (Windows, Mac o Linux) para la programación.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 p-4 border border-outline-variant rounded-lg bg-surface-container-lowest">
+                                <div class="bg-surface-container-highest p-3 rounded-full text-primary">
+                                    <span class="material-symbols-outlined" data-icon="school">school</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-label-md text-label-md text-on-background">Conocimientos</h3>
+                                    <p class="font-body-sm text-body-sm text-on-surface-variant">No se requiere experiencia previa en programación o electrónica. Nivel inicial.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Prestador -->
+                    <div class="scroll-mt-24" id="prestador">
+                        <h2 class="font-headline-md text-headline-md text-on-background mb-6">Información del Prestador</h2>
+                        <div class="flex flex-col sm:flex-row gap-6 p-6 border border-outline-variant rounded-xl bg-surface-container-lowest shadow-sm items-center sm:items-start">
+                            <div class="w-24 h-24 rounded-full overflow-hidden border border-outline-variant flex-shrink-0">
+                                <img alt="Instructor Profile" class="w-full h-full object-cover" data-alt="Professional portrait of a male robotics instructor in his 30s, wearing a clean, dark navy polo shirt. He is smiling warmly in a well-lit, modern classroom setting with slightly blurred technological equipment in the background. Academic and approachable aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu6APHCf47DLfYGave3wi3EJY9JumelHnhu-lDEv_LkV7unloHYM-LE33_riqSvLk4RwU7cic5XNeZx6JE3TvKzXJrNV4eyv-_KkKo16VODt3hRwWeULCDNr8cD8xGzOL_PehCH5qdeix93Xn_8_TYVR6ZQM6C7aC2fkcrFOMjrJ8KLbxVsQTwRy14F3IvOwwaKREPTlgYVLMTL_QhcnhAT4m5xpXVA-AA-Q4cSRNcDHJ_Qj7Rhl3j"/>
+                            </div>
+                            <div class="flex flex-col gap-2 text-center sm:text-left">
+                                <h3 class="font-headline-md text-headline-md text-on-background">Ing. Martín Silva</h3>
+                                <p class="font-label-md text-label-md text-primary">Ingeniero Mecatrónico / Docente Principal</p>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant mt-2">Con más de 10 años de experiencia en la industria de la automatización y 5 años dedicados a la docencia. Especializado en hacer accesibles conceptos complejos de ingeniería para estudiantes de todos los niveles.</p>
+                                <button class="text-primary font-label-md text-label-md mt-2 flex items-center justify-center sm:justify-start gap-1 hover:underline">
+                                                                Ver perfil completo <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Related Services -->
+            <section class="mt-8 pt-12 border-t border-outline-variant">
+                <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background mb-8">Servicios Relacionados</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Related Card 1 -->
+                    <div class="flex flex-col bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 group cursor-pointer">
+                        <div class="aspect-video relative overflow-hidden">
+                            <img alt="Curso Python" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A brightly lit computer lab where a student is focused on coding on a dual-monitor setup. Code syntax is visible on screen. The environment is modern, clean, and academic. Shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1W6zjSrSza1WvxPMQzuIU4LQowyJP4G5DR_0OBXd0duG2TqCMlrsVAC6vCD1f9K3CzdLf0GNzbssftsUbcD894j2QaUKigF567vC5FkIrLVopEElb9C0FVr8idZRP8_gifmDYBYAsTJrLzdDLiL4Nch8yuf1GJhud5PULOAKuMXzpPy3nzr7qLH2CysihTkVz0XbcwwiJYXMO-Tsn3DskKvhv2uAcDiS8_zAmQn_GiyjTaarK4UzJ"/>
+                            <div class="absolute top-2 left-2 bg-surface px-2 py-1 rounded text-primary font-label-sm text-label-sm shadow-sm">Programación</div>
+                        </div>
+                        <div class="p-4 flex flex-col gap-2">
+                            <h3 class="font-label-md text-label-md text-on-background line-clamp-2">Introducción a Python para Científicos</h3>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-auto">8 Semanas</p>
+                            <div class="font-label-md text-label-md text-primary mt-2">$3,200 UYU</div>
+                        </div>
+                    </div>
+                    <!-- Related Card 2 -->
+                    <div class="flex flex-col bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 group cursor-pointer">
+                        <div class="aspect-video relative overflow-hidden">
+                            <img alt="Impresión 3D" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A sleek 3D printer in the process of creating a complex geometric object in bright orange filament. The setting is a clean, well-lit maker space with a minimalist design approach. Focus is on the extruder nozzle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVx02qqBCUEM21F_cyWn3U0EJRJodKMFzaGOLDydXgIBZvZmFeS_aWeDC2crfaQ9rNGdpUpenbXH6vRCxKTPxyqTTLQC5wBMU475jxxiVnDmHFaMtUNypKBJ60XN3jlLnHiCJdSyg5_z3EdZjthiIq2uM0oPQcoSlXmFAHOoQyFProl_w6_x_0AUmSWoKGeOmdP2TPSmhj3iCSggzmXKwwrBJLv8MuzxtbC6mijB1XS_dHrxF6qA8f"/>
+                            <div class="absolute top-2 left-2 bg-surface px-2 py-1 rounded text-primary font-label-sm text-label-sm shadow-sm">Fabricación</div>
+                        </div>
+                        <div class="p-4 flex flex-col gap-2">
+                            <h3 class="font-label-md text-label-md text-on-background line-clamp-2">Diseño e Impresión 3D Básica</h3>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-auto">4 Semanas</p>
+                            <div class="font-label-md text-label-md text-primary mt-2">$2,500 UYU</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <!-- Footer -->
+        <footer class="w-full bg-surface-container-lowest border-t border-outline-variant mt-auto">
+            <div class="py-12 px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-gutter max-w-container-max mx-auto">
+                <div class="col-span-1 md:col-span-4 mb-6">
+                    <span class="font-headline-md text-headline-md text-primary">Equipo Litoral</span>
+                </div>
+                <div class="flex flex-col gap-3">
+                    <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary underline transition-all duration-300" href="#">Contact Support</a>
+                    <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary underline transition-all duration-300" href="#">Privacy Policy</a>
+                </div>
+                <div class="flex flex-col gap-3">
+                    <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary underline transition-all duration-300" href="#">Institutional Portal</a>
+                    <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary underline transition-all duration-300" href="#">Terms of Service</a>
+                </div>
+                <div class="col-span-1 md:col-span-4 mt-8 pt-8 border-t border-outline-variant text-center">
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 Equipo Litoral. All rights reserved. Team: Alejandro, Ronny, Emanuel, Sebastián.</p>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>
