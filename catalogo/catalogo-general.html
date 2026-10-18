@@ -1,360 +1,130 @@
-<!DOCTYPE html>
-
-<html lang="es"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Catálogo de Servicios Educativos - Equipo Litoral</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-          darkMode: "class",
-          theme: {
-            extend: {
-              "colors": {
-                      "surface-container-highest": "#d3e4fe",
-                      "on-secondary": "#ffffff",
-                      "surface-tint": "#405f91",
-                      "surface-container-low": "#eff4ff",
-                      "surface-container-lowest": "#ffffff",
-                      "surface-dim": "#cbdbf5",
-                      "on-tertiary-fixed-variant": "#004883",
-                      "secondary-container": "#54f8d7",
-                      "outline-variant": "#c4c6d0",
-                      "on-tertiary": "#ffffff",
-                      "primary-fixed-dim": "#a9c7ff",
-                      "error-container": "#ffdad6",
-                      "surface-variant": "#d3e4fe",
-                      "on-error-container": "#93000a",
-                      "primary-container": "#002b5b",
-                      "on-primary-fixed": "#001b3d",
-                      "secondary-fixed": "#58fbda",
-                      "surface-bright": "#f8f9ff",
-                      "tertiary-fixed-dim": "#a4c9ff",
-                      "on-secondary-fixed-variant": "#005143",
-                      "tertiary": "#001731",
-                      "surface": "#f8f9ff",
-                      "on-primary": "#ffffff",
-                      "primary-fixed": "#d6e3ff",
-                      "secondary-fixed-dim": "#2cdebf",
-                      "inverse-primary": "#a9c7ff",
-                      "error": "#ba1a1a",
-                      "on-tertiary-fixed": "#001c39",
-                      "surface-container": "#e5eeff",
-                      "on-surface-variant": "#43474f",
-                      "background": "#f8f9ff",
-                      "tertiary-container": "#002c54",
-                      "surface-container-high": "#dce9ff",
-                      "on-secondary-fixed": "#00201a",
-                      "on-surface": "#0b1c30",
-                      "on-primary-fixed-variant": "#264778",
-                      "on-primary-container": "#7594ca",
-                      "primary": "#001736",
-                      "outline": "#747780",
-                      "on-tertiary-container": "#5095e7",
-                      "secondary": "#006b5a",
-                      "on-error": "#ffffff",
-                      "tertiary-fixed": "#d4e3ff",
-                      "on-background": "#0b1c30",
-                      "inverse-on-surface": "#eaf1ff",
-                      "inverse-surface": "#213145",
-                      "on-secondary-container": "#00705e"
-              },
-              "borderRadius": {
-                      "DEFAULT": "0.125rem",
-                      "lg": "0.25rem",
-                      "xl": "0.5rem",
-                      "full": "0.75rem"
-              },
-              "spacing": {
-                      "unit": "4px",
-                      "margin-desktop": "48px",
-                      "margin-mobile": "16px",
-                      "gutter": "24px",
-                      "container-max": "1280px"
-              },
-              "fontFamily": {
-                      "headline-lg-mobile": [
-                              "Montserrat"
-                      ],
-                      "body-md": [
-                              "Inter"
-                      ],
-                      "headline-xl": [
-                              "Montserrat"
-                      ],
-                      "headline-md": [
-                              "Montserrat"
-                      ],
-                      "headline-lg": [
-                              "Montserrat"
-                      ],
-                      "body-lg": [
-                              "Inter"
-                      ],
-                      "label-sm": [
-                              "Inter"
-                      ],
-                      "label-md": [
-                              "Inter"
-                      ],
-                      "body-sm": [
-                              "Inter"
-                      ]
-              },
-              "fontSize": {
-                      "headline-lg-mobile": [
-                              "24px",
-                              {
-                                      "lineHeight": "32px",
-                                      "fontWeight": "700"
-                              }
-                      ],
-                      "body-md": [
-                              "16px",
-                              {
-                                      "lineHeight": "24px",
-                                      "fontWeight": "400"
-                              }
-                      ],
-                      "headline-xl": [
-                              "48px",
-                              {
-                                      "lineHeight": "56px",
-                                      "letterSpacing": "-0.02em",
-                                      "fontWeight": "700"
-                              }
-                      ],
-                      "headline-md": [
-                              "24px",
-                              {
-                                      "lineHeight": "32px",
-                                      "fontWeight": "600"
-                              }
-                      ],
-                      "headline-lg": [
-                              "32px",
-                              {
-                                      "lineHeight": "40px",
-                                      "letterSpacing": "-0.01em",
-                                      "fontWeight": "700"
-                              }
-                      ],
-                      "body-lg": [
-                              "18px",
-                              {
-                                      "lineHeight": "28px",
-                                      "fontWeight": "400"
-                              }
-                      ],
-                      "label-sm": [
-                              "12px",
-                              {
-                                      "lineHeight": "14px",
-                                      "fontWeight": "500"
-                              }
-                      ],
-                      "label-md": [
-                              "14px",
-                              {
-                                      "lineHeight": "16px",
-                                      "letterSpacing": "0.05em",
-                                      "fontWeight": "600"
-                              }
-                      ],
-                      "body-sm": [
-                              "14px",
-                              {
-                                      "lineHeight": "20px",
-                                      "fontWeight": "400"
-                              }
-                      ]
-              }
-      },
-          },
-        }
-      </script>
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Catálogo de Servicios | Equipo Litoral</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
 </head>
-<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
-<!-- TopNavBar (Shared Component) -->
-<header class="fixed top-0 w-full z-50 bg-surface dark:bg-surface-dim shadow-sm">
-<div class="flex justify-between items-center px-margin-desktop h-16 w-full max-w-container-max mx-auto">
-<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">
-                Equipo Litoral
-            </div>
-<nav class="hidden md:flex gap-gutter">
-<a class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary dark:border-primary-fixed-dim pb-1 hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-200 ease-in-out" href="#">Catalog</a>
-<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors duration-200 ease-in-out" href="#">About Us</a>
-</nav>
-<div class="flex items-center gap-unit-2" id="nav-guest">
-<a href="../login/login.html"><button class="font-label-md text-label-md text-primary bg-transparent border border-primary px-4 py-2 rounded-full hover:bg-surface-container-low transition-colors">Login</button></a>
-<a href="../login/registro.html"><button class="font-label-md text-label-md text-on-primary bg-primary px-4 py-2 rounded-full hover:bg-primary-container transition-colors shadow-sm">Register</button></a>
-</div>
-<div class="hidden items-center gap-unit-2" id="nav-user">
-<span class="hidden md:inline font-label-md text-label-md text-on-surface-variant" id="nav-user-name"></span>
-<button class="font-label-md text-label-md text-primary bg-transparent border border-primary px-4 py-2 rounded-full hover:bg-surface-container-low transition-colors" id="btn-logout">Cerrar sesión</button>
-</div>
-</div>
-</header>
-<!-- Main Layout -->
-<main class="flex-grow pt-[104px] pb-20 px-margin-mobile md:px-margin-desktop w-full max-w-container-max mx-auto">
-<!-- Header -->
-<div class="mb-10">
-<h1 class="font-headline-xl text-headline-xl md:font-headline-xl md:text-headline-xl text-primary mb-2">Catálogo de Servicios Educativos</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl">Explora nuestra oferta académica y de mentoría diseñada para impulsar tu desarrollo profesional e institucional.</p>
-</div>
-<div class="flex flex-col md:flex-row gap-gutter">
-<!-- Sidebar (Filters) -->
-<aside class="w-full md:w-1/4 shrink-0">
-<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm sticky top-[104px]">
-<div class="flex items-center justify-between mb-6">
-<h2 class="font-headline-md text-headline-md text-on-surface">Filtros</h2>
-<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors" data-icon="filter_list">filter_list</span>
-</div>
-<!-- Category Filter -->
-<div class="mb-8">
-<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-4">Categoría</h3>
-<div class="flex flex-col gap-3">
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="form-checkbox h-5 w-5 text-secondary border-outline rounded focus:ring-secondary focus:ring-offset-0 transition duration-200" type="checkbox"/>
-<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Cursos</span>
-</label>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="form-checkbox h-5 w-5 text-secondary border-outline rounded focus:ring-secondary focus:ring-offset-0 transition duration-200" type="checkbox"/>
-<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Mentorías</span>
-</label>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="form-checkbox h-5 w-5 text-secondary border-outline rounded focus:ring-secondary focus:ring-offset-0 transition duration-200" type="checkbox"/>
-<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Robótica</span>
-</label>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="form-checkbox h-5 w-5 text-secondary border-outline rounded focus:ring-secondary focus:ring-offset-0 transition duration-200" type="checkbox"/>
-<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Formación</span>
-</label>
-</div>
-</div>
-<!-- Price Filter -->
-<div class="mb-8">
-<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-4">Precio</h3>
-<div class="flex flex-col gap-3">
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="form-radio h-5 w-5 text-secondary border-outline focus:ring-secondary focus:ring-offset-0 transition duration-200" name="price" type="radio"/>
-<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Todos</span>
-</label>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="form-radio h-5 w-5 text-secondary border-outline focus:ring-secondary focus:ring-offset-0 transition duration-200" name="price" type="radio"/>
-<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Gratuitos</span>
-</label>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="form-radio h-5 w-5 text-secondary border-outline focus:ring-secondary focus:ring-offset-0 transition duration-200" name="price" type="radio"/>
-<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">De pago</span>
-</label>
-</div>
-</div>
-<button class="w-full font-label-md text-label-md text-primary border border-outline-variant py-3 rounded-lg hover:bg-surface-container-low transition-colors duration-200 mt-2">
-                        Limpiar Filtros
-                    </button>
-</div>
-</aside>
-<!-- Main Content Area -->
-<div class="w-full md:w-3/4">
-<!-- Search Bar -->
-<div class="mb-8 relative">
-<span class="material-symbols-outlined absolute left-4 top-1/2 transform -translate-y-1/2 text-outline-variant" data-icon="search">search</span>
-<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl py-4 pl-12 pr-4 font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all shadow-sm" placeholder="Buscar servicios educativos, cursos o mentorías..." type="text"/>
-</div>
-<!-- Catalog Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-<!-- Card 1 -->
-<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm hover:shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
-<div class="relative w-full aspect-video overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A brightly lit modern classroom with students interacting with small educational robots on desks. High key lighting, academic and innovative aesthetic. Professional and clean composition focusing on hands-on learning with technology." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPqX-4J5A-YAB15KUpmAY-5IZ_zoya5hTHhZHJjOZxugsti-S7NF9uXSCzy3Xgdm_ci9Yod7I4x3NFZNshWq6FzSV15MXOEBVSVT4HeKy2L01UD5fvun-h6ymoAQ3yReH3lwHM4JBVJYvtXoEcZr8Pol6Sng8hvPWyN16DJZnXqnz5KsjHp-CqtF2kCL_KCkr3NW9bIal0jeeCGCY0RCW7tvHRPCaZk4EGgftGZlQ6dauF84lpQgPv"/>
-<div class="absolute top-3 left-3 bg-primary text-on-primary font-label-sm text-label-sm px-3 py-1 rounded-full shadow-sm">
-                                Robótica
-                            </div>
-</div>
-<div class="p-6 flex flex-col flex-grow">
-<p class="font-label-sm text-label-sm text-on-surface-variant mb-2">Fundación Sadosky</p>
-<h3 class="font-headline-md text-headline-md text-on-surface mb-3 flex-grow">Taller de Robótica Educativa</h3>
-<div class="flex items-center gap-2 mb-6">
-<span class="material-symbols-outlined text-outline-variant text-sm" data-icon="schedule">schedule</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant">4 semanas</span>
-</div>
-<button class="w-full bg-secondary text-on-secondary font-label-md text-label-md py-3 rounded-lg hover:bg-secondary-fixed-dim transition-colors duration-200">Ver Detalles</button>
-</div>
-</div>
-<!-- Card 2 -->
-<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm hover:shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
-<div class="relative w-full aspect-video overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A focused one-on-one virtual mentoring session shown on a modern laptop screen in a clean, minimalist office setting. The atmosphere is professional, supportive, and technologically enabled, with cool natural light illuminating the workspace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCX2AxZ8pRtTd2LVX1YQYuozb09LD69VkDOn5-lLmI1Z-ARshfUA_SRuZ2BepAwjrWrltkyAooNrPsENo9nxpZ-BzR8l5B-qmN6UUlkKhzfOH52_m4whPQNTCrIOIQXkZ3_fK2aIGNeMPrh5fYjeIqE_gVvBlMOcVTkrHPymXuowcG4CdyWsnox93uEf5jxboUcOtoe4Fiaj-6YNqvGjUSy20nK-PTxCWHYH1U5LnMUFirgaIILYrdB"/>
-<div class="absolute top-3 left-3 bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-3 py-1 rounded-full shadow-sm">
-                                Mentorías
-                            </div>
-</div>
-<div class="p-6 flex flex-col flex-grow">
-<p class="font-label-sm text-label-sm text-on-surface-variant mb-2">Equipo Litoral Core</p>
-<h3 class="font-headline-md text-headline-md text-on-surface mb-3 flex-grow">Mentoría en Desarrollo de Software</h3>
-<div class="flex items-center gap-2 mb-6">
-<span class="material-symbols-outlined text-outline-variant text-sm" data-icon="video_camera_front">video_camera_front</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant">Sesiones 1:1</span>
-</div>
-<button class="w-full bg-secondary text-on-secondary font-label-md text-label-md py-3 rounded-lg hover:bg-secondary-fixed-dim transition-colors duration-200">Ver Detalles</button>
-</div>
-</div>
-<!-- Card 3 -->
-<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm hover:shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
-<div class="relative w-full aspect-video overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clean, modern digital certificate graphic on a sleek tablet screen resting on a wooden desk next to a notebook. The scene implies academic achievement and professional certification in a minimalist, corporate educational environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvYN9L_AA3aANcTLd0kQmJv0Yhiy70hLAcAPlzXJfFlStMG2SK1UBVfO1FJpxNC6sBLirdqweMnkbJFm1FtROaVWUM0lpGsqUfsvYRi1PklqAOk-M2MFe_LZlYdIyNP6mbdWDIHFH6ekTJ4kjRHyjA3ZHZ4KEBvQu5wqZvIZDWsG86yZkcOTl-iK51sCigZavhBsUNJtOg5F5gbx5B8N90mdyGDmmAEE5ps1dPEssUiybds7g4eDOL"/>
-<div class="absolute top-3 left-3 bg-primary-container text-on-primary-container font-label-sm text-label-sm px-3 py-1 rounded-full shadow-sm">
-                                Formación
-                            </div>
-</div>
-<div class="p-6 flex flex-col flex-grow">
-<p class="font-label-sm text-label-sm text-on-surface-variant mb-2">Instituto Superior</p>
-<h3 class="font-headline-md text-headline-md text-on-surface mb-3 flex-grow">Didáctica General para Docentes</h3>
-<div class="flex items-center gap-2 mb-6">
-<span class="material-symbols-outlined text-outline-variant text-sm" data-icon="menu_book">menu_book</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant">Intensivo 3 meses</span>
-</div>
-<button class="w-full bg-secondary text-on-secondary font-label-md text-label-md py-3 rounded-lg hover:bg-secondary-fixed-dim transition-colors duration-200">Ver Detalles</button>
-</div>
-</div>
-</div>
-<!-- Pagination Placeholder (Minimal) -->
-<div class="mt-12 flex justify-center items-center gap-2">
-<button class="w-10 h-10 rounded-full flex items-center justify-center border border-outline-variant text-on-surface hover:bg-surface-container-low transition-colors">
-<span class="material-symbols-outlined text-sm" data-icon="chevron_left">chevron_left</span>
-</button>
-<button class="w-10 h-10 rounded-full flex items-center justify-center bg-primary text-on-primary font-label-md">1</button>
-<button class="w-10 h-10 rounded-full flex items-center justify-center border border-outline-variant text-on-surface hover:bg-surface-container-low font-label-md transition-colors">2</button>
-<button class="w-10 h-10 rounded-full flex items-center justify-center border border-outline-variant text-on-surface hover:bg-surface-container-low font-label-md transition-colors">3</button>
-<button class="w-10 h-10 rounded-full flex items-center justify-center border border-outline-variant text-on-surface hover:bg-surface-container-low transition-colors">
-<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
-</button>
-</div>
-</div>
-</div>
-</main>
-<!-- Footer (Shared Component) -->
-<footer class="w-full bg-surface-container-lowest dark:bg-tertiary border-t border-outline-variant dark:border-outline">
-<div class="py-12 px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-gutter max-w-container-max mx-auto">
-<div class="md:col-span-1">
-<div class="font-headline-md text-headline-md text-primary dark:text-tertiary-fixed mb-4">
-                    Equipo Litoral
+<body class="d-flex flex-column min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-litoral sticky-top" aria-label="Navegación principal">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="../index.html"><i class="bi bi-mortarboard-fill me-2" aria-hidden="true"></i>Equipo Litoral</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal" aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menú de navegación">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="menuPrincipal">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="../index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="../catalogo/catalogo-general.html">Catálogo</a></li>
+                    </ul>
+                    <div id="nav-guest" class="d-flex gap-2">
+                        <a href="../login/login.html" class="btn btn-outline-light btn-sm">Iniciar sesión</a>
+                        <a href="../login/registro.html" class="btn btn-accent btn-sm">Registrarse</a>
+                    </div>
+                    <div id="nav-user" class="d-flex align-items-center gap-2 hidden">
+                        <a href="../gestion/detalle-gestion.html" class="btn btn-outline-light btn-sm"><i class="bi bi-person-circle me-1" aria-hidden="true"></i><span id="nav-user-name"></span></a>
+                        <button id="btn-logout" type="button" class="btn btn-accent btn-sm">Cerrar sesión</button>
+                    </div>
                 </div>
-<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">
-                    © 2024 Equipo Litoral. All rights reserved. Team: Alejandro, Ronny, Emanuel, Sebastián.
-                </p>
-</div>
-<div class="md:col-span-3 flex flex-wrap gap-8 justify-end">
-<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant hover:text-secondary dark:hover:text-secondary-fixed-dim underline transition-all duration-300" href="#">Contact Support</a>
-<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant hover:text-secondary dark:hover:text-secondary-fixed-dim underline transition-all duration-300" href="#">Privacy Policy</a>
-<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant hover:text-secondary dark:hover:text-secondary-fixed-dim underline transition-all duration-300" href="#">Institutional Portal</a>
-<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant hover:text-secondary dark:hover:text-secondary-fixed-dim underline transition-all duration-300" href="#">Terms of Service</a>
-</div>
-</div>
-</footer>
-<script type="module" src="../session.js"></script>
-</body></html>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container py-5 flex-grow-1">
+        <header class="mb-4">
+            <h1 class="fw-bold">Catálogo de Servicios Educativos</h1>
+            <p class="text-secondary mb-0">Explora nuestra oferta académica y de mentoría diseñada para impulsar tu desarrollo profesional e institucional.</p>
+        </header>
+
+        <div class="row g-4">
+            <aside class="col-lg-3" aria-label="Filtros del catálogo">
+                <div class="card-litoral p-4">
+                    <h2 class="h6 fw-bold text-uppercase mb-3">Filtros</h2>
+                    <fieldset class="mb-3">
+                        <legend class="fs-6 fw-semibold">Categoría</legend>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="categoria" id="cat-todas" value="todas" checked>
+                                <label class="form-check-label" for="cat-todas">Todas</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="categoria" id="cat-cursos" value="cursos">
+                                <label class="form-check-label" for="cat-cursos">Cursos</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="categoria" id="cat-mentorias" value="mentorias">
+                                <label class="form-check-label" for="cat-mentorias">Mentorías</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="categoria" id="cat-robotica" value="robotica">
+                                <label class="form-check-label" for="cat-robotica">Robótica</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="categoria" id="cat-formacion" value="formacion">
+                                <label class="form-check-label" for="cat-formacion">Formación</label>
+                            </div>
+                    </fieldset>
+                    <button type="button" id="btn-limpiar" class="btn btn-outline-primary btn-sm w-100"><i class="bi bi-x-circle me-1" aria-hidden="true"></i>Limpiar Filtros</button>
+                </div>
+            </aside>
+
+            <section class="col-lg-9" aria-label="Listado de servicios">
+                <div id="sin-resultados" class="alert alert-info hidden" role="status">No hay servicios en esta categoría por el momento.</div>
+                <div class="row g-4" id="lista-servicios">
+                    <div class="col-md-6 col-xl-4" data-categoria="robotica">
+                        <article class="card-litoral h-100 p-4 d-flex flex-column">
+                            <span class="badge text-bg-primary align-self-start mb-2">Robótica</span>
+                            <p class="small text-secondary mb-1">Fundación Sadosky</p>
+                            <h3 class="h5 fw-bold">Taller de Robótica Educativa</h3>
+                            <p class="text-secondary small mt-auto mb-3"><i class="bi bi-clock me-1" aria-hidden="true"></i>4 semanas</p>
+                            <a href="detalle.html?id=taller-robotica" class="btn btn-outline-primary w-100" aria-label="Ver detalles de Taller de Robótica Educativa">Ver Detalles</a>
+                        </article>
+                    </div>
+                    <div class="col-md-6 col-xl-4" data-categoria="mentorias">
+                        <article class="card-litoral h-100 p-4 d-flex flex-column">
+                            <span class="badge text-bg-primary align-self-start mb-2">Mentorías</span>
+                            <p class="small text-secondary mb-1">Equipo Litoral Core</p>
+                            <h3 class="h5 fw-bold">Mentoría en Desarrollo de Software</h3>
+                            <p class="text-secondary small mt-auto mb-3"><i class="bi bi-person-video3 me-1" aria-hidden="true"></i>Sesiones 1:1</p>
+                            <a href="detalle.html?id=mentoria-software" class="btn btn-outline-primary w-100" aria-label="Ver detalles de Mentoría en Desarrollo de Software">Ver Detalles</a>
+                        </article>
+                    </div>
+                    <div class="col-md-6 col-xl-4" data-categoria="formacion">
+                        <article class="card-litoral h-100 p-4 d-flex flex-column">
+                            <span class="badge text-bg-primary align-self-start mb-2">Formación</span>
+                            <p class="small text-secondary mb-1">Instituto Superior</p>
+                            <h3 class="h5 fw-bold">Didáctica General para Docentes</h3>
+                            <p class="text-secondary small mt-auto mb-3"><i class="bi bi-calendar-event me-1" aria-hidden="true"></i>Intensivo 3 meses</p>
+                            <a href="detalle.html?id=didactica-docentes" class="btn btn-outline-primary w-100" aria-label="Ver detalles de Didáctica General para Docentes">Ver Detalles</a>
+                        </article>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer-litoral py-4 mt-auto">
+        <div class="container">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-6">
+                    <strong class="text-white">Equipo Litoral</strong>
+                    <div class="small">Alejandro, Ronny, Emanuel y Sebastián · Proyecto académico del Taller Integrador</div>
+                </div>
+                <div class="col-md-6 text-md-end small">
+                    <a href="../catalogo/catalogo-general.html" class="me-3">Catálogo</a>
+                    <a href="../login/login.html">Iniciar sesión</a>
+                    <div class="mt-1">© 2026 Equipo Litoral. Todos los derechos reservados.</div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="filtros.js"></script>
+    <script type="module" src="../session.js"></script>
+</body>
+</html>
