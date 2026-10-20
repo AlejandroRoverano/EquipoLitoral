@@ -1,6 +1,7 @@
 // catalogo/adquisicion.js
 // RF-09: Flujo de adquisición de un servicio educativo.
 // RNF-09: Pago simulado sin datos reales de medios de pago.
+// RD-08: El registro en Firestore se hace con el modelo de adquisiciones-modelo.js.
 //
 // Pasos del flujo:
 //   1) Selección del servicio: el usuario toca "Adquirir Servicio" en el detalle.
@@ -8,7 +9,7 @@
 //   3) Información previa: se muestra un resumen del servicio y del usuario.
 //   4) Pago simulado: el usuario elige un medio de pago (sin ingresar datos) y paga.
 //   5) Registro: el resultado del pago se guarda en "pagos" y, si se aprueba,
-//      la adquisición se guarda en "adquisiciones".
+//      la adquisición se guarda en "adquisiciones" (ver adquisiciones-modelo.js).
 //   6) Mensaje final: confirmación o información del error.
 //
 // IMPORTANTE (RNF-09): el pago es 100% simulado. No se solicitan ni se guardan
@@ -16,14 +17,14 @@
 
 import { auth, db } from "../firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 import {
-  collection,
-  doc,
-  getDoc,
-  addDoc,
-  writeBatch,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+  MEDIOS_DE_PAGO,
+  generarCodigoOperacion,
+  usuarioTieneServicio,
+  registrarAdquisicion,
+  registrarPagoRechazado
+} from "../adquisiciones-modelo.js";
 
 /* ------------------------------------------------------------------ */
 /* Datos del servicio seleccionado                                     */
@@ -49,14 +50,6 @@ function obtenerServicio() {
 }
 
 const servicio = obtenerServicio();
-
-// Medios de pago de la simulación (solo el nombre, nunca datos reales).
-// Las claves coinciden con el value de los radio buttons del detalle.
-const MEDIOS_DE_PAGO = {
-  tarjeta: "Tarjeta de crédito o débito (simulada)",
-  transferencia: "Transferencia bancaria (simulada)",
-  billetera: "Billetera digital (simulada)"
-};
 
 // Tiempo que tarda el "procesamiento" del pago simulado
 const DEMORA_PAGO_MS = 1500;
@@ -150,22 +143,6 @@ function traducirError(codigo) {
   }
 }
 
-// El ID del documento combina usuario y servicio: así un usuario
-// no puede adquirir dos veces el mismo servicio.
-function idAdquisicion(uid) {
-  return `${uid}_${servicio.id}`;
-}
-
-// Código de operación ficticio para identificar el pago simulado (ej: SIM-7F3K9Q)
-function generarCodigoOperacion() {
-  const caracteres = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  let codigo = "SIM-";
-  for (let i = 0; i < 6; i++) {
-    codigo += caracteres[Math.floor(Math.random() * caracteres.length)];
-  }
-  return codigo;
-}
-
 const esperar = (ms) => new Promise((resolver) => setTimeout(resolver, ms));
 
 /* ------------------------------------------------------------------ */
@@ -187,8 +164,7 @@ onAuthStateChanged(auth, async (user) => {
     }
 
     // ¿Ya adquirió este servicio?
-    const snapAdq = await getDoc(doc(db, "adquisiciones", idAdquisicion(user.uid)));
-    if (snapAdq.exists()) {
+    if (await usuarioTieneServicio(user.uid, servicio.id)) {
       marcarComoAdquirido();
     }
   } catch (error) {
@@ -293,11 +269,8 @@ btnConfirmar.addEventListener("click", async () => {
   bloquearPago(true);
 
   try {
-    const refAdquisicion = doc(db, "adquisiciones", idAdquisicion(user.uid));
-
     // Evita registrar (y cobrar) dos veces la misma adquisición
-    const existente = await getDoc(refAdquisicion);
-    if (existente.exists()) {
+    if (await usuarioTieneServicio(user.uid, servicio.id)) {
       bloquearPago(false);
       mostrarMensajeModal("Ya habías adquirido este servicio anteriormente. No se realizó ningún cobro.", "info");
       terminarFlujo();
@@ -308,25 +281,11 @@ btnConfirmar.addEventListener("click", async () => {
     await esperar(DEMORA_PAGO_MS);
 
     const codigoOperacion = generarCodigoOperacion();
-
-    // Datos del pago: solo información de la operación, NUNCA datos del medio de pago
-    const datosPago = {
-      uid: user.uid,
-      usuarioEmail: user.email,
-      servicioId: servicio.id,
-      servicioNombre: servicio.nombre,
-      monto: servicio.precio,
-      moneda: servicio.moneda,
-      metodo: metodo,
-      simulado: true,
-      estado: aprobado ? "aprobado" : "rechazado",
-      codigoOperacion: codigoOperacion,
-      fecha: serverTimestamp()
-    };
+    const operacion = { usuario: user, servicio, metodo, codigoOperacion };
 
     if (!aprobado) {
       // Pago rechazado: se registra el intento, pero no la adquisición
-      await addDoc(collection(db, "pagos"), datosPago);
+      await registrarPagoRechazado(operacion);
       bloquearPago(false);
       btnConfirmar.textContent = "Reintentar pago";
       mostrarMensajeModal(
@@ -337,26 +296,7 @@ btnConfirmar.addEventListener("click", async () => {
     }
 
     // Pago aprobado: se guardan el pago y la adquisición juntos (todo o nada)
-    const refPago = doc(collection(db, "pagos"));
-    const lote = writeBatch(db);
-    lote.set(refPago, datosPago);
-    lote.set(refAdquisicion, {
-      uid: user.uid,
-      usuarioNombre: user.displayName || "",
-      usuarioEmail: user.email,
-      servicioId: servicio.id,
-      servicioNombre: servicio.nombre,
-      prestador: servicio.prestador,
-      precio: servicio.precio,
-      moneda: servicio.moneda,
-      periodo: servicio.periodo,
-      estado: "confirmada",
-      pagoId: refPago.id,
-      codigoOperacion: codigoOperacion,
-      metodoPago: metodo,
-      fecha: serverTimestamp()
-    });
-    await lote.commit();
+    await registrarAdquisicion(operacion);
 
     bloquearPago(false);
     mostrarMensajeModal(
