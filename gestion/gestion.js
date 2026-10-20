@@ -14,6 +14,12 @@ import {
   getDoc,
   updateDoc
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+import {
+  obtenerAdquisicionesDeUsuario,
+  formatearFecha,
+  formatearImporte,
+  ESTADOS_ADQUISICION
+} from "../adquisiciones-modelo.js";
 
 const navUser = document.getElementById("nav-user");
 const navUserName = document.getElementById("nav-user-name");
@@ -50,6 +56,7 @@ onAuthStateChanged(auth, async (user) => {
   }
 
   aplicarVistaSegunRol(rol);
+  cargarAdquisicionesPanel(user.uid, rol);
 });
 
 function aplicarVistaSegunRol(rol) {
@@ -165,3 +172,81 @@ btnLogout.addEventListener("click", async () => {
     btnLogout.disabled = false;
   }
 });
+
+/* ------------------------------------------------------------------ */
+/* RF-10: últimas adquisiciones en el panel                            */
+/* ------------------------------------------------------------------ */
+// Muestra las 3 adquisiciones más recientes del estudiante (leídas de Firestore).
+// El historial completo está en historial.html.
+
+const ADQUISICIONES_EN_PANEL = 3;
+
+async function cargarAdquisicionesPanel(uid, rol) {
+  const contenedor = document.getElementById("lista-adquisiciones-panel");
+  const totalCursos = document.getElementById("total-cursos-activos");
+  if (!contenedor) return;
+
+  if (rol === "prestador") {
+    contenedor.replaceChildren(
+      crearElemento("p", "font-body-md text-body-md text-on-surface-variant col-span-full",
+        "Acá vas a ver los servicios que dictás.")
+    );
+    return;
+  }
+
+  try {
+    const adquisiciones = await obtenerAdquisicionesDeUsuario(uid);
+    if (totalCursos) totalCursos.textContent = adquisiciones.length;
+
+    if (adquisiciones.length === 0) {
+      const vacio = crearElemento("div",
+        "col-span-full bg-surface border border-outline-variant/30 rounded-xl p-8 text-center");
+      const enlace = crearElemento("a", "text-secondary font-label-md text-label-md hover:underline", "Explorar el catálogo");
+      enlace.href = "../catalogo/catalogo-general.html";
+      vacio.append(
+        crearElemento("p", "font-body-md text-body-md text-on-surface-variant mb-2", "Todavía no adquiriste servicios."),
+        enlace
+      );
+      contenedor.replaceChildren(vacio);
+      return;
+    }
+
+    contenedor.replaceChildren(
+      ...adquisiciones.slice(0, ADQUISICIONES_EN_PANEL).map(crearTarjetaPanel)
+    );
+  } catch (error) {
+    console.error("Error al cargar las adquisiciones:", error.code, error.message);
+    contenedor.replaceChildren(
+      crearElemento("p", "font-body-md text-body-md text-error col-span-full",
+        "No pudimos cargar tus adquisiciones. Recargá la página para intentar de nuevo.")
+    );
+  }
+}
+
+// Crea un elemento con clases y texto (textContent: los datos nunca se interpretan como HTML)
+function crearElemento(etiqueta, clases, texto) {
+  const el = document.createElement(etiqueta);
+  if (clases) el.className = clases;
+  if (texto !== undefined) el.textContent = texto;
+  return el;
+}
+
+function crearTarjetaPanel(a) {
+  const tarjeta = crearElemento("div",
+    "bg-surface border border-outline-variant/30 rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 flex flex-col h-full");
+  const estado = crearElemento("span",
+    "self-start bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-sm text-label-sm mb-3",
+    a.estado === ESTADOS_ADQUISICION.CONFIRMADA ? "Confirmada" : a.estado);
+  const enlace = crearElemento("a", "text-secondary font-label-md text-label-md hover:underline mt-4", "Ver detalle del servicio");
+  enlace.href = `../catalogo/detalle.html?id=${encodeURIComponent(a.servicioId)}`;
+
+  tarjeta.append(
+    estado,
+    crearElemento("h3", "font-headline-md text-headline-md text-on-surface mb-1", a.servicioNombre),
+    crearElemento("p", "font-body-sm text-body-sm text-on-surface-variant mb-4", a.prestador || ""),
+    crearElemento("p", "font-body-sm text-body-sm text-on-surface-variant flex-grow",
+      `Adquirido el ${formatearFecha(a.fecha, false)} · ${formatearImporte(a)}`),
+    enlace
+  );
+  return tarjeta;
+}

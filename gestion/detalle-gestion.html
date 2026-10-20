@@ -200,7 +200,7 @@
                                                 </a>
                                 </li>
                                 <li>
-                                <a class="flex items-center gap-3 px-4 py-3 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full font-bold active:translate-x-1 duration-200" href="#">
+                                <a class="flex items-center gap-3 px-4 py-3 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full font-bold active:translate-x-1 duration-200" href="historial.html">
                                         <span class="material-symbols-outlined" data-icon="school" style="font-variation-settings: 'FILL' 1;">school</span>
                                                 Mis Cursos
                                         </a>
@@ -288,8 +288,8 @@
                                         <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Resumen de Actividad</h3>
                                         <div class="grid grid-cols-2 gap-4">
                                                 <div class="bg-surface-container-lowest p-4 rounded-lg border border-outline-variant/20 flex flex-col gap-1 items-center justify-center text-center">
-                                                        <span class="font-headline-lg text-headline-lg text-primary">4</span>
-                                                        <span class="font-body-sm text-body-sm text-on-surface-variant">Cursos Activos</span>
+                                                        <span class="font-headline-lg text-headline-lg text-primary" id="total-cursos-activos">-</span>
+                                                        <span class="font-body-sm text-body-sm text-on-surface-variant">Servicios Adquiridos</span>
                                                 </div>
                                                 <div class="bg-surface-container-lowest p-4 rounded-lg border border-outline-variant/20 flex flex-col gap-1 items-center justify-center text-center">
                                                         <span class="font-headline-lg text-headline-lg text-secondary">12</span>
@@ -302,53 +302,11 @@
                         <section class="mb-12">
                                 <div class="flex justify-between items-end mb-6">
                                         <h2 class="font-headline-md text-headline-md text-on-surface" id="titulo-adquisiciones">Mis Adquisiciones</h2>
-                                        <a class="font-label-md text-label-md text-primary hover:underline flex items-center gap-1" href="#">Ver todo <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span></a>
+                                        <a class="font-label-md text-label-md text-primary hover:underline flex items-center gap-1" href="historial.html">Ver todo <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span></a>
                                 </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                <!-- Course Card 1 -->
-                                        <div class="bg-surface border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group flex flex-col h-full">
-                                                <div class="h-48 relative overflow-hidden">
-                                                        <img alt="Taller de Robótica" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A close-up shot of a modern educational robotics kit being assembled on a clean, white laboratory table. The lighting is bright and clinical, emphasizing the precise engineering of the components. Small LED lights on the robot glow softly in blue. The atmosphere is academic, focused, and technologically advanced, fitting a sterile learning environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAulIvSqLsLbc5PRd3yC_Uj6TqrpL3fF48fKZv_sJnYLU5PwGrAdhl9f18zrD4RYF63WW1ZgJ22j1sLDBDoP0DSHl_OPK52qIU8wcSluyk-FjwM2lMqaBmuB3xPG8NQ25KEg4Hj5eJOKL6YYX91DhDG7GOHnwR_5BsAXwiR21ngeTMPqXUswSQgorDLzo2R4zHnZISTjfrBYT0e3V8c8qa4V8lkAWo7YN-lyblcgeDIl59nME63LVEr"/>
-                                                        <div class="absolute top-4 left-4 bg-primary text-on-primary px-3 py-1 rounded-md font-label-sm text-label-sm backdrop-blur-sm bg-opacity-90">
-                                                                Robótica
-                                                        </div>
-                                                </div>
-                                                <div class="p-6 flex flex-col flex-grow">
-                                                        <h3 class="font-headline-md text-headline-md text-on-surface mb-2">Introducción a la Robótica Educativa</h3>
-                                                        <p class="font-body-sm text-body-sm text-on-surface-variant mb-6 flex-grow">Aprende los fundamentos para integrar la robótica en el aula de clases.</p>
-                                                        <div class="flex flex-col gap-3">
-                                                                <div class="w-full bg-surface-container-highest rounded-full h-2">
-                                                                        <div class="bg-secondary h-2 rounded-full" style="width: 75%"></div>
-                                                                </div>
-                                                                <div class="flex justify-between items-center">
-                                                                        <span class="font-label-sm text-label-sm text-on-surface-variant">75% Completado</span>
-                                                                        <button class="text-secondary font-label-md text-label-md hover:underline">Continuar</button>
-                                                                </div>
-                                                        </div>
-                                                </div>
-                                        </div>
-                                <!-- Course Card 2 -->
-                                        <div class="bg-surface border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group flex flex-col h-full">
-                                                <div class="h-48 relative overflow-hidden">
-                                                        <img alt="Gestión Educativa" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clean, minimalist digital dashboard displayed on a sleek laptop screen. The screen shows charts and graphs related to educational metrics in a cool blue and white color palette. The laptop rests on a light oak desk in a bright, modern office space. The lighting is natural and soft, creating a calm, professional atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9-s4bU1jiyQ5LsRH6hNBZ9VrTXwZFcnxhI09kNtCrkf2Wd7ZRPP2wzJyD4b2jZ6aE009o1b46FjEhywHQfFKRBTw56cIe6BxCkNrrOCLbpc7Y_Qbs2780NMMIPwY_7y4QnQhLDO5iqbbx-AmNkvoI9NBIIwoGxCsvexyP80GFxmwfBfjFQp8I21GYEXnixbVsUSZgyjxsVUvmd6HMqHffgyJHzf0gT0Bhgps1caNwCXke4-1J6MOs"/>
-                                                        <div class="absolute top-4 left-4 bg-primary text-on-primary px-3 py-1 rounded-md font-label-sm text-label-sm backdrop-blur-sm bg-opacity-90">
-                                                                Gestión
-                                                        </div>
-                                                </div>
-                                                <div class="p-6 flex flex-col flex-grow">
-                                                        <h3 class="font-headline-md text-headline-md text-on-surface mb-2">Herramientas Digitales para el Aula</h3>
-                                                        <p class="font-body-sm text-body-sm text-on-surface-variant mb-6 flex-grow">Optimiza tu tiempo y mejora la interacción con tus estudiantes.</p>
-                                                        <div class="flex flex-col gap-3">
-                                                                <div class="w-full bg-surface-container-highest rounded-full h-2">
-                                                                        <div class="bg-secondary h-2 rounded-full" style="width: 30%"></div>
-                                                                </div>
-                                                                <div class="flex justify-between items-center">
-                                                                        <span class="font-label-sm text-label-sm text-on-surface-variant">30% Completado</span>
-                                                                        <button class="text-secondary font-label-md text-label-md hover:underline">Continuar</button>
-                                                                </div>
-                                                        </div>
-                                                </div>
-                                        </div>
+                                <!-- RF-10: se completa con las adquisiciones reales (gestion.js) -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="lista-adquisiciones-panel">
+                                        <p class="font-body-md text-body-md text-on-surface-variant col-span-full">Cargando tus adquisiciones...</p>
                                 </div>
                         </section>
                 </main>

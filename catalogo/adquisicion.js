@@ -113,7 +113,7 @@ function marcarComoAdquirido() {
   btnAdquirir.disabled = true;
   btnAdquirir.innerHTML = '<i class="bi bi-check-circle me-2" aria-hidden="true"></i>Servicio adquirido';
   mostrarAviso(
-    'Ya adquiriste este servicio. Podés verlo en <a href="../gestion/detalle-gestion.html" class="alert-link">Mis Adquisiciones</a>.',
+    'Ya adquiriste este servicio. Podés verlo en <a href="../gestion/historial.html" class="alert-link">Mis Adquisiciones</a>.',
     "success"
   );
 }
