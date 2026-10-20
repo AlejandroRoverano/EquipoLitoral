@@ -196,3 +196,29 @@ export async function obtenerAdquisicionesDeUsuario(uid) {
     .map(convertirAdquisicion)
     .sort((a, b) => (b.fecha?.getTime() || 0) - (a.fecha?.getTime() || 0));
 }
+
+/* ------------------------------------------------------------------ */
+/* Presentación (RF-10)                                                */
+/* ------------------------------------------------------------------ */
+// Funciones para mostrar los datos de forma clara en cualquier pantalla.
+
+// "$4.500 UYU / mes"
+export function formatearImporte(adquisicion) {
+  if (typeof adquisicion.precio !== "number") return "-";
+  const importe = `$${adquisicion.precio.toLocaleString("es-UY")} ${adquisicion.moneda || ""}`.trim();
+  return adquisicion.periodo ? `${importe} / ${adquisicion.periodo}` : importe;
+}
+
+// "20/10/2026, 02:15" (o solo "20/10/2026" si conHora es false)
+export function formatearFecha(fecha, conHora = true) {
+  if (!(fecha instanceof Date)) return "-";
+  const opciones = conHora
+    ? { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }
+    : { day: "2-digit", month: "2-digit", year: "numeric" };
+  return fecha.toLocaleString("es-UY", opciones);
+}
+
+// "Tarjeta de crédito o débito (simulada)"
+export function nombreMedioPago(metodo) {
+  return MEDIOS_DE_PAGO[metodo] || "-";
+}
