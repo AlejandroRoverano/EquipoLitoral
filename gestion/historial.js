@@ -40,9 +40,10 @@ onAuthStateChanged(auth, async (user) => {
   }
 
   try {
-    // Los prestadores no adquieren servicios (ver RF-09)
+    // RNF-10: el historial es de los estudiantes (los únicos que adquieren servicios)
     const snapUsuario = await getDoc(doc(db, "usuarios", user.uid));
-    if (snapUsuario.exists() && snapUsuario.data().rol === "prestador") {
+    const rol = snapUsuario.exists() && snapUsuario.data().rol ? snapUsuario.data().rol : "estudiante";
+    if (rol !== "estudiante") {
       mostrarSolo(avisoPrestador);
       return;
     }

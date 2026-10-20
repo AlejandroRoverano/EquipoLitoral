@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Administración | Equipo Litoral</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-litoral sticky-top" aria-label="Navegación principal">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="../index.html"><i class="bi bi-mortarboard-fill me-2" aria-hidden="true"></i>Equipo Litoral</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal" aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menú de navegación">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="menuPrincipal">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="../index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../catalogo/catalogo-general.html">Catálogo</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="panel.html">Administración</a></li>
+                    </ul>
+                    <div id="nav-guest" class="d-flex gap-2">
+                        <a href="../login/login.html" class="btn btn-outline-light btn-sm">Iniciar sesión</a>
+                        <a href="../login/registro.html" class="btn btn-accent btn-sm">Registrarse</a>
+                    </div>
+                    <div id="nav-user" class="d-flex align-items-center gap-2 hidden">
+                        <a href="../gestion/detalle-gestion.html" class="btn btn-outline-light btn-sm"><i class="bi bi-person-circle me-1" aria-hidden="true"></i><span id="nav-user-name"></span></a>
+                        <button id="btn-logout" type="button" class="btn btn-accent btn-sm">Cerrar sesión</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container py-4 flex-grow-1">
+        <!-- Mientras se verifica la sesión y el rol no se muestra nada del panel -->
+        <div id="admin-verificando" class="text-center py-5" role="status">
+            <div class="spinner-border text-primary" aria-hidden="true"></div>
+            <p class="text-secondary mt-3 mb-0">Verificando permisos...</p>
+        </div>
+
+        <div id="admin-contenido" class="hidden">
+            <header class="mb-4">
+                <span class="badge text-bg-danger mb-2"><i class="bi bi-shield-lock me-1" aria-hidden="true"></i>Solo administradores</span>
+                <h1 class="fw-bold mb-1">Panel de administración</h1>
+                <p class="text-secondary mb-0">Adquisiciones registradas en toda la plataforma.</p>
+            </header>
+
+            <div class="row g-3 mb-4">
+                <div class="col-6 col-md-3">
+                    <div class="card-litoral p-3 text-center h-100">
+                        <p class="h3 fw-bold mb-0" id="admin-total">-</p>
+                        <p class="small text-secondary mb-0">Adquisiciones</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card-litoral p-3 text-center h-100">
+                        <p class="h3 fw-bold mb-0" id="admin-compradores">-</p>
+                        <p class="small text-secondary mb-0">Estudiantes compradores</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="admin-error" class="alert alert-danger hidden" role="alert"></div>
+            <div id="admin-vacio" class="alert alert-info hidden" role="status">Todavía no hay adquisiciones registradas.</div>
+
+            <div class="card-litoral p-0 overflow-hidden">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <caption class="visually-hidden">Adquisiciones de todos los usuarios</caption>
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Usuario</th>
+                                <th scope="col">Servicio</th>
+                                <th scope="col">Importe</th>
+                                <th scope="col">Medio de pago</th>
+                                <th scope="col">Código</th>
+                                <th scope="col">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-tabla"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer-litoral py-4 mt-auto">
+        <div class="container">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-6">
+                    <strong class="text-white">Equipo Litoral</strong>
+                    <div class="small">Alejandro, Ronny, Emanuel y Sebastián · Proyecto académico del Taller Integrador</div>
+                </div>
+                <div class="col-md-6 text-md-end small">
+                    <a href="../catalogo/catalogo-general.html" class="me-3">Catálogo</a>
+                    <a href="../login/login.html">Iniciar sesión</a>
+                    <div class="mt-1">© 2026 Equipo Litoral. Todos los derechos reservados.</div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="../session.js"></script>
+    <script type="module" src="panel.js"></script>
+</body>
+</html>

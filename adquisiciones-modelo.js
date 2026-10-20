@@ -197,6 +197,15 @@ export async function obtenerAdquisicionesDeUsuario(uid) {
     .sort((a, b) => (b.fecha?.getTime() || 0) - (a.fecha?.getTime() || 0));
 }
 
+// Devuelve TODAS las adquisiciones de la plataforma (RNF-10: solo administradores).
+// Las reglas de Firestore rechazan esta consulta si el usuario no es administrador.
+export async function obtenerTodasLasAdquisiciones() {
+  const resultado = await getDocs(collection(db, COLECCION_ADQUISICIONES));
+  return resultado.docs
+    .map(convertirAdquisicion)
+    .sort((a, b) => (b.fecha?.getTime() || 0) - (a.fecha?.getTime() || 0));
+}
+
 /* ------------------------------------------------------------------ */
 /* Presentación (RF-10)                                                */
 /* ------------------------------------------------------------------ */

@@ -25,6 +25,7 @@ import {
   registrarAdquisicion,
   registrarPagoRechazado
 } from "../adquisiciones-modelo.js";
+import { ROLES } from "../acceso.js";
 
 /* ------------------------------------------------------------------ */
 /* Datos del servicio seleccionado                                     */
@@ -192,10 +193,12 @@ btnAdquirir.addEventListener("click", () => {
     return;
   }
 
-  // Solo los estudiantes adquieren servicios; los prestadores los ofrecen
-  if (rolActual === "prestador") {
+  // RNF-10: solo los estudiantes adquieren servicios
+  // (los prestadores los ofrecen y los administradores gestionan la plataforma)
+  if (rolActual !== ROLES.ESTUDIANTE) {
+    const tipoCuenta = rolActual === ROLES.ADMINISTRADOR ? "administrador" : "prestador de servicios";
     mostrarAviso(
-      "Tu cuenta es de prestador de servicios. Solo las cuentas de estudiante pueden adquirir servicios.",
+      `Tu cuenta es de ${tipoCuenta}. Solo las cuentas de estudiante pueden adquirir servicios.`,
       "warning"
     );
     return;

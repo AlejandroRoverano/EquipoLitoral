@@ -4,7 +4,13 @@
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      "firestore.rules",
+      "README.md",
+      "docs/**"
     ]
+  },
+  "firestore": {
+    "rules": "firestore.rules"
   }
 }
