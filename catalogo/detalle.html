@@ -90,7 +90,16 @@
             </div>
 
             <aside class="col-lg-4" aria-label="Adquisición del servicio">
-                <div class="card-litoral p-4 sticky-lg-top" style="top: 5rem;">
+                <div class="card-litoral p-4 sticky-lg-top" style="top: 5rem;" id="bloque-adquisicion"
+                     data-servicio-id="taller-robotica"
+                     data-servicio-nombre="Taller de Robótica Educativa"
+                     data-servicio-prestador="Ing. Martín Silva"
+                     data-servicio-modalidad="Presencial"
+                     data-servicio-duracion="12 semanas · 4 hs por semana"
+                     data-servicio-inicio="15 de marzo de 2024"
+                     data-servicio-precio="4500"
+                     data-servicio-moneda="UYU"
+                     data-servicio-periodo="mes">
                     <p class="display-6 fw-bold mb-0">$4,500</p>
                     <p class="text-secondary">UYU / mes</p>
                     <ul class="list-unstyled mb-4">
@@ -99,6 +108,7 @@
                         <li><i class="bi bi-calendar-event text-success me-2" aria-hidden="true"></i>Inicia: 15 de Marzo, 2024</li>
                     </ul>
                     <button type="button" id="btn-adquirir" class="btn btn-accent btn-lg w-100">Adquirir Servicio</button>
+                    <div id="aviso-adquisicion" class="hidden" role="status" aria-live="polite"></div>
                 </div>
             </aside>
         </div>
@@ -120,6 +130,28 @@
         </section>
     </main>
 
+    <!-- RF-09: ventana de confirmación de la adquisición -->
+    <div class="modal fade" id="modal-adquisicion" tabindex="-1" aria-labelledby="titulo-modal-adquisicion" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 fw-bold" id="titulo-modal-adquisicion">Confirmar adquisición</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-secondary">Revisá los datos antes de confirmar.</p>
+                    <dl class="row mb-0" id="modal-resumen"></dl>
+                    <div id="modal-adquisicion-msg" class="hidden" role="alert"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal" id="btn-cancelar-adquisicion">Cancelar</button>
+                    <a href="../gestion/detalle-gestion.html" class="btn btn-primary hidden" id="btn-ver-adquisiciones">Ver mis adquisiciones</a>
+                    <button type="button" class="btn btn-accent" id="btn-confirmar-adquisicion">Confirmar adquisición</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer class="footer-litoral py-4 mt-auto">
         <div class="container">
             <div class="row g-3 align-items-center">
@@ -138,5 +170,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="../session.js"></script>
+    <script type="module" src="adquisicion.js"></script>
 </body>
 </html>
