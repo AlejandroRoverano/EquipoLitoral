@@ -141,12 +141,39 @@
                 <div class="modal-body">
                     <p class="text-secondary">Revisá los datos antes de confirmar.</p>
                     <dl class="row mb-0" id="modal-resumen"></dl>
+
+                    <!-- RNF-09: pago simulado (no se piden ni se guardan datos reales de medios de pago) -->
+                    <section id="seccion-pago" class="border-top pt-3 mt-2" aria-labelledby="titulo-pago">
+                        <h3 class="h6 fw-bold" id="titulo-pago"><i class="bi bi-credit-card me-2" aria-hidden="true"></i>Pago (simulado)</h3>
+                        <div class="alert alert-info small py-2">
+                            <i class="bi bi-info-circle me-1" aria-hidden="true"></i>Este pago es una <strong>simulación</strong>: no se solicitan ni se guardan datos reales de tarjetas, cuentas bancarias u otros medios de pago, y no se realiza ningún cobro.
+                        </div>
+                        <fieldset class="mb-3">
+                            <legend class="fs-6 fw-semibold">Medio de pago</legend>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="medio-pago" id="pago-tarjeta" value="tarjeta" checked>
+                                <label class="form-check-label" for="pago-tarjeta">Tarjeta de crédito o débito (simulada)</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="medio-pago" id="pago-transferencia" value="transferencia">
+                                <label class="form-check-label" for="pago-transferencia">Transferencia bancaria (simulada)</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="medio-pago" id="pago-billetera" value="billetera">
+                                <label class="form-check-label" for="pago-billetera">Billetera digital (simulada)</label>
+                            </div>
+                        </fieldset>
+                        <div class="form-check form-switch small">
+                            <input class="form-check-input" type="checkbox" role="switch" id="simular-rechazo">
+                            <label class="form-check-label text-secondary" for="simular-rechazo">Simular pago rechazado (para pruebas)</label>
+                        </div>
+                    </section>
                     <div id="modal-adquisicion-msg" class="hidden" role="alert"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal" id="btn-cancelar-adquisicion">Cancelar</button>
                     <a href="../gestion/detalle-gestion.html" class="btn btn-primary hidden" id="btn-ver-adquisiciones">Ver mis adquisiciones</a>
-                    <button type="button" class="btn btn-accent" id="btn-confirmar-adquisicion">Confirmar adquisición</button>
+                    <button type="button" class="btn btn-accent" id="btn-confirmar-adquisicion">Pagar</button>
                 </div>
             </div>
         </div>
