@@ -41,9 +41,9 @@ if (btnLogout) {
     btnLogout.disabled = true;
     try {
       await signOut(auth);
-      // Ruta absoluta (con "/" inicial) para que funcione sin importar
-      // desde qué profundidad de carpeta se llame (raíz, catalogo/, gestion/, etc).
-      window.location.href = "/index.html";
+      // Se calcula desde la ubicación de este archivo (la raíz del sitio), así funciona
+      // en GitHub Pages (/EquipoLitoral/) y desde cualquier carpeta.
+      window.location.href = new URL("index.html", import.meta.url).href;
     } catch (error) {
       console.error("Error al cerrar sesión:", error.code, error.message);
       btnLogout.disabled = false;

@@ -23,14 +23,7 @@ function mostrarMensaje(id, texto, tipo = "error") {
   const caja = document.getElementById(id);
   if (!caja) return;
   caja.textContent = texto;
-  caja.classList.remove("hidden");
-  if (tipo === "error") {
-    caja.className =
-      "block mb-4 px-4 py-3 rounded-lg font-body-sm text-body-sm bg-error-container text-on-error-container";
-  } else {
-    caja.className =
-      "block mb-4 px-4 py-3 rounded-lg font-body-sm text-body-sm bg-secondary-container text-on-secondary-fixed";
-  }
+  caja.className = tipo === "error" ? "alert alert-danger mb-3" : "alert alert-success mb-3";
 }
 
 function limpiarMensaje(id) {
@@ -58,7 +51,7 @@ function traducirError(codigo) {
     case "auth/invalid-email":
       return "El formato del correo electrónico no es válido.";
     case "auth/weak-password":
-      return "La contraseña es demasiado débil (mínimo 6 caracteres).";
+      return "La contraseña es demasiado débil (mínimo 8 caracteres).";
     case "auth/missing-password":
       return "Ingresá una contraseña.";
     case "auth/invalid-credential":
