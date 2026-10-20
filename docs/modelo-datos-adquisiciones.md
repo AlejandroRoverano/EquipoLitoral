@@ -126,31 +126,10 @@ adquisiciones.forEach((a) => {
 });
 ```
 
-## Reglas de seguridad sugeridas para Firestore
+## Reglas de seguridad
 
-Se configuran en la consola de Firebase, en **Firestore Database → Reglas**. Hay que agregar estos bloques dentro de `match /databases/{database}/documents { ... }`, junto a las reglas que ya existan para `usuarios`.
+Las reglas de Firestore para `adquisiciones` y `pagos` están en **`firestore.rules`**, en la raíz del repositorio, y se explican en la [matriz de permisos](matriz-de-permisos.md) (RNF-10). En resumen:
 
-```
-// Adquisiciones: cada usuario ve y crea solo las suyas
-match /adquisiciones/{adquisicionId} {
-  allow read: if request.auth != null
-              && (resource == null || resource.data.uid == request.auth.uid);
-  allow create: if request.auth != null
-                && request.resource.data.uid == request.auth.uid
-                && adquisicionId == request.auth.uid + "_" + request.resource.data.servicioId;
-  allow update, delete: if false;
-}
-
-// Pagos simulados: cada usuario ve y crea solo los suyos
-match /pagos/{pagoId} {
-  allow read: if request.auth != null && resource.data.uid == request.auth.uid;
-  allow create: if request.auth != null
-                && request.resource.data.uid == request.auth.uid
-                && request.resource.data.simulado == true;
-  allow update, delete: if false;
-}
-```
-
-- `resource == null` permite comprobar si una adquisición existe, aunque todavía no se haya creado.
-- Nadie puede modificar ni borrar adquisiciones o pagos desde la página. Quedan como registro histórico.
-- Si más adelante el prestador tiene que ver quién adquirió sus servicios, hay que agregar una regla de lectura para ese rol.
+- Cada usuario lee solo sus propias adquisiciones y pagos. El administrador lee todos.
+- Solo un estudiante puede crear adquisiciones y pagos, y únicamente a su propio nombre.
+- Los pagos no se pueden modificar ni borrar. Las adquisiciones solo las modifica un administrador.

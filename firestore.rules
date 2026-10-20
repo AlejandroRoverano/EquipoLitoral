@@ -1,0 +1,92 @@
+rules_version = '2';
+
+// RNF-10: Reglas de seguridad de Firestore del proyecto Equipo Litoral.
+// Matriz de permisos completa: docs/matriz-de-permisos.md
+//
+// Para publicarlas: firebase deploy --only firestore:rules
+// (o copiar este archivo en la consola de Firebase: Firestore Database > Reglas)
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- Funciones auxiliares ----------
+
+    function autenticado() {
+      return request.auth != null;
+    }
+
+    function esDueno(uid) {
+      return autenticado() && request.auth.uid == uid;
+    }
+
+    function tienePerfil() {
+      return autenticado()
+        && exists(/databases/$(database)/documents/usuarios/$(request.auth.uid));
+    }
+
+    // Rol guardado en usuarios/{uid}. Lo lee el servidor, el usuario no lo puede falsear.
+    function rol() {
+      return get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.rol;
+    }
+
+    function esAdmin() {
+      return tienePerfil() && rol() == 'administrador';
+    }
+
+    function esEstudiante() {
+      return tienePerfil() && rol() == 'estudiante';
+    }
+
+    // ---------- usuarios ----------
+    // Cada usuario lee y edita su propio perfil. Nadie puede asignarse un rol
+    // administrativo: al registrarse solo puede elegir estudiante o prestador,
+    // y después no puede cambiarlo. El rol de administrador se asigna desde la consola.
+    match /usuarios/{uid} {
+      allow read: if esDueno(uid) || esAdmin();
+      allow create: if esDueno(uid)
+        && request.resource.data.uid == uid
+        && request.resource.data.rol in ['estudiante', 'prestador'];
+      allow update: if (esDueno(uid)
+          && request.resource.data.rol == resource.data.rol
+          && request.resource.data.uid == resource.data.uid)
+        || esAdmin();
+      allow delete: if esAdmin();
+    }
+
+    // ---------- servicios ----------
+    // El catálogo es público (visitantes incluidos).
+    // Solo un administrador puede crear, editar o borrar servicios.
+    match /servicios/{servicioId} {
+      allow read: if true;
+      allow create, update, delete: if esAdmin();
+    }
+
+    // ---------- adquisiciones ----------
+    // Cada usuario lee solo las suyas (campo uid == request.auth.uid); el administrador lee todas.
+    // "resource == null" permite comprobar si una adquisición existe antes de crearla.
+    // Solo un estudiante crea adquisiciones, y únicamente a su nombre.
+    match /adquisiciones/{adquisicionId} {
+      allow read: if autenticado()
+        && (resource == null || resource.data.uid == request.auth.uid || esAdmin());
+      allow create: if esEstudiante()
+        && request.resource.data.uid == request.auth.uid
+        && adquisicionId == request.auth.uid + '_' + request.resource.data.servicioId
+        && request.resource.data.estado == 'confirmada';
+      allow update, delete: if esAdmin();
+    }
+
+    // ---------- pagos (simulados, RNF-09) ----------
+    // Cada usuario lee solo sus pagos; el administrador lee todos.
+    // Son un registro histórico: nadie los modifica ni los borra.
+    match /pagos/{pagoId} {
+      allow read: if autenticado()
+        && (resource.data.uid == request.auth.uid || esAdmin());
+      allow create: if esEstudiante()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.simulado == true;
+      allow update, delete: if false;
+    }
+
+    // Cualquier otra colección queda cerrada por defecto.
+  }
+}
