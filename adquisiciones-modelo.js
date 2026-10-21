@@ -44,6 +44,17 @@ export const ESTADOS_PAGO = {
   RECHAZADO: "rechazado"
 };
 
+// Nombres para mostrar de cada estado (RF-13)
+export const NOMBRES_ESTADOS_ADQUISICION = {
+  [ESTADOS_ADQUISICION.CONFIRMADA]: "Confirmada",
+  [ESTADOS_ADQUISICION.CANCELADA]: "Cancelada"
+};
+
+export const NOMBRES_ESTADOS_PAGO = {
+  [ESTADOS_PAGO.APROBADO]: "Aprobado",
+  [ESTADOS_PAGO.RECHAZADO]: "Rechazado"
+};
+
 // Medios de pago de la simulación (RNF-09): solo el nombre, nunca datos reales.
 // Las claves coinciden con el value de los radio buttons del detalle.
 export const MEDIOS_DE_PAGO = {
@@ -206,6 +217,39 @@ export async function obtenerTodasLasAdquisiciones() {
     .sort((a, b) => (b.fecha?.getTime() || 0) - (a.fecha?.getTime() || 0));
 }
 
+// Devuelve el pago simulado asociado a una adquisición, o null si no existe (RF-13).
+// Las reglas de Firestore solo permiten leer pagos ajenos a un administrador.
+export async function obtenerPago(pagoId) {
+  if (!pagoId) return null;
+  const snap = await getDoc(doc(db, COLECCION_PAGOS, pagoId));
+  if (!snap.exists()) return null;
+  const datos = snap.data();
+  return {
+    id: snap.id,
+    ...datos,
+    fecha: datos.fecha?.toDate ? datos.fecha.toDate() : null
+  };
+}
+
+// Resumen del conjunto de adquisiciones (RF-13):
+//  - total: cantidad de adquisiciones registradas;
+//  - compradores: cantidad de estudiantes distintos que adquirieron algo;
+//  - importesPorMoneda: suma de los importes, separada por moneda. Solo cuentan las
+//    adquisiciones confirmadas: una adquisición cancelada no representa un ingreso.
+export function resumirAdquisiciones(adquisiciones) {
+  const importesPorMoneda = {};
+  adquisiciones.forEach((a) => {
+    if (a.estado !== ESTADOS_ADQUISICION.CONFIRMADA || typeof a.precio !== "number") return;
+    const moneda = a.moneda || "-";
+    importesPorMoneda[moneda] = (importesPorMoneda[moneda] || 0) + a.precio;
+  });
+  return {
+    total: adquisiciones.length,
+    compradores: new Set(adquisiciones.map((a) => a.uid)).size,
+    importesPorMoneda
+  };
+}
+
 /* ------------------------------------------------------------------ */
 /* Presentación (RF-10)                                                */
 /* ------------------------------------------------------------------ */
@@ -216,6 +260,12 @@ export function formatearImporte(adquisicion) {
   if (typeof adquisicion.precio !== "number") return "-";
   const importe = `$${adquisicion.precio.toLocaleString("es-UY")} ${adquisicion.moneda || ""}`.trim();
   return adquisicion.periodo ? `${importe} / ${adquisicion.periodo}` : importe;
+}
+
+// "$4.500 UYU" (importe suelto, sin período)
+export function formatearMonto(monto, moneda) {
+  if (typeof monto !== "number") return "-";
+  return `$${monto.toLocaleString("es-UY")} ${moneda || ""}`.trim();
 }
 
 // "20/10/2026, 02:15" (o solo "20/10/2026" si conHora es false)

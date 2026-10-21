@@ -3,8 +3,9 @@
 //
 // - Sin sesión: redirige al login.
 // - Con sesión pero sin rol de administrador: muestra "Acceso denegado".
-// - Administrador: ve todas las adquisiciones de la plataforma.
+// - Administrador: ve el resumen y las últimas adquisiciones de la plataforma.
 //   (Las reglas de Firestore solo permiten esta lectura a administradores.)
+//   La gestión completa está en adquisiciones.html (RF-13).
 
 import { protegerPagina, ROLES } from "../acceso.js";
 import {
@@ -37,7 +38,8 @@ async function cargarAdquisiciones() {
       return;
     }
 
-    tabla.replaceChildren(...adquisiciones.map(crearFila));
+    // El listado completo, con filtros y detalle, está en admin/adquisiciones.html (RF-13)
+    tabla.replaceChildren(...adquisiciones.slice(0, 5).map(crearFila));
   } catch (error) {
     console.error("Error al cargar las adquisiciones:", error.code, error.message);
     const caja = document.getElementById("admin-error");

@@ -57,13 +57,16 @@
                             <li class="nav-item"><a class="nav-link active fw-semibold" aria-current="page" href="panel.html"><i class="bi bi-speedometer2 me-2" aria-hidden="true"></i>Inicio</a></li>
                             <li class="nav-item"><a class="nav-link" href="servicios.html"><i class="bi bi-collection me-2" aria-hidden="true"></i>Servicios</a></li>
                             <li class="nav-item"><a class="nav-link" href="usuarios.html"><i class="bi bi-people me-2" aria-hidden="true"></i>Usuarios</a></li>
-                            <li class="nav-item"><span class="nav-link disabled d-flex align-items-center" aria-disabled="true"><i class="bi bi-receipt me-2" aria-hidden="true"></i>Adquisiciones<span class="badge text-bg-light ms-auto">Próximamente</span></span></li>
+                            <li class="nav-item"><a class="nav-link" href="adquisiciones.html"><i class="bi bi-receipt me-2" aria-hidden="true"></i>Adquisiciones</a></li>
                         </ul>
                     </nav>
                 </aside>
 
                 <div class="col-lg-9">
-                    <h2 class="h4 fw-bold mb-3">Adquisiciones registradas</h2>
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                        <h2 class="h4 fw-bold mb-0">Últimas adquisiciones</h2>
+                        <a href="adquisiciones.html" class="btn btn-sm btn-accent">Ver todas y gestionar<i class="bi bi-arrow-right ms-1" aria-hidden="true"></i></a>
+                    </div>
                     <div class="row g-3 mb-4">
                         <div class="col-6 col-md-3">
                             <div class="card-litoral p-3 text-center h-100">
@@ -85,7 +88,7 @@
                     <div class="card-litoral p-0 overflow-hidden">
                         <div class="table-responsive">
                             <table class="table table-hover align-middle mb-0">
-                                <caption class="visually-hidden">Adquisiciones de todos los usuarios</caption>
+                                <caption class="visually-hidden">Las cinco adquisiciones más recientes</caption>
                                 <thead class="table-light">
                                     <tr>
                                         <th scope="col">Fecha</th>

@@ -25,8 +25,8 @@ El rol se guarda en el campo `rol` del documento `usuarios/{uid}` en Firestore.
 | Adquirir un servicio (RF-09, RNF-09) | ❌ se le pide iniciar sesión | ✅ | ❌ aviso | ❌ aviso |
 | Ver y editar su propio perfil (`gestion/detalle-gestion.html`) | ➡️ | ✅ | ✅ | ✅ |
 | Ver su historial de adquisiciones (`gestion/historial.html`, RF-10) | ➡️ | ✅ | ❌ aviso | ❌ aviso |
-| Ver las adquisiciones de otros usuarios | ❌ | ❌ | ❌ | ✅ en el panel de administración |
-| Panel de administración (`admin/panel.html`, `admin/servicios.html`, `admin/usuarios.html`) | ➡️ | ❌ Acceso denegado | ❌ Acceso denegado | ✅ |
+| Ver las adquisiciones de otros usuarios y el pago simulado asociado (`admin/adquisiciones.html`, RF-13) | ❌ | ❌ | ❌ | ✅ |
+| Panel de administración (`admin/panel.html`, `admin/servicios.html`, `admin/usuarios.html`, `admin/adquisiciones.html`) | ➡️ | ❌ Acceso denegado | ❌ Acceso denegado | ✅ |
 | Ver el enlace "Administración" en la barra de navegación | ❌ | ❌ | ❌ | ✅ |
 | Crear servicios (RF-11, RD-04) | ❌ | ❌ | ✅ a su nombre, en "Mis servicios" | ✅ |
 | Editar, dar de baja o reactivar servicios (RF-11, RD-04) | ❌ | ❌ | ✅ solo los suyos | ✅ todos |
@@ -78,7 +78,7 @@ Publicar reemplaza todas las reglas anteriores. Si en la consola hay reglas para
 
 | Pieza | Qué hace |
 |---|---|
-| `acceso.js` | `protegerPagina({ roles })`: sin sesión redirige al login, y sin el rol necesario muestra "Acceso denegado". Lo usan `admin/panel.js`, `admin/servicios.js`, `admin/usuarios.js` y `gestion/mis-servicios.js`. |
+| `acceso.js` | `protegerPagina({ roles })`: sin sesión redirige al login, y sin el rol necesario muestra "Acceso denegado". Lo usan `admin/panel.js`, `admin/servicios.js`, `admin/usuarios.js`, `admin/adquisiciones.js` y `gestion/mis-servicios.js`. |
 | `session.js` | Muestra el enlace "Administración" en la barra de navegación solo a los administradores. |
 | `catalogo/adquisicion.js` | Comprueba la sesión y el rol antes de abrir el flujo de compra. |
 | `gestion/historial.js`, `gestion/gestion.js` | Redirigen al login si no hay sesión. |

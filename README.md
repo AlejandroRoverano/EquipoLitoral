@@ -18,7 +18,7 @@ Plataforma web de servicios educativos (cursos, talleres y mentorías). Proyecto
 | `catalogo/` | Catálogo de servicios, detalle y flujo de adquisición. |
 | `login/` | Registro, inicio de sesión y recuperación de contraseña. |
 | `gestion/` | Panel del usuario, historial de adquisiciones y "Mis servicios" del prestador. |
-| `admin/` | Panel de administración (solo administradores): inicio, gestión de servicios y de usuarios. |
+| `admin/` | Panel de administración (solo administradores): inicio, gestión de servicios, de usuarios y de adquisiciones. |
 | `firebase-config.js` | Configuración de Firebase. |
 | `session.js` | Muestra u oculta los botones de sesión en la barra de navegación. |
 | `acceso.js` | Protección de páginas por sesión y rol. |
