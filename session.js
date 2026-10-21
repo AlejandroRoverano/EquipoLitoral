@@ -7,6 +7,7 @@
 //   #btn-logout     -> botón que cierra la sesión
 // Además, si el usuario es administrador, agrega el enlace "Administración"
 // a la barra de navegación (RF-11).
+// Con sesión iniciada también se oculta el enlace "Iniciar sesión" del footer.
 
 import { auth, db } from "./firebase-config.js";
 import {
@@ -20,6 +21,17 @@ const navUser = document.getElementById("nav-user");
 const navUserName = document.getElementById("nav-user-name");
 const btnLogout = document.getElementById("btn-logout");
 
+// El enlace "Iniciar sesión" del footer solo tiene sentido si no hay sesión.
+// Al ocultarlo también se quita el margen del enlace anterior, para que el footer
+// no quede corrido.
+function actualizarEnlaceFooter(haySesion) {
+  document.querySelectorAll('footer a[href$="login/login.html"]').forEach((enlace) => {
+    enlace.classList.toggle("hidden", haySesion);
+    const anterior = enlace.previousElementSibling;
+    if (anterior?.tagName === "A") anterior.classList.toggle("me-3", !haySesion);
+  });
+}
+
 // Detecta el estado de la sesión en tiempo real.
 // Se ejecuta automáticamente al cargar la página y cada vez que cambia
 // (login, logout, o expiración de la sesión en otra pestaña).
@@ -31,11 +43,13 @@ onAuthStateChanged(auth, (user) => {
     if (navUserName) {
       navUserName.textContent = user.displayName || user.email;
     }
+    actualizarEnlaceFooter(true);
     mostrarEnlaceAdmin(user.uid);
   } else {
     // No hay ningún usuario autenticado
     navGuest?.classList.remove("hidden");
     navUser?.classList.add("hidden");
+    actualizarEnlaceFooter(false);
   }
 });
 
