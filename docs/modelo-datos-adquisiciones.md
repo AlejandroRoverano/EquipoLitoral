@@ -112,6 +112,9 @@ Los datos del servicio (nombre, prestador, precio) **se copian** en la adquisici
 | `obtenerAdquisicion(uid, servicioId)` | Devuelve una adquisición, o `null` si no existe. |
 | `usuarioTieneServicio(uid, servicioId)` | Devuelve `true` si el usuario ya tiene el servicio confirmado. |
 | `obtenerAdquisicionesDeUsuario(uid)` | Devuelve todas las adquisiciones del usuario, de la más reciente a la más antigua. |
+| `obtenerTodasLasAdquisiciones()` | Devuelve las adquisiciones de **todos** los usuarios, de la más reciente a la más antigua. Solo administradores (RF-13). |
+| `obtenerPago(pagoId)` | Devuelve el pago simulado asociado a una adquisición, o `null` si no existe. Solo administradores pueden leer pagos ajenos (RF-13). |
+| `resumirAdquisiciones(adquisiciones)` | Calcula el resumen del panel: total, estudiantes compradores e importe total por moneda (RF-13). |
 
 Las funciones de lectura devuelven la `fecha` ya convertida a `Date` de JavaScript.
 
@@ -125,6 +128,14 @@ adquisiciones.forEach((a) => {
   console.log(a.servicioNombre, a.precio, a.moneda, a.fecha.toLocaleDateString("es-UY"), a.estado);
 });
 ```
+
+## Gestión desde el panel administrativo (RF-13)
+
+La página `admin/adquisiciones.html` lista todas las adquisiciones y permite consultar el detalle de cada una con su pago simulado.
+
+- **Resumen:** total de adquisiciones, estudiantes compradores distintos (por `uid`) e importe total **por moneda**. El importe suma solo las adquisiciones `confirmada`: una adquisición `cancelada` no cuenta como ingreso. El resumen no cambia con los filtros.
+- **Listado:** de la más reciente a la más antigua. Se filtra por estado y por servicio, y se busca por nombre o correo del usuario o por código de operación (sin distinguir mayúsculas ni tildes).
+- **Detalle:** al elegir una adquisición se lee su pago en `pagos/{pagoId}`. Si el pago no existe se muestra un aviso, sin romper el detalle.
 
 ## Reglas de seguridad
 

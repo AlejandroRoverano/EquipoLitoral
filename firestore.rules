@@ -98,7 +98,8 @@ service cloud.firestore {
     }
 
     // ---------- adquisiciones ----------
-    // Cada usuario lee solo las suyas (campo uid == request.auth.uid); el administrador lee todas.
+    // Cada usuario lee solo las suyas (campo uid == request.auth.uid); el administrador lee todas
+    // (RF-13: listado y detalle de adquisiciones en admin/adquisiciones.html).
     // "resource == null" permite comprobar si una adquisición existe antes de crearla.
     // Solo un estudiante crea adquisiciones, únicamente a su nombre, de un servicio
     // activo y con el precio que figura en el catálogo (RF-11).
@@ -116,7 +117,7 @@ service cloud.firestore {
     }
 
     // ---------- pagos (simulados, RNF-09) ----------
-    // Cada usuario lee solo sus pagos; el administrador lee todos.
+    // Cada usuario lee solo sus pagos; el administrador lee todos (RF-13: detalle de la adquisición).
     // Son un registro histórico: nadie los modifica ni los borra.
     match /pagos/{pagoId} {
       allow read: if autenticado()
