@@ -231,6 +231,20 @@ export async function obtenerPago(pagoId) {
   };
 }
 
+// Devuelve TODOS los pagos simulados, aprobados y rechazados (RF-14: solo administradores).
+// Las reglas de Firestore rechazan esta consulta si el usuario no es administrador.
+export async function obtenerTodosLosPagos() {
+  const resultado = await getDocs(collection(db, COLECCION_PAGOS));
+  return resultado.docs.map((snap) => {
+    const datos = snap.data();
+    return {
+      id: snap.id,
+      ...datos,
+      fecha: datos.fecha?.toDate ? datos.fecha.toDate() : null
+    };
+  });
+}
+
 // Resumen del conjunto de adquisiciones (RF-13):
 //  - total: cantidad de adquisiciones registradas;
 //  - compradores: cantidad de estudiantes distintos que adquirieron algo;

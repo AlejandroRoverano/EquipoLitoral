@@ -63,47 +63,122 @@
                 </aside>
 
                 <div class="col-lg-9">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-                        <h2 class="h4 fw-bold mb-0">Últimas adquisiciones</h2>
-                        <a href="adquisiciones.html" class="btn btn-sm btn-accent">Ver todas y gestionar<i class="bi bi-arrow-right ms-1" aria-hidden="true"></i></a>
-                    </div>
-                    <div class="row g-3 mb-4">
-                        <div class="col-6 col-md-3">
-                            <div class="card-litoral p-3 text-center h-100">
-                                <p class="h3 fw-bold mb-0" id="admin-total">-</p>
-                                <p class="small text-secondary mb-0">Adquisiciones</p>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div class="card-litoral p-3 text-center h-100">
-                                <p class="h3 fw-bold mb-0" id="admin-compradores">-</p>
-                                <p class="small text-secondary mb-0">Estudiantes compradores</p>
-                            </div>
-                        </div>
-                    </div>
+                    <h2 class="h4 fw-bold mb-1">Estado general de la plataforma</h2>
+                    <p class="text-secondary small mb-3">Indicadores calculados con los datos reales de Firestore.</p>
 
                     <div id="admin-error" class="alert alert-danger hidden" role="alert"></div>
-                    <div id="admin-vacio" class="alert alert-info hidden" role="status">Todavía no hay adquisiciones registradas.</div>
 
-                    <div class="card-litoral p-0 overflow-hidden">
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0">
-                                <caption class="visually-hidden">Las cinco adquisiciones más recientes</caption>
-                                <thead class="table-light">
-                                    <tr>
-                                        <th scope="col">Fecha</th>
-                                        <th scope="col">Usuario</th>
-                                        <th scope="col">Servicio</th>
-                                        <th scope="col">Importe</th>
-                                        <th scope="col">Medio de pago</th>
-                                        <th scope="col">Código</th>
-                                        <th scope="col">Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="admin-tabla"></tbody>
-                            </table>
+                    <section aria-label="Indicadores" class="mb-4">
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6 col-xl-4">
+                                <div class="card-litoral p-3 h-100" data-fuente="usuarios">
+                                    <h3 class="h6 text-secondary fw-semibold mb-2">Usuarios registrados</h3>
+                                    <div data-contenido>
+                                        <p class="h2 fw-bold mb-2" id="ind-usuarios-total">-</p>
+                                        <ul class="list-unstyled small mb-0">
+                                            <li class="d-flex justify-content-between"><span>Estudiantes</span><strong id="ind-usuarios-estudiante">-</strong></li>
+                                            <li class="d-flex justify-content-between"><span>Prestadores</span><strong id="ind-usuarios-prestador">-</strong></li>
+                                            <li class="d-flex justify-content-between"><span>Administradores</span><strong id="ind-usuarios-administrador">-</strong></li>
+                                        </ul>
+                                    </div>
+                                    <p class="small text-danger mb-0 hidden" data-error role="status">No se pudo calcular este indicador.</p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-4">
+                                <div class="card-litoral p-3 h-100" data-fuente="servicios">
+                                    <h3 class="h6 text-secondary fw-semibold mb-2">Servicios disponibles</h3>
+                                    <div data-contenido>
+                                        <p class="h2 fw-bold mb-1" id="ind-servicios">-</p>
+                                        <p class="small text-secondary mb-0">Activos en el catálogo.</p>
+                                    </div>
+                                    <p class="small text-danger mb-0 hidden" data-error role="status">No se pudo calcular este indicador.</p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-4">
+                                <div class="card-litoral p-3 h-100" data-fuente="adquisiciones">
+                                    <h3 class="h6 text-secondary fw-semibold mb-2">Adquisiciones</h3>
+                                    <div data-contenido>
+                                        <p class="h2 fw-bold mb-1" id="ind-adq-total">-</p>
+                                        <p class="small text-secondary mb-0"><strong id="ind-adq-30">-</strong> en los últimos 30 días.</p>
+                                    </div>
+                                    <p class="small text-danger mb-0 hidden" data-error role="status">No se pudo calcular este indicador.</p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-4">
+                                <div class="card-litoral p-3 h-100" data-fuente="adquisiciones">
+                                    <h3 class="h6 text-secondary fw-semibold mb-2">Importe de adquisiciones confirmadas</h3>
+                                    <div data-contenido>
+                                        <ul class="list-unstyled mb-1" id="ind-importes"><li class="h2 fw-bold mb-0">-</li></ul>
+                                        <p class="small text-secondary mb-0"><i class="bi bi-info-circle me-1" aria-hidden="true"></i>Corresponde a pagos simulados, no a dinero real.</p>
+                                    </div>
+                                    <p class="small text-danger mb-0 hidden" data-error role="status">No se pudo calcular este indicador.</p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-4">
+                                <div class="card-litoral p-3 h-100" data-fuente="pagos">
+                                    <h3 class="h6 text-secondary fw-semibold mb-2">Pagos simulados rechazados</h3>
+                                    <div data-contenido>
+                                        <p class="h2 fw-bold mb-1" id="ind-rechazados">-</p>
+                                        <p class="small text-secondary mb-0" id="ind-rechazados-detalle"></p>
+                                    </div>
+                                    <p class="small text-danger mb-0 hidden" data-error role="status">No se pudo calcular este indicador.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-12 col-xl-7">
+                            <section class="card-litoral p-3 h-100" aria-labelledby="titulo-grafico" data-fuente="adquisiciones">
+                                <h3 class="h6 fw-bold mb-3" id="titulo-grafico">Adquisiciones por mes</h3>
+                                <div data-contenido>
+                                    <div id="ind-grafico" class="d-flex align-items-end gap-1 hidden" style="height: 180px" role="img"></div>
+                                    <p id="ind-grafico-vacio" class="text-secondary mb-0 hidden">Todavía no hay adquisiciones para graficar.</p>
+                                </div>
+                                <p class="small text-danger mb-0 hidden" data-error role="status">No se pudo calcular este indicador.</p>
+                            </section>
+                        </div>
+                        <div class="col-12 col-xl-5">
+                            <section class="card-litoral p-3 h-100" aria-labelledby="titulo-top" data-fuente="adquisiciones">
+                                <h3 class="h6 fw-bold mb-3" id="titulo-top">Servicios más adquiridos</h3>
+                                <div data-contenido>
+                                    <ol class="list-unstyled mb-0 hidden" id="ind-top"></ol>
+                                    <p id="ind-top-vacio" class="text-secondary mb-0 hidden">Todavía no hay adquisiciones confirmadas.</p>
+                                </div>
+                                <p class="small text-danger mb-0 hidden" data-error role="status">No se pudo calcular este indicador.</p>
+                            </section>
                         </div>
                     </div>
+
+                    <section aria-labelledby="titulo-ultimas" data-fuente="adquisiciones">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                            <h3 class="h5 fw-bold mb-0" id="titulo-ultimas">Últimas adquisiciones</h3>
+                            <a href="adquisiciones.html" class="btn btn-sm btn-accent">Ver todas y gestionar<i class="bi bi-arrow-right ms-1" aria-hidden="true"></i></a>
+                        </div>
+                        <div data-contenido>
+                            <div id="admin-vacio" class="alert alert-info hidden" role="status">Todavía no hay adquisiciones registradas.</div>
+                            <div class="card-litoral p-0 overflow-hidden" id="admin-tabla-wrap">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <caption class="visually-hidden">Las cinco adquisiciones más recientes</caption>
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th scope="col">Fecha</th>
+                                                <th scope="col">Usuario</th>
+                                                <th scope="col">Servicio</th>
+                                                <th scope="col">Importe</th>
+                                                <th scope="col">Medio de pago</th>
+                                                <th scope="col">Código</th>
+                                                <th scope="col">Estado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="admin-tabla"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="small text-danger mb-0 hidden" data-error role="status">No se pudo cargar el listado.</p>
+                    </section>
                 </div>
             </div>
         </div>
