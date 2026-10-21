@@ -17,13 +17,14 @@ Plataforma web de servicios educativos (cursos, talleres y mentorías). Proyecto
 | `index.html` | Página de inicio. |
 | `catalogo/` | Catálogo de servicios, detalle y flujo de adquisición. |
 | `login/` | Registro, inicio de sesión y recuperación de contraseña. |
-| `gestion/` | Panel del usuario e historial de adquisiciones. |
+| `gestion/` | Panel del usuario, historial de adquisiciones y "Mis servicios" del prestador. |
 | `admin/` | Panel de administración (solo administradores): inicio, gestión de servicios y de usuarios. |
 | `firebase-config.js` | Configuración de Firebase. |
 | `session.js` | Muestra u oculta los botones de sesión en la barra de navegación. |
 | `acceso.js` | Protección de páginas por sesión y rol. |
 | `adquisiciones-modelo.js` | Lectura y escritura de adquisiciones y pagos en Firestore. |
 | `servicios-modelo.js` | Lectura y escritura de los servicios del catálogo en Firestore. |
+| `servicios-gestor.js` | Interfaz común para gestionar servicios (panel administrativo y Mis servicios). |
 | `usuarios-modelo.js` | Listado de usuarios y cambio de rol para el panel administrativo. |
 | `firestore.rules` | Reglas de seguridad de Firestore. |
 | `docs/` | Documentación del proyecto. |
@@ -32,13 +33,14 @@ Plataforma web de servicios educativos (cursos, talleres y mentorías). Proyecto
 
 - [Matriz de permisos y restricciones de acceso](docs/matriz-de-permisos.md) (RNF-10)
 - [Modelo de datos de adquisiciones](docs/modelo-datos-adquisiciones.md) (RD-08)
-- [Modelo de datos de servicios](docs/modelo-datos-servicios.md) (RF-11)
+- [Modelo de datos de servicios](docs/modelo-datos-servicios.md) (RF-11, RD-04)
 
 ## Primeros pasos con Firestore
 
 1. Publicar las reglas: `firebase deploy --only firestore:rules` (ver la [matriz de permisos](docs/matriz-de-permisos.md)).
 2. Asignar el rol `administrador` al **primer** usuario desde la consola de Firebase. Los siguientes se pueden asignar desde **Administración → Usuarios**.
 3. Con ese usuario, entrar a **Administración → Servicios** y tocar **"Cargar servicios iniciales"** para que el catálogo tenga contenido.
+4. Asignar a cada servicio su **prestador responsable** (editar el servicio → selector "Prestador responsable"), para que ese prestador lo pueda gestionar desde **Mis servicios**.
 
 ## Cómo trabajar en el repositorio
 

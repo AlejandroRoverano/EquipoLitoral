@@ -14,6 +14,7 @@ import {
   getDoc,
   updateDoc
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+import { obtenerServiciosDePrestador } from "../servicios-modelo.js";
 import {
   obtenerAdquisicionesDeUsuario,
   formatearFecha,
@@ -62,6 +63,8 @@ onAuthStateChanged(auth, async (user) => {
 function aplicarVistaSegunRol(rol) {
   // RF-11: el administrador tiene acceso directo al panel de administración
   document.getElementById("link-panel-admin")?.classList.toggle("hidden", rol !== "administrador");
+  // RD-04: el prestador gestiona sus servicios desde "Mis servicios"
+  document.getElementById("link-mis-servicios")?.classList.toggle("hidden", rol !== "prestador");
 
   if (rol === "administrador") {
     badgeRol.textContent = "Administrador";
@@ -70,9 +73,11 @@ function aplicarVistaSegunRol(rol) {
   } else if (rol === "prestador") {
     badgeRol.textContent = "Prestador de Servicios";
     panelSubtitulo.textContent = "Gestión de tus servicios";
-    tituloAdquisiciones.textContent = "Cursos que Dictás";
-    // Solo el prestador puede dar de alta nuevos servicios
+    tituloAdquisiciones.textContent = "Mis servicios";
+    // RD-04: el prestador da de alta y gestiona sus servicios en mis-servicios.html
     btnNuevoServicio.classList.remove("hidden");
+    const verTodo = document.getElementById("link-ver-todo");
+    if (verTodo) verTodo.href = "mis-servicios.html";
   } else {
     badgeRol.textContent = "Estudiante";
     panelSubtitulo.textContent = "Tus cursos y mentorías";
@@ -195,9 +200,7 @@ async function cargarAdquisicionesPanel(uid, rol) {
   }
 
   if (rol === "prestador") {
-    contenedor.replaceChildren(
-      crearElemento("p", "col-12 text-secondary mb-0", "Acá vas a ver los servicios que dictás.")
-    );
+    await cargarServiciosPanel(uid, contenedor, totalCursos);
     return;
   }
 
@@ -253,4 +256,54 @@ function crearTarjetaPanel(a) {
   );
   col.append(tarjeta);
   return col;
+}
+
+/* ------------------------------------------------------------------ */
+/* RD-04: servicios del prestador en el panel                          */
+/* ------------------------------------------------------------------ */
+// Muestra los servicios del prestador (los 3 primeros) con acceso a "Mis servicios".
+
+async function cargarServiciosPanel(uid, contenedor, totalActivos) {
+  try {
+    const servicios = await obtenerServiciosDePrestador(uid);
+    const activos = servicios.filter((s) => s.activo).length;
+    if (totalActivos) {
+      totalActivos.textContent = activos;
+      const etiqueta = totalActivos.nextElementSibling;
+      if (etiqueta) etiqueta.textContent = "Servicios activos en el catálogo";
+    }
+
+    if (servicios.length === 0) {
+      const vacio = crearElemento("div", "col-12");
+      const caja = crearElemento("div", "card-litoral p-4 text-center");
+      const enlace = crearElemento("a", "", "Crear mi primer servicio");
+      enlace.href = "mis-servicios.html";
+      caja.append(crearElemento("p", "text-secondary mb-2", "Todavía no tenés servicios publicados."), enlace);
+      vacio.append(caja);
+      contenedor.replaceChildren(vacio);
+      return;
+    }
+
+    contenedor.replaceChildren(
+      ...servicios.slice(0, ADQUISICIONES_EN_PANEL).map((s) => {
+        const col = crearElemento("div", "col-md-6 col-xl-4");
+        const tarjeta = crearElemento("article", "card-litoral p-4 h-100 d-flex flex-column");
+        const enlace = crearElemento("a", "mt-auto", "Gestionar");
+        enlace.href = "mis-servicios.html";
+        tarjeta.append(
+          crearElemento("span", `badge align-self-start mb-2 ${s.activo ? "text-bg-success" : "text-bg-secondary"}`, s.activo ? "Activo" : "Dado de baja"),
+          crearElemento("h3", "h6 fw-bold", s.nombre),
+          crearElemento("p", "small text-secondary mb-3", s.duracion || ""),
+          enlace
+        );
+        col.append(tarjeta);
+        return col;
+      })
+    );
+  } catch (error) {
+    console.error("Error al cargar los servicios del prestador:", error.code, error.message);
+    contenedor.replaceChildren(
+      crearElemento("p", "col-12 text-danger mb-0", "No pudimos cargar tus servicios. Recargá la página para intentar de nuevo.")
+    );
+  }
 }

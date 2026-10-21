@@ -9,7 +9,9 @@
 //   - El ID es un "slug" legible generado a partir del nombre (ej: taller-robotica).
 //   - La baja es lógica: el campo "activo" pasa a false y el servicio deja de
 //     mostrarse en el catálogo, pero se conserva (las adquisiciones lo referencian).
-//   - Solo un administrador puede crear o modificar servicios (firestore.rules).
+//   - RD-04: cada servicio puede tener un prestador dueño (campo "prestadorUid").
+//     El administrador gestiona todos los servicios; un prestador solo crea
+//     servicios a su nombre y modifica los suyos (firestore.rules).
 
 import { db } from "./firebase-config.js";
 import {
@@ -115,7 +117,9 @@ function normalizar(datos) {
     precio: datos.precio,
     moneda: datos.moneda,
     periodo: datos.periodo,
-    certificado: Boolean(datos.certificado)
+    certificado: Boolean(datos.certificado),
+    // RD-04: cuenta del prestador dueño del servicio (null = sin asignar)
+    prestadorUid: datos.prestadorUid || null
   };
 }
 
@@ -143,6 +147,13 @@ export async function obtenerServiciosActivos() {
   return resultado.docs.map(convertir).sort(porNombre);
 }
 
+// RD-04: servicios de un prestador (activos e inactivos), ordenados por nombre
+export async function obtenerServiciosDePrestador(uid) {
+  const consulta = query(collection(db, COLECCION_SERVICIOS), where("prestadorUid", "==", uid));
+  const resultado = await getDocs(consulta);
+  return resultado.docs.map(convertir).sort(porNombre);
+}
+
 // Todos los servicios, activos e inactivos (panel administrativo)
 export async function obtenerTodosLosServicios() {
   const resultado = await getDocs(collection(db, COLECCION_SERVICIOS));
@@ -150,11 +161,12 @@ export async function obtenerTodosLosServicios() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Escritura (solo administradores, según firestore.rules)             */
+/* Escritura (administradores, o el prestador dueño: firestore.rules)  */
 /* ------------------------------------------------------------------ */
 
 // Crea un servicio y devuelve su ID. Si el ID ya existe, agrega un número (-2, -3...).
-export async function crearServicio(datos, uidAdmin) {
+// uidCreador: quien lo crea (administrador o prestador).
+export async function crearServicio(datos, uidCreador) {
   const base = generarIdServicio(datos.nombre) || "servicio";
   let id = base;
   for (let n = 2; await obtenerServicio(id); n++) {
@@ -163,7 +175,7 @@ export async function crearServicio(datos, uidAdmin) {
   await setDoc(doc(db, COLECCION_SERVICIOS, id), {
     ...normalizar(datos),
     activo: true,
-    creadoPor: uidAdmin,
+    creadoPor: uidCreador,
     creadoEn: serverTimestamp(),
     actualizadoEn: serverTimestamp()
   });

@@ -37,6 +37,10 @@ service cloud.firestore {
       return tienePerfil() && rol() == 'estudiante';
     }
 
+    function esPrestador() {
+      return tienePerfil() && rol() == 'prestador';
+    }
+
     // RF-11: datos del servicio en la colección servicios
     function servicio(servicioId) {
       return get(/databases/$(database)/documents/servicios/$(servicioId)).data;
@@ -74,11 +78,23 @@ service cloud.firestore {
 
     // ---------- servicios ----------
     // El catálogo es público (visitantes incluidos).
-    // Solo un administrador puede crear, editar o borrar servicios.
+    // El administrador puede crear, editar y borrar cualquier servicio.
+    // RD-04: un prestador puede crear servicios a su nombre y editar, dar de baja o
+    // reactivar SOLO los suyos (prestadorUid == su uid). No puede pasarle un servicio
+    // a otro prestador ni borrarlo.
     // La baja es lógica (activo = false), así las adquisiciones conservan su referencia.
     match /servicios/{servicioId} {
       allow read: if true;
-      allow create, update, delete: if esAdmin();
+      allow create: if esAdmin()
+        || (esPrestador()
+          && request.resource.data.prestadorUid == request.auth.uid
+          && request.resource.data.creadoPor == request.auth.uid);
+      allow update: if esAdmin()
+        || (esPrestador()
+          && resource.data.prestadorUid == request.auth.uid
+          && request.resource.data.prestadorUid == request.auth.uid
+          && request.resource.data.creadoPor == resource.data.creadoPor);
+      allow delete: if esAdmin();
     }
 
     // ---------- adquisiciones ----------

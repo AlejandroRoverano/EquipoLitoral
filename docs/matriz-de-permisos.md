@@ -28,7 +28,10 @@ El rol se guarda en el campo `rol` del documento `usuarios/{uid}` en Firestore.
 | Ver las adquisiciones de otros usuarios | ❌ | ❌ | ❌ | ✅ en el panel de administración |
 | Panel de administración (`admin/panel.html`, `admin/servicios.html`, `admin/usuarios.html`) | ➡️ | ❌ Acceso denegado | ❌ Acceso denegado | ✅ |
 | Ver el enlace "Administración" en la barra de navegación | ❌ | ❌ | ❌ | ✅ |
-| Crear, editar, dar de baja o reactivar servicios (RF-11) | ❌ | ❌ | ❌ | ✅ |
+| Crear servicios (RF-11, RD-04) | ❌ | ❌ | ✅ a su nombre, en "Mis servicios" | ✅ |
+| Editar, dar de baja o reactivar servicios (RF-11, RD-04) | ❌ | ❌ | ✅ solo los suyos | ✅ todos |
+| Asignar el prestador responsable de un servicio (RD-04) | ❌ | ❌ | ❌ | ✅ |
+| Página "Mis servicios" (`gestion/mis-servicios.html`) | ➡️ | ❌ Acceso denegado | ✅ | ❌ Acceso denegado (usa el panel) |
 | Ver un servicio dado de baja en el catálogo | ❌ | ❌ | ❌ | ✅ solo en el panel |
 | Ver el listado de usuarios: nombre, correo, rol, fecha de registro y cantidad de adquisiciones (RF-12) | ❌ | ❌ | ❌ | ✅ |
 | Cambiar el rol de otro usuario (RF-12) | ❌ | ❌ | ❌ | ✅ |
@@ -52,7 +55,7 @@ Las reglas están en **`firestore.rules`**, en la raíz del repositorio. Son la 
 | Colección | Leer | Crear | Editar | Borrar |
 |---|---|---|---|---|
 | `usuarios/{uid}` | El propio usuario o un administrador. | El propio usuario, solo con rol `estudiante` o `prestador`. | El propio usuario, **sin cambiar su rol**. Un administrador puede cambiar **solo el rol** de otro usuario, nunca el suyo. | Solo un administrador. |
-| `servicios/{id}` | Todos, incluidos los visitantes. | Solo un administrador. | Solo un administrador. | Solo un administrador (en la práctica se usa la baja lógica, `activo: false`). |
+| `servicios/{id}` | Todos, incluidos los visitantes. | Un administrador, o un prestador **a su propio nombre** (`prestadorUid` = su uid). | Un administrador, o el **prestador dueño**, sin poder pasarle el servicio a otro. | Solo un administrador (en la práctica se usa la baja lógica, `activo: false`). |
 | `adquisiciones/{uid}_{servicioId}` | El dueño (`uid == request.auth.uid`) o un administrador. | Solo un estudiante, a su propio nombre, de un servicio activo y con el precio del catálogo. | Solo un administrador. | Solo un administrador. |
 | `pagos/{id}` | El dueño o un administrador. | Solo un estudiante, a su nombre y con `simulado: true`. | Nadie. | Nadie. |
 | Cualquier otra colección | Nadie. | Nadie. | Nadie. | Nadie. |
@@ -75,13 +78,13 @@ Publicar reemplaza todas las reglas anteriores. Si en la consola hay reglas para
 
 | Pieza | Qué hace |
 |---|---|
-| `acceso.js` | `protegerPagina({ roles })`: sin sesión redirige al login, y sin el rol necesario muestra "Acceso denegado". Lo usan `admin/panel.js`, `admin/servicios.js` y `admin/usuarios.js`. |
+| `acceso.js` | `protegerPagina({ roles })`: sin sesión redirige al login, y sin el rol necesario muestra "Acceso denegado". Lo usan `admin/panel.js`, `admin/servicios.js`, `admin/usuarios.js` y `gestion/mis-servicios.js`. |
 | `session.js` | Muestra el enlace "Administración" en la barra de navegación solo a los administradores. |
 | `catalogo/adquisicion.js` | Comprueba la sesión y el rol antes de abrir el flujo de compra. |
 | `gestion/historial.js`, `gestion/gestion.js` | Redirigen al login si no hay sesión. |
 | `firestore.rules` | Hace cumplir todos los permisos sobre los datos en el servidor. |
 
-## Pendiente de definir con el equipo
+## Decisiones tomadas
 
-- El panel de gestión le muestra al **prestador** un botón "Nuevo Servicio", pero según la RNF-10 solo el **administrador** puede crear servicios. Hay que decidir si el prestador también puede hacerlo. Si puede, hay que cambiar la regla de `servicios` en `firestore.rules`.
+- **RD-04 (prestador dueño de sus servicios):** la RNF-10 establecía que solo el administrador podía crear o modificar servicios. Con la RD-04 se decidió que **el prestador también puede crear servicios a su nombre y modificar, dar de baja o reactivar únicamente los suyos**. El administrador sigue pudiendo gestionar todos y es quien asigna el prestador responsable de los servicios existentes. Borrar servicios sigue siendo exclusivo del administrador.
 - Desde RF-11 el catálogo se lee desde la colección `servicios` de Firestore (ver [modelo de servicios](modelo-datos-servicios.md)).
