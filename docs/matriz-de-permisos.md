@@ -9,7 +9,7 @@ Este documento define qué puede hacer cada tipo de usuario en la plataforma Equ
 | **Visitante** | Persona sin sesión iniciada. | No requiere cuenta. |
 | **Estudiante** | Usuario que adquiere servicios educativos. | Se elige al registrarse. Es la opción por defecto. |
 | **Prestador** | Usuario que ofrece servicios educativos. | Se elige al registrarse. |
-| **Administrador** | Gestiona la plataforma. | **No se puede elegir al registrarse.** Se asigna a mano en la consola de Firebase: en Firestore Database → `usuarios` → el documento del usuario, se cambia el campo `rol` a `administrador`. |
+| **Administrador** | Gestiona la plataforma. | **No se puede elegir al registrarse.** El primero se asigna a mano en la consola de Firebase (Firestore Database → `usuarios` → documento del usuario → campo `rol` = `administrador`). Después, un administrador puede asignar roles desde **Administración → Usuarios** (RF-12). |
 
 El rol se guarda en el campo `rol` del documento `usuarios/{uid}` en Firestore.
 
@@ -26,11 +26,13 @@ El rol se guarda en el campo `rol` del documento `usuarios/{uid}` en Firestore.
 | Ver y editar su propio perfil (`gestion/detalle-gestion.html`) | ➡️ | ✅ | ✅ | ✅ |
 | Ver su historial de adquisiciones (`gestion/historial.html`, RF-10) | ➡️ | ✅ | ❌ aviso | ❌ aviso |
 | Ver las adquisiciones de otros usuarios | ❌ | ❌ | ❌ | ✅ en el panel de administración |
-| Panel de administración (`admin/panel.html`, `admin/servicios.html`) | ➡️ | ❌ Acceso denegado | ❌ Acceso denegado | ✅ |
+| Panel de administración (`admin/panel.html`, `admin/servicios.html`, `admin/usuarios.html`) | ➡️ | ❌ Acceso denegado | ❌ Acceso denegado | ✅ |
 | Ver el enlace "Administración" en la barra de navegación | ❌ | ❌ | ❌ | ✅ |
 | Crear, editar, dar de baja o reactivar servicios (RF-11) | ❌ | ❌ | ❌ | ✅ |
 | Ver un servicio dado de baja en el catálogo | ❌ | ❌ | ❌ | ✅ solo en el panel |
-| Cambiar el rol de un usuario | ❌ | ❌ | ❌ | ✅ |
+| Ver el listado de usuarios: nombre, correo, rol, fecha de registro y cantidad de adquisiciones (RF-12) | ❌ | ❌ | ❌ | ✅ |
+| Cambiar el rol de otro usuario (RF-12) | ❌ | ❌ | ❌ | ✅ |
+| Cambiar su propio rol | ❌ | ❌ | ❌ | ❌ |
 
 ## Qué pasa al intentar acceder a algo que no corresponde
 
@@ -49,7 +51,7 @@ Las reglas están en **`firestore.rules`**, en la raíz del repositorio. Son la 
 
 | Colección | Leer | Crear | Editar | Borrar |
 |---|---|---|---|---|
-| `usuarios/{uid}` | El propio usuario o un administrador. | El propio usuario, solo con rol `estudiante` o `prestador`. | El propio usuario, **sin cambiar su rol**, o un administrador. | Solo un administrador. |
+| `usuarios/{uid}` | El propio usuario o un administrador. | El propio usuario, solo con rol `estudiante` o `prestador`. | El propio usuario, **sin cambiar su rol**. Un administrador puede cambiar **solo el rol** de otro usuario, nunca el suyo. | Solo un administrador. |
 | `servicios/{id}` | Todos, incluidos los visitantes. | Solo un administrador. | Solo un administrador. | Solo un administrador (en la práctica se usa la baja lógica, `activo: false`). |
 | `adquisiciones/{uid}_{servicioId}` | El dueño (`uid == request.auth.uid`) o un administrador. | Solo un estudiante, a su propio nombre, de un servicio activo y con el precio del catálogo. | Solo un administrador. | Solo un administrador. |
 | `pagos/{id}` | El dueño o un administrador. | Solo un estudiante, a su nombre y con `simulado: true`. | Nadie. | Nadie. |
@@ -73,7 +75,7 @@ Publicar reemplaza todas las reglas anteriores. Si en la consola hay reglas para
 
 | Pieza | Qué hace |
 |---|---|
-| `acceso.js` | `protegerPagina({ roles })`: sin sesión redirige al login, y sin el rol necesario muestra "Acceso denegado". Lo usan `admin/panel.js` y `admin/servicios.js`. |
+| `acceso.js` | `protegerPagina({ roles })`: sin sesión redirige al login, y sin el rol necesario muestra "Acceso denegado". Lo usan `admin/panel.js`, `admin/servicios.js` y `admin/usuarios.js`. |
 | `session.js` | Muestra el enlace "Administración" en la barra de navegación solo a los administradores. |
 | `catalogo/adquisicion.js` | Comprueba la sesión y el rol antes de abrir el flujo de compra. |
 | `gestion/historial.js`, `gestion/gestion.js` | Redirigen al login si no hay sesión. |
