@@ -73,36 +73,14 @@
             </aside>
 
             <section class="col-lg-9" aria-label="Listado de servicios">
-                <div id="sin-resultados" class="alert alert-info hidden" role="status">No hay servicios en esta categoría por el momento.</div>
-                <div class="row g-4" id="lista-servicios">
-                    <div class="col-md-6 col-xl-4" data-categoria="robotica">
-                        <article class="card-litoral h-100 p-4 d-flex flex-column">
-                            <span class="badge text-bg-primary align-self-start mb-2">Robótica</span>
-                            <p class="small text-secondary mb-1">Fundación Sadosky</p>
-                            <h3 class="h5 fw-bold">Taller de Robótica Educativa</h3>
-                            <p class="text-secondary small mt-auto mb-3"><i class="bi bi-clock me-1" aria-hidden="true"></i>4 semanas</p>
-                            <a href="detalle.html?id=taller-robotica" class="btn btn-outline-primary w-100" aria-label="Ver detalles de Taller de Robótica Educativa">Ver Detalles</a>
-                        </article>
-                    </div>
-                    <div class="col-md-6 col-xl-4" data-categoria="mentorias">
-                        <article class="card-litoral h-100 p-4 d-flex flex-column">
-                            <span class="badge text-bg-primary align-self-start mb-2">Mentorías</span>
-                            <p class="small text-secondary mb-1">Equipo Litoral Core</p>
-                            <h3 class="h5 fw-bold">Mentoría en Desarrollo de Software</h3>
-                            <p class="text-secondary small mt-auto mb-3"><i class="bi bi-person-video3 me-1" aria-hidden="true"></i>Sesiones 1:1</p>
-                            <a href="detalle.html?id=mentoria-software" class="btn btn-outline-primary w-100" aria-label="Ver detalles de Mentoría en Desarrollo de Software">Ver Detalles</a>
-                        </article>
-                    </div>
-                    <div class="col-md-6 col-xl-4" data-categoria="formacion">
-                        <article class="card-litoral h-100 p-4 d-flex flex-column">
-                            <span class="badge text-bg-primary align-self-start mb-2">Formación</span>
-                            <p class="small text-secondary mb-1">Instituto Superior</p>
-                            <h3 class="h5 fw-bold">Didáctica General para Docentes</h3>
-                            <p class="text-secondary small mt-auto mb-3"><i class="bi bi-calendar-event me-1" aria-hidden="true"></i>Intensivo 3 meses</p>
-                            <a href="detalle.html?id=didactica-docentes" class="btn btn-outline-primary w-100" aria-label="Ver detalles de Didáctica General para Docentes">Ver Detalles</a>
-                        </article>
-                    </div>
+                <!-- RF-11: los servicios se cargan desde Firestore (catalogo.js) -->
+                <div id="catalogo-cargando" class="text-center py-5" role="status">
+                    <div class="spinner-border text-primary" aria-hidden="true"></div>
+                    <p class="text-secondary mt-3 mb-0">Cargando servicios...</p>
                 </div>
+                <div id="catalogo-error" class="alert alert-danger hidden" role="alert">No pudimos cargar el catálogo. Revisá tu conexión y recargá la página.</div>
+                <div id="sin-resultados" class="alert alert-info hidden" role="status">No hay servicios en esta categoría por el momento.</div>
+                <div class="row g-4" id="lista-servicios"></div>
             </section>
         </div>
     </main>
@@ -124,7 +102,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="filtros.js"></script>
     <script type="module" src="../session.js"></script>
+    <script type="module" src="catalogo.js"></script>
 </body>
 </html>

@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Servicios | Administración | Equipo Litoral</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-litoral sticky-top" aria-label="Navegación principal">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="../index.html"><i class="bi bi-mortarboard-fill me-2" aria-hidden="true"></i>Equipo Litoral</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal" aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menú de navegación">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="menuPrincipal">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="../index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../catalogo/catalogo-general.html">Catálogo</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="panel.html">Administración</a></li>
+                    </ul>
+                    <div id="nav-guest" class="d-flex gap-2">
+                        <a href="../login/login.html" class="btn btn-outline-light btn-sm">Iniciar sesión</a>
+                        <a href="../login/registro.html" class="btn btn-accent btn-sm">Registrarse</a>
+                    </div>
+                    <div id="nav-user" class="d-flex align-items-center gap-2 hidden">
+                        <a href="../gestion/detalle-gestion.html" class="btn btn-outline-light btn-sm"><i class="bi bi-person-circle me-1" aria-hidden="true"></i><span id="nav-user-name"></span></a>
+                        <button id="btn-logout" type="button" class="btn btn-accent btn-sm">Cerrar sesión</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container py-4 flex-grow-1">
+        <!-- Mientras se verifica la sesión y el rol no se muestra nada del panel -->
+        <div id="admin-verificando" class="text-center py-5" role="status">
+            <div class="spinner-border text-primary" aria-hidden="true"></div>
+            <p class="text-secondary mt-3 mb-0">Verificando permisos...</p>
+        </div>
+
+        <div id="admin-contenido" class="hidden">
+            <header class="mb-4">
+                <span class="badge text-bg-danger mb-2"><i class="bi bi-shield-lock me-1" aria-hidden="true"></i>Solo administradores</span>
+                <h1 class="fw-bold mb-1">Panel de administración</h1>
+                <p class="text-secondary mb-0">Gestión de los servicios del catálogo.</p>
+            </header>
+
+            <div class="row g-4">
+                <aside class="col-lg-3" aria-label="Secciones del panel de administración">
+                    <nav class="card-litoral p-3">
+                        <ul class="nav flex-column">
+                            <li class="nav-item"><a class="nav-link" href="panel.html"><i class="bi bi-speedometer2 me-2" aria-hidden="true"></i>Inicio</a></li>
+                            <li class="nav-item"><a class="nav-link active fw-semibold" aria-current="page" href="servicios.html"><i class="bi bi-collection me-2" aria-hidden="true"></i>Servicios</a></li>
+                            <li class="nav-item"><span class="nav-link disabled d-flex align-items-center" aria-disabled="true"><i class="bi bi-people me-2" aria-hidden="true"></i>Usuarios<span class="badge text-bg-light ms-auto">Próximamente</span></span></li>
+                            <li class="nav-item"><span class="nav-link disabled d-flex align-items-center" aria-disabled="true"><i class="bi bi-receipt me-2" aria-hidden="true"></i>Adquisiciones<span class="badge text-bg-light ms-auto">Próximamente</span></span></li>
+                        </ul>
+                    </nav>
+                </aside>
+
+                <div class="col-lg-9">
+                    <section aria-labelledby="titulo-servicios">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                            <h2 class="h4 fw-bold mb-0" id="titulo-servicios">Servicios</h2>
+                            <button type="button" id="btn-nuevo-servicio" class="btn btn-accent"><i class="bi bi-plus-lg me-1" aria-hidden="true"></i>Nuevo servicio</button>
+                        </div>
+
+                        <div id="servicios-msg" class="hidden" role="status" aria-live="polite"></div>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-8">
+                                <label for="buscar-servicio" class="visually-hidden">Buscar servicio</label>
+                                <input type="search" id="buscar-servicio" class="form-control" placeholder="Buscar por nombre o prestador">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="filtro-estado" class="visually-hidden">Filtrar por estado</label>
+                                <select id="filtro-estado" class="form-select">
+                                    <option value="todos">Todos los estados</option>
+                                    <option value="activos">Activos</option>
+                                    <option value="inactivos">Dados de baja</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="servicios-cargando" class="text-center py-4" role="status">
+                            <div class="spinner-border spinner-border-sm text-primary" aria-hidden="true"></div>
+                            <span class="text-secondary ms-2">Cargando servicios...</span>
+                        </div>
+
+                        <div id="servicios-vacio" class="card-litoral p-5 text-center hidden">
+                            <i class="bi bi-collection display-5 text-secondary" aria-hidden="true"></i>
+                            <h3 class="h5 fw-bold mt-3">Todavía no hay servicios en Firestore</h3>
+                            <p class="text-secondary">Podés crear uno nuevo o cargar los cinco servicios que el catálogo mostraba antes.</p>
+                            <button type="button" id="btn-cargar-iniciales" class="btn btn-primary"><i class="bi bi-cloud-upload me-1" aria-hidden="true"></i>Cargar servicios iniciales</button>
+                        </div>
+
+                        <p id="servicios-sin-resultados" class="text-secondary hidden">Ningún servicio coincide con la búsqueda.</p>
+
+                        <div id="servicios-tabla-wrap" class="card-litoral p-0 overflow-hidden hidden">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <caption class="visually-hidden">Servicios del catálogo</caption>
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th scope="col">Servicio</th>
+                                            <th scope="col">Categoría</th>
+                                            <th scope="col">Precio</th>
+                                            <th scope="col">Estado</th>
+                                            <th scope="col" class="text-end">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="servicios-tabla"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Formulario de alta y edición de servicios -->
+    <div class="modal fade" id="modal-servicio" tabindex="-1" aria-labelledby="titulo-modal-servicio" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <form class="modal-content" id="form-servicio" novalidate>
+                <div class="modal-header">
+                    <h2 class="modal-title h5 fw-bold" id="titulo-modal-servicio">Nuevo servicio</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="form-servicio-msg" class="hidden" role="alert"></div>
+
+                    <h3 class="h6 fw-bold text-uppercase text-secondary mb-3">Datos generales</h3>
+                    <div class="row g-3 mb-4">
+                        <div class="col-12">
+                            <label for="srv-nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
+                            <input type="text" id="srv-nombre" class="form-control" maxlength="100" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="srv-categoria" class="form-label">Categoría <span class="text-danger">*</span></label>
+                            <select id="srv-categoria" class="form-select" required></select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="srv-modalidad" class="form-label">Modalidad <span class="text-danger">*</span></label>
+                            <select id="srv-modalidad" class="form-select" required></select>
+                        </div>
+                        <div class="col-12">
+                            <label for="srv-descripcion-corta" class="form-label">Descripción corta <span class="text-danger">*</span></label>
+                            <input type="text" id="srv-descripcion-corta" class="form-control" maxlength="200" required>
+                            <div class="form-text">Se muestra debajo del título en el detalle del servicio.</div>
+                        </div>
+                        <div class="col-12">
+                            <label for="srv-descripcion" class="form-label">Descripción <span class="text-danger">*</span></label>
+                            <textarea id="srv-descripcion" class="form-control" rows="4" required></textarea>
+                            <div class="form-text">Dejá una línea en blanco para separar párrafos.</div>
+                        </div>
+                        <div class="col-12">
+                            <label for="srv-objetivos" class="form-label">Objetivos</label>
+                            <textarea id="srv-objetivos" class="form-control" rows="3"></textarea>
+                            <div class="form-text">Un objetivo por línea.</div>
+                        </div>
+                        <div class="col-12">
+                            <label for="srv-requisitos" class="form-label">Requisitos</label>
+                            <textarea id="srv-requisitos" class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="srv-certificado">
+                                <label class="form-check-label" for="srv-certificado">Otorga certificado</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="h6 fw-bold text-uppercase text-secondary mb-3">Prestador</h3>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label for="srv-prestador" class="form-label">Prestador <span class="text-danger">*</span></label>
+                            <input type="text" id="srv-prestador" class="form-control" maxlength="100" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="srv-institucion" class="form-label">Institución</label>
+                            <input type="text" id="srv-institucion" class="form-control" maxlength="100">
+                        </div>
+                        <div class="col-12">
+                            <label for="srv-prestador-detalle" class="form-label">Información del prestador</label>
+                            <textarea id="srv-prestador-detalle" class="form-control" rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    <h3 class="h6 fw-bold text-uppercase text-secondary mb-3">Cursada y precio</h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="srv-duracion" class="form-label">Duración <span class="text-danger">*</span></label>
+                            <input type="text" id="srv-duracion" class="form-control" placeholder="Ej: 12 semanas" maxlength="60" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="srv-carga" class="form-label">Carga horaria</label>
+                            <input type="text" id="srv-carga" class="form-control" placeholder="Ej: 4 hs por semana" maxlength="60">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="srv-cupo" class="form-label">Cupo máximo</label>
+                            <input type="number" id="srv-cupo" class="form-control" min="1" step="1" placeholder="Sin límite">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="srv-inicio" class="form-label">Fecha de inicio</label>
+                            <input type="date" id="srv-inicio" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="srv-precio" class="form-label">Precio <span class="text-danger">*</span></label>
+                            <input type="number" id="srv-precio" class="form-control" min="0" step="1" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="srv-moneda" class="form-label">Moneda <span class="text-danger">*</span></label>
+                            <select id="srv-moneda" class="form-select" required></select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="srv-periodo" class="form-label">Período <span class="text-danger">*</span></label>
+                            <select id="srv-periodo" class="form-select" required></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-accent" id="btn-guardar-servicio">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmación de baja / reactivación -->
+    <div class="modal fade" id="modal-estado" tabindex="-1" aria-labelledby="titulo-modal-estado" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 fw-bold" id="titulo-modal-estado">Dar de baja</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="texto-modal-estado" class="mb-0"></p>
+                    <div id="modal-estado-msg" class="hidden" role="alert"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="btn-confirmar-estado">Dar de baja</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-litoral py-4 mt-auto">
+        <div class="container">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-6">
+                    <strong class="text-white">Equipo Litoral</strong>
+                    <div class="small">Alejandro, Ronny, Emanuel y Sebastián · Proyecto académico del Taller Integrador</div>
+                </div>
+                <div class="col-md-6 text-md-end small">
+                    <a href="../catalogo/catalogo-general.html" class="me-3">Catálogo</a>
+                    <a href="../login/login.html">Iniciar sesión</a>
+                    <div class="mt-1">© 2026 Equipo Litoral. Todos los derechos reservados.</div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="../session.js"></script>
+    <script type="module" src="servicios.js"></script>
+</body>
+</html>

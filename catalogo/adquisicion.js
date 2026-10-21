@@ -2,6 +2,7 @@
 // RF-09: Flujo de adquisición de un servicio educativo.
 // RNF-09: Pago simulado sin datos reales de medios de pago.
 // RD-08: El registro en Firestore se hace con el modelo de adquisiciones-modelo.js.
+// RF-11: Los datos del servicio se leen desde Firestore (detalle.js).
 //
 // Pasos del flujo:
 //   1) Selección del servicio: el usuario toca "Adquirir Servicio" en el detalle.
@@ -26,31 +27,18 @@ import {
   registrarPagoRechazado
 } from "../adquisiciones-modelo.js";
 import { ROLES } from "../acceso.js";
+import { servicioListo } from "./detalle.js";
 
 /* ------------------------------------------------------------------ */
 /* Datos del servicio seleccionado                                     */
 /* ------------------------------------------------------------------ */
 
-// Los datos se toman del bloque de adquisición del detalle (atributos data-*).
-// El id se toma de la URL (detalle.html?id=...) y, si no viene, del propio bloque.
-// Cuando los servicios se lean desde Firestore, solo hay que cambiar esta función.
-function obtenerServicio() {
-  const bloque = document.getElementById("bloque-adquisicion");
-  const params = new URLSearchParams(window.location.search);
-  return {
-    id: params.get("id") || bloque.dataset.servicioId,
-    nombre: bloque.dataset.servicioNombre,
-    prestador: bloque.dataset.servicioPrestador,
-    modalidad: bloque.dataset.servicioModalidad,
-    duracion: bloque.dataset.servicioDuracion,
-    inicio: bloque.dataset.servicioInicio,
-    precio: Number(bloque.dataset.servicioPrecio),
-    moneda: bloque.dataset.servicioMoneda,
-    periodo: bloque.dataset.servicioPeriodo
-  };
-}
+// RF-11: el servicio se lee desde Firestore en detalle.js.
+// "servicioListo" resuelve null si el servicio no existe.
+const servicio = await servicioListo;
 
-const servicio = obtenerServicio();
+// Solo se puede adquirir un servicio que existe y está activo
+const disponible = Boolean(servicio && servicio.activo);
 
 // Tiempo que tarda el "procesamiento" del pago simulado
 const DEMORA_PAGO_MS = 1500;
@@ -152,6 +140,10 @@ const esperar = (ms) => new Promise((resolver) => setTimeout(resolver, ms));
 
 onAuthStateChanged(auth, async (user) => {
   usuarioActual = user;
+
+  // Servicio inexistente o dado de baja: detalle.js ya mostró el aviso correspondiente
+  if (!disponible) return;
+
   ocultarAviso();
   btnAdquirir.disabled = false;
 
@@ -178,6 +170,7 @@ onAuthStateChanged(auth, async (user) => {
 /* ------------------------------------------------------------------ */
 
 btnAdquirir.addEventListener("click", () => {
+  if (!disponible) return;
   ocultarAviso();
 
   // Sin sesión: no puede adquirir, se le invita a iniciar sesión

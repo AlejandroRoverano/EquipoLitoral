@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Taller de Robótica Educativa | Equipo Litoral</title>
+    <title>Detalle del servicio | Equipo Litoral</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
@@ -40,16 +40,29 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="../index.html">Inicio</a></li>
                 <li class="breadcrumb-item"><a href="catalogo-general.html">Catálogo</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Taller de Robótica Educativa</li>
+                <li class="breadcrumb-item active" aria-current="page" id="migas-servicio">Servicio</li>
             </ol>
         </nav>
 
-        <div class="row g-4">
+        <!-- RF-11: el contenido se carga desde Firestore (detalle.js) -->
+        <div id="detalle-cargando" class="text-center py-5" role="status">
+            <div class="spinner-border text-primary" aria-hidden="true"></div>
+            <p class="text-secondary mt-3 mb-0">Cargando servicio...</p>
+        </div>
+
+        <div id="detalle-no-encontrado" class="card-litoral p-5 text-center hidden" role="alert">
+            <i class="bi bi-search display-5 text-secondary" aria-hidden="true"></i>
+            <h1 class="h4 fw-bold mt-3" id="no-encontrado-titulo">No encontramos este servicio</h1>
+            <p class="text-secondary" id="no-encontrado-texto">Puede que el enlace sea incorrecto o que el servicio ya no esté disponible.</p>
+            <a href="catalogo-general.html" class="btn btn-primary">Ver catálogo</a>
+        </div>
+
+        <div id="detalle-contenido" class="row g-4 hidden">
             <div class="col-lg-8">
                 <header class="mb-4">
-                    <div class="mb-2"><span class="badge text-bg-primary me-1">Presencial</span><span class="badge badge-accent">Certificado</span></div>
-                    <h1 class="fw-bold">Taller de Robótica Educativa</h1>
-                    <p class="lead text-secondary">Aprende los fundamentos de la electrónica, mecánica y programación construyendo tus propios robots desde cero.</p>
+                    <div class="mb-2" id="detalle-badges"></div>
+                    <h1 class="fw-bold" id="detalle-nombre"></h1>
+                    <p class="lead text-secondary" id="detalle-descripcion-corta"></p>
                 </header>
 
                 <ul class="nav nav-tabs" role="tablist">
@@ -60,73 +73,40 @@
                 </ul>
                 <div class="tab-content card-litoral p-4 mt-3">
                     <section class="tab-pane fade show active" id="descripcion" role="tabpanel" tabindex="0">
-                        <h2 class="h5 fw-bold">Descripción del Taller</h2>
-                        <p>El Taller de Robótica Educativa está diseñado para introducir a los participantes en el fascinante mundo de la automatización y la programación física. A través de un enfoque "hands-on" (aprender haciendo), los estudiantes ensamblarán y programarán diferentes tipos de robots utilizando placas de desarrollo estándar de la industria.</p>
-                        <p class="mb-0">Durante el curso, se proveerán todos los materiales necesarios, incluyendo el kit de robótica que el estudiante podrá llevarse al finalizar el programa. Las clases combinan teoría fundamental con extensas sesiones prácticas de resolución de problemas reales.</p>
+                        <h2 class="h5 fw-bold">Descripción</h2>
+                        <div id="detalle-descripcion"></div>
                     </section>
                     <section class="tab-pane fade" id="objetivos" role="tabpanel" tabindex="0">
                         <h2 class="h5 fw-bold">Objetivos de Aprendizaje</h2>
-                        <ul class="mb-0">
-                            <li>Comprender los principios básicos de la electrónica y circuitos.</li>
-                            <li>Programar microcontroladores usando C++ y lenguajes de bloques.</li>
-                            <li>Diseñar algoritmos para la toma de decisiones autónomas del robot.</li>
-                            <li>Integrar sensores (ultrasonido, infrarrojo) y actuadores (motores, servos).</li>
-                        </ul>
+                        <ul class="mb-0" id="detalle-objetivos"></ul>
                     </section>
                     <section class="tab-pane fade" id="requisitos" role="tabpanel" tabindex="0">
                         <h2 class="h5 fw-bold">Requisitos Previos</h2>
-                        <h3 class="h6 fw-semibold">Equipo</h3>
-                        <p>Notebook propia (Windows, Mac o Linux) para la programación.</p>
-                        <h3 class="h6 fw-semibold">Conocimientos</h3>
-                        <p class="mb-0">No se requiere experiencia previa en programación o electrónica. Nivel inicial.</p>
+                        <p class="mb-0" id="detalle-requisitos"></p>
                     </section>
                     <section class="tab-pane fade" id="prestador" role="tabpanel" tabindex="0">
                         <h2 class="h5 fw-bold">Información del Prestador</h2>
-                        <h3 class="h6 fw-semibold mb-0">Ing. Martín Silva</h3>
-                        <p class="text-secondary small">Ingeniero Mecatrónico / Docente Principal</p>
-                        <p class="mb-0">Con más de 10 años de experiencia en la industria de la automatización y 5 años dedicados a la docencia. Especializado en hacer accesibles conceptos complejos de ingeniería para estudiantes de todos los niveles.</p>
+                        <h3 class="h6 fw-semibold mb-0" id="detalle-prestador"></h3>
+                        <p class="text-secondary small" id="detalle-institucion"></p>
+                        <p class="mb-0" id="detalle-prestador-detalle"></p>
                     </section>
                 </div>
             </div>
 
             <aside class="col-lg-4" aria-label="Adquisición del servicio">
-                <div class="card-litoral p-4 sticky-lg-top" style="top: 5rem;" id="bloque-adquisicion"
-                     data-servicio-id="taller-robotica"
-                     data-servicio-nombre="Taller de Robótica Educativa"
-                     data-servicio-prestador="Ing. Martín Silva"
-                     data-servicio-modalidad="Presencial"
-                     data-servicio-duracion="12 semanas · 4 hs por semana"
-                     data-servicio-inicio="15 de marzo de 2024"
-                     data-servicio-precio="4500"
-                     data-servicio-moneda="UYU"
-                     data-servicio-periodo="mes">
-                    <p class="display-6 fw-bold mb-0">$4,500</p>
-                    <p class="text-secondary">UYU / mes</p>
-                    <ul class="list-unstyled mb-4">
-                        <li class="mb-2"><i class="bi bi-clock text-success me-2" aria-hidden="true"></i>12 Semanas • 4hs / semana</li>
-                        <li class="mb-2"><i class="bi bi-people text-success me-2" aria-hidden="true"></i>Máximo 15 estudiantes</li>
-                        <li><i class="bi bi-calendar-event text-success me-2" aria-hidden="true"></i>Inicia: 15 de Marzo, 2024</li>
-                    </ul>
+                <div class="card-litoral p-4 sticky-lg-top" style="top: 5rem;" id="bloque-adquisicion">
+                    <p class="display-6 fw-bold mb-0" id="detalle-precio"></p>
+                    <p class="text-secondary" id="detalle-periodo"></p>
+                    <ul class="list-unstyled mb-4" id="detalle-datos"></ul>
                     <button type="button" id="btn-adquirir" class="btn btn-accent btn-lg w-100">Adquirir Servicio</button>
                     <div id="aviso-adquisicion" class="hidden" role="status" aria-live="polite"></div>
                 </div>
             </aside>
         </div>
 
-        <section class="mt-5" aria-labelledby="tituloRelacionados">
+        <section class="mt-5 hidden" aria-labelledby="tituloRelacionados" id="seccion-relacionados">
             <h2 class="h4 fw-bold mb-3" id="tituloRelacionados">Servicios Relacionados</h2>
-            <div class="row g-3">
-                <div class="col-md-6"><article class="card-litoral p-4 h-100">
-                        <span class="badge text-bg-secondary mb-2">Programación</span>
-                        <h3 class="h6 fw-bold"><a href="detalle.html?id=python-cientificos" class="stretched-link text-decoration-none">Introducción a Python para Científicos</a></h3>
-                        <p class="small text-secondary mb-0">8 Semanas · $3,200 UYU</p>
-                    </article></div>
-                <div class="col-md-6"><article class="card-litoral p-4 h-100">
-                        <span class="badge text-bg-secondary mb-2">Fabricación</span>
-                        <h3 class="h6 fw-bold"><a href="detalle.html?id=impresion-3d" class="stretched-link text-decoration-none">Diseño e Impresión 3D Básica</a></h3>
-                        <p class="small text-secondary mb-0">4 Semanas · $2,500 UYU</p>
-                    </article></div>
-            </div>
+            <div class="row g-3" id="lista-relacionados"></div>
         </section>
     </main>
 
@@ -197,6 +177,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="../session.js"></script>
+    <script type="module" src="detalle.js"></script>
     <script type="module" src="adquisicion.js"></script>
 </body>
 </html>
