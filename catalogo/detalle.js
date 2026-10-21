@@ -144,7 +144,7 @@ async function cargarRelacionados(actual) {
     $("lista-relacionados").replaceChildren(
       ...relacionados.map((s) => {
         const col = crear("div", "col-md-6");
-        const tarjeta = crear("article", "card-litoral p-4 h-100");
+        const tarjeta = crear("article", "card-litoral p-4 h-100 position-relative");
         const enlace = crear("a", "stretched-link text-decoration-none", s.nombre);
         enlace.href = `detalle.html?id=${encodeURIComponent(s.id)}`;
         const titulo = crear("h3", "h6 fw-bold");
