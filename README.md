@@ -26,6 +26,7 @@ Plataforma web de servicios educativos (cursos, talleres y mentorías). Proyecto
 | `servicios-modelo.js` | Lectura y escritura de los servicios del catálogo en Firestore. |
 | `servicios-gestor.js` | Interfaz común para gestionar servicios (panel administrativo y Mis servicios). |
 | `usuarios-modelo.js` | Listado de usuarios y cambio de rol para el panel administrativo. |
+| `indicadores-modelo.js` | Cálculo de los indicadores del estado general de la plataforma (RF-14). |
 | `firestore.rules` | Reglas de seguridad de Firestore. |
 | `docs/` | Documentación del proyecto. |
 
@@ -34,6 +35,7 @@ Plataforma web de servicios educativos (cursos, talleres y mentorías). Proyecto
 - [Matriz de permisos y restricciones de acceso](docs/matriz-de-permisos.md) (RNF-10)
 - [Modelo de datos de adquisiciones](docs/modelo-datos-adquisiciones.md) (RD-08)
 - [Modelo de datos de servicios](docs/modelo-datos-servicios.md) (RF-11, RD-04)
+- [Indicadores del panel administrativo](docs/indicadores-panel.md) (RF-14)
 
 ## Primeros pasos con Firestore
 

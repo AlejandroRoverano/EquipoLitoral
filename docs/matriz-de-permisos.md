@@ -33,6 +33,7 @@ El rol se guarda en el campo `rol` del documento `usuarios/{uid}` en Firestore.
 | Asignar el prestador responsable de un servicio (RD-04) | ❌ | ❌ | ❌ | ✅ |
 | Página "Mis servicios" (`gestion/mis-servicios.html`) | ➡️ | ❌ Acceso denegado | ✅ | ❌ Acceso denegado (usa el panel) |
 | Ver un servicio dado de baja en el catálogo | ❌ | ❌ | ❌ | ✅ solo en el panel |
+| Ver los indicadores del estado general de la plataforma en `admin/panel.html` (RF-14) | ❌ | ❌ | ❌ | ✅ |
 | Ver el listado de usuarios: nombre, correo, rol, fecha de registro y cantidad de adquisiciones (RF-12) | ❌ | ❌ | ❌ | ✅ |
 | Cambiar el rol de otro usuario (RF-12) | ❌ | ❌ | ❌ | ✅ |
 | Cambiar su propio rol | ❌ | ❌ | ❌ | ❌ |
