@@ -60,7 +60,14 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 function aplicarVistaSegunRol(rol) {
-  if (rol === "prestador") {
+  // RF-11: el administrador tiene acceso directo al panel de administración
+  document.getElementById("link-panel-admin")?.classList.toggle("hidden", rol !== "administrador");
+
+  if (rol === "administrador") {
+    badgeRol.textContent = "Administrador";
+    panelSubtitulo.textContent = "Administración de la plataforma";
+    btnNuevoServicio.classList.add("hidden");
+  } else if (rol === "prestador") {
     badgeRol.textContent = "Prestador de Servicios";
     panelSubtitulo.textContent = "Gestión de tus servicios";
     tituloAdquisiciones.textContent = "Cursos que Dictás";
@@ -179,6 +186,13 @@ async function cargarAdquisicionesPanel(uid, rol) {
   const contenedor = document.getElementById("lista-adquisiciones-panel");
   const totalCursos = document.getElementById("total-cursos-activos");
   if (!contenedor) return;
+
+  if (rol === "administrador") {
+    contenedor.replaceChildren(
+      crearElemento("p", "col-12 text-secondary mb-0", "Las adquisiciones de toda la plataforma están en el panel de administración.")
+    );
+    return;
+  }
 
   if (rol === "prestador") {
     contenedor.replaceChildren(

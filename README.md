@@ -18,11 +18,12 @@ Plataforma web de servicios educativos (cursos, talleres y mentorías). Proyecto
 | `catalogo/` | Catálogo de servicios, detalle y flujo de adquisición. |
 | `login/` | Registro, inicio de sesión y recuperación de contraseña. |
 | `gestion/` | Panel del usuario e historial de adquisiciones. |
-| `admin/` | Panel de administración (solo administradores). |
+| `admin/` | Panel de administración (solo administradores): inicio y gestión de servicios. |
 | `firebase-config.js` | Configuración de Firebase. |
 | `session.js` | Muestra u oculta los botones de sesión en la barra de navegación. |
 | `acceso.js` | Protección de páginas por sesión y rol. |
 | `adquisiciones-modelo.js` | Lectura y escritura de adquisiciones y pagos en Firestore. |
+| `servicios-modelo.js` | Lectura y escritura de los servicios del catálogo en Firestore. |
 | `firestore.rules` | Reglas de seguridad de Firestore. |
 | `docs/` | Documentación del proyecto. |
 
@@ -30,6 +31,13 @@ Plataforma web de servicios educativos (cursos, talleres y mentorías). Proyecto
 
 - [Matriz de permisos y restricciones de acceso](docs/matriz-de-permisos.md) (RNF-10)
 - [Modelo de datos de adquisiciones](docs/modelo-datos-adquisiciones.md) (RD-08)
+- [Modelo de datos de servicios](docs/modelo-datos-servicios.md) (RF-11)
+
+## Primeros pasos con Firestore
+
+1. Publicar las reglas: `firebase deploy --only firestore:rules` (ver la [matriz de permisos](docs/matriz-de-permisos.md)).
+2. Asignar el rol `administrador` a un usuario desde la consola de Firebase.
+3. Con ese usuario, entrar a **Administración → Servicios** y tocar **"Cargar servicios iniciales"** para que el catálogo tenga contenido.
 
 ## Cómo trabajar en el repositorio
 

@@ -37,6 +37,16 @@ service cloud.firestore {
       return tienePerfil() && rol() == 'estudiante';
     }
 
+    // RF-11: datos del servicio en la colección servicios
+    function servicio(servicioId) {
+      return get(/databases/$(database)/documents/servicios/$(servicioId)).data;
+    }
+
+    function servicioDisponible(servicioId) {
+      return exists(/databases/$(database)/documents/servicios/$(servicioId))
+        && servicio(servicioId).activo == true;
+    }
+
     // ---------- usuarios ----------
     // Cada usuario lee y edita su propio perfil. Nadie puede asignarse un rol
     // administrativo: al registrarse solo puede elegir estudiante o prestador,
@@ -56,6 +66,7 @@ service cloud.firestore {
     // ---------- servicios ----------
     // El catálogo es público (visitantes incluidos).
     // Solo un administrador puede crear, editar o borrar servicios.
+    // La baja es lógica (activo = false), así las adquisiciones conservan su referencia.
     match /servicios/{servicioId} {
       allow read: if true;
       allow create, update, delete: if esAdmin();
@@ -64,14 +75,18 @@ service cloud.firestore {
     // ---------- adquisiciones ----------
     // Cada usuario lee solo las suyas (campo uid == request.auth.uid); el administrador lee todas.
     // "resource == null" permite comprobar si una adquisición existe antes de crearla.
-    // Solo un estudiante crea adquisiciones, y únicamente a su nombre.
+    // Solo un estudiante crea adquisiciones, únicamente a su nombre, de un servicio
+    // activo y con el precio que figura en el catálogo (RF-11).
     match /adquisiciones/{adquisicionId} {
       allow read: if autenticado()
         && (resource == null || resource.data.uid == request.auth.uid || esAdmin());
       allow create: if esEstudiante()
         && request.resource.data.uid == request.auth.uid
         && adquisicionId == request.auth.uid + '_' + request.resource.data.servicioId
-        && request.resource.data.estado == 'confirmada';
+        && request.resource.data.estado == 'confirmada'
+        && servicioDisponible(request.resource.data.servicioId)
+        && request.resource.data.precio == servicio(request.resource.data.servicioId).precio
+        && request.resource.data.moneda == servicio(request.resource.data.servicioId).moneda;
       allow update, delete: if esAdmin();
     }
 

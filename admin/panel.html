@@ -47,44 +47,60 @@
             <header class="mb-4">
                 <span class="badge text-bg-danger mb-2"><i class="bi bi-shield-lock me-1" aria-hidden="true"></i>Solo administradores</span>
                 <h1 class="fw-bold mb-1">Panel de administración</h1>
-                <p class="text-secondary mb-0">Adquisiciones registradas en toda la plataforma.</p>
+                <p class="text-secondary mb-0">Resumen de la actividad de la plataforma.</p>
             </header>
 
-            <div class="row g-3 mb-4">
-                <div class="col-6 col-md-3">
-                    <div class="card-litoral p-3 text-center h-100">
-                        <p class="h3 fw-bold mb-0" id="admin-total">-</p>
-                        <p class="small text-secondary mb-0">Adquisiciones</p>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="card-litoral p-3 text-center h-100">
-                        <p class="h3 fw-bold mb-0" id="admin-compradores">-</p>
-                        <p class="small text-secondary mb-0">Estudiantes compradores</p>
-                    </div>
-                </div>
-            </div>
+            <div class="row g-4">
+                <aside class="col-lg-3" aria-label="Secciones del panel de administración">
+                    <nav class="card-litoral p-3">
+                        <ul class="nav flex-column">
+                            <li class="nav-item"><a class="nav-link active fw-semibold" aria-current="page" href="panel.html"><i class="bi bi-speedometer2 me-2" aria-hidden="true"></i>Inicio</a></li>
+                            <li class="nav-item"><a class="nav-link" href="servicios.html"><i class="bi bi-collection me-2" aria-hidden="true"></i>Servicios</a></li>
+                            <li class="nav-item"><span class="nav-link disabled d-flex align-items-center" aria-disabled="true"><i class="bi bi-people me-2" aria-hidden="true"></i>Usuarios<span class="badge text-bg-light ms-auto">Próximamente</span></span></li>
+                            <li class="nav-item"><span class="nav-link disabled d-flex align-items-center" aria-disabled="true"><i class="bi bi-receipt me-2" aria-hidden="true"></i>Adquisiciones<span class="badge text-bg-light ms-auto">Próximamente</span></span></li>
+                        </ul>
+                    </nav>
+                </aside>
 
-            <div id="admin-error" class="alert alert-danger hidden" role="alert"></div>
-            <div id="admin-vacio" class="alert alert-info hidden" role="status">Todavía no hay adquisiciones registradas.</div>
+                <div class="col-lg-9">
+                    <h2 class="h4 fw-bold mb-3">Adquisiciones registradas</h2>
+                    <div class="row g-3 mb-4">
+                        <div class="col-6 col-md-3">
+                            <div class="card-litoral p-3 text-center h-100">
+                                <p class="h3 fw-bold mb-0" id="admin-total">-</p>
+                                <p class="small text-secondary mb-0">Adquisiciones</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="card-litoral p-3 text-center h-100">
+                                <p class="h3 fw-bold mb-0" id="admin-compradores">-</p>
+                                <p class="small text-secondary mb-0">Estudiantes compradores</p>
+                            </div>
+                        </div>
+                    </div>
 
-            <div class="card-litoral p-0 overflow-hidden">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <caption class="visually-hidden">Adquisiciones de todos los usuarios</caption>
-                        <thead class="table-light">
-                            <tr>
-                                <th scope="col">Fecha</th>
-                                <th scope="col">Usuario</th>
-                                <th scope="col">Servicio</th>
-                                <th scope="col">Importe</th>
-                                <th scope="col">Medio de pago</th>
-                                <th scope="col">Código</th>
-                                <th scope="col">Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-tabla"></tbody>
-                    </table>
+                    <div id="admin-error" class="alert alert-danger hidden" role="alert"></div>
+                    <div id="admin-vacio" class="alert alert-info hidden" role="status">Todavía no hay adquisiciones registradas.</div>
+
+                    <div class="card-litoral p-0 overflow-hidden">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <caption class="visually-hidden">Adquisiciones de todos los usuarios</caption>
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col">Fecha</th>
+                                        <th scope="col">Usuario</th>
+                                        <th scope="col">Servicio</th>
+                                        <th scope="col">Importe</th>
+                                        <th scope="col">Medio de pago</th>
+                                        <th scope="col">Código</th>
+                                        <th scope="col">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-tabla"></tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
