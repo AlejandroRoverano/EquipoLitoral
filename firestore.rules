@@ -50,7 +50,11 @@ service cloud.firestore {
     // ---------- usuarios ----------
     // Cada usuario lee y edita su propio perfil. Nadie puede asignarse un rol
     // administrativo: al registrarse solo puede elegir estudiante o prestador,
-    // y después no puede cambiarlo. El rol de administrador se asigna desde la consola.
+    // y después no puede cambiarlo.
+    // RF-12: el administrador lista todos los usuarios y puede cambiar SOLO el rol
+    // de otro usuario (no su nombre ni su correo). Nadie se quita a sí mismo el rol
+    // de administrador, así la plataforma nunca queda sin administradores.
+    // El primer administrador se asigna desde la consola de Firebase.
     match /usuarios/{uid} {
       allow read: if esDueno(uid) || esAdmin();
       allow create: if esDueno(uid)
@@ -59,7 +63,12 @@ service cloud.firestore {
       allow update: if (esDueno(uid)
           && request.resource.data.rol == resource.data.rol
           && request.resource.data.uid == resource.data.uid)
-        || esAdmin();
+        || (esAdmin()
+          && request.resource.data.diff(resource.data).affectedKeys()
+               .hasOnly(['rol', 'rolActualizadoPor', 'rolActualizadoEn'])
+          && request.resource.data.rol in ['estudiante', 'prestador', 'administrador']
+          && request.resource.data.rolActualizadoPor == request.auth.uid
+          && (uid != request.auth.uid || request.resource.data.rol == 'administrador'));
       allow delete: if esAdmin();
     }
 
