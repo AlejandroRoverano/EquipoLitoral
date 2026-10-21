@@ -1,0 +1,76 @@
+/* css/styles.css · Equipo Litoral
+   Identidad visual propia sobre Bootstrap 5 (paleta y tipografías del prototipo). */
+
+:root {
+  --el-navy: #001736;
+  --el-navy-2: #002b5b;
+  --el-green: #006b5a;
+  --el-mint: #54f8d7;
+  --el-surface: #eff4ff;
+  --el-ink: #0b1c30;
+  --el-muted: #43474f;
+
+  --bs-primary: var(--el-navy-2);
+  --bs-primary-rgb: 0, 43, 91;
+  --bs-link-color: var(--el-navy-2);
+  --bs-link-hover-color: var(--el-green);
+  --bs-body-bg: #f8f9ff;
+  --bs-body-color: var(--el-ink);
+  --bs-body-font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --bs-border-radius: .75rem;
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand { font-family: "Montserrat", "Inter", sans-serif; }
+
+/* Utilidad que usa el JavaScript del proyecto para mostrar y ocultar elementos */
+.hidden { display: none !important; }
+
+/* Botones */
+.btn-primary {
+  --bs-btn-bg: var(--el-navy-2); --bs-btn-border-color: var(--el-navy-2);
+  --bs-btn-hover-bg: var(--el-navy); --bs-btn-hover-border-color: var(--el-navy);
+  --bs-btn-active-bg: var(--el-navy); --bs-btn-active-border-color: var(--el-navy);
+  --bs-btn-disabled-bg: var(--el-navy-2); --bs-btn-disabled-border-color: var(--el-navy-2);
+}
+.btn-outline-primary {
+  --bs-btn-color: var(--el-navy-2); --bs-btn-border-color: var(--el-navy-2);
+  --bs-btn-hover-bg: var(--el-navy-2); --bs-btn-hover-border-color: var(--el-navy-2);
+  --bs-btn-active-bg: var(--el-navy); --bs-btn-active-border-color: var(--el-navy);
+}
+.btn-accent {
+  --bs-btn-color: #fff; --bs-btn-bg: var(--el-green); --bs-btn-border-color: var(--el-green);
+  --bs-btn-hover-color: var(--el-ink); --bs-btn-hover-bg: var(--el-mint); --bs-btn-hover-border-color: var(--el-mint);
+  --bs-btn-active-color: var(--el-ink); --bs-btn-active-bg: var(--el-mint); --bs-btn-active-border-color: var(--el-mint);
+  --bs-btn-disabled-bg: var(--el-green); --bs-btn-disabled-border-color: var(--el-green);
+  font-weight: 600;
+}
+
+/* Foco visible para navegación con teclado */
+:focus-visible { outline: 3px solid var(--el-mint); outline-offset: 2px; }
+
+/* Navbar */
+.navbar-litoral { background: var(--el-navy); }
+.navbar-litoral .nav-link { color: rgba(255,255,255,.85); }
+.navbar-litoral .nav-link:hover, .navbar-litoral .nav-link.active { color: var(--el-mint); }
+
+/* Portada */
+.hero { background: linear-gradient(135deg, var(--el-navy) 0%, var(--el-navy-2) 100%); }
+.badge-accent { background: var(--el-mint); color: var(--el-ink); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.chip { display: inline-flex; align-items: center; gap: .4rem; padding: .35rem .8rem; border-radius: 999px;
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); font-size: .875rem; }
+
+/* Tarjetas */
+.card-litoral { border: 1px solid #d3e4fe; border-radius: 1rem; background: #fff; transition: box-shadow .2s, transform .2s; }
+.card-litoral:hover { box-shadow: 0 .75rem 1.5rem rgba(0,23,54,.1); transform: translateY(-2px); }
+.icon-circle { width: 3rem; height: 3rem; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+  background: var(--el-surface); color: var(--el-green); font-size: 1.4rem; }
+
+/* Acceso (login y registro) */
+.auth-wrap { min-height: calc(100vh - 56px); background: linear-gradient(135deg, var(--el-surface) 0%, #fff 100%); }
+.auth-card { max-width: 460px; width: 100%; }
+.role-option .btn { border-radius: .75rem; padding: .9rem .5rem; }
+
+/* Pie de página */
+.footer-litoral { background: var(--el-navy); color: rgba(255,255,255,.8); }
+.footer-litoral a { color: rgba(255,255,255,.8); text-decoration: none; }
+.footer-litoral a:hover { color: var(--el-mint); }

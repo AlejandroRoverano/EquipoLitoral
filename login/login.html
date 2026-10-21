@@ -1,264 +1,135 @@
-<!DOCTYPE html>
-
-<html class="light" lang="es">
-    <head>
-        <meta charset="utf-8"/>
-        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <title>Equipo Litoral - Iniciar Sesión / Registrarse</title>
-        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Montserrat:wght@600;700&amp;display=swap" rel="stylesheet"/>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-        <script id="tailwind-config">
-            tailwind.config = {
-                darkMode: "class",
-                theme: {
-                    extend: {
-                        "colors": {
-                            "on-primary-fixed-variant": "#264778",
-                            "secondary-fixed-dim": "#2cdebf",
-                            "on-error-container": "#93000a",
-                            "on-secondary-fixed": "#00201a",
-                            "primary-container": "#002b5b",
-                            "surface-dim": "#cbdbf5",
-                            "tertiary-container": "#002c54",
-                            "on-tertiary-fixed-variant": "#004883",
-                            "surface-container-low": "#eff4ff",
-                            "outline-variant": "#c4c6d0",
-                            "secondary": "#006b5a",
-                            "primary-fixed": "#d6e3ff",
-                            "on-error": "#ffffff",
-                            "inverse-surface": "#213145",
-                            "surface-bright": "#f8f9ff",
-                            "tertiary-fixed-dim": "#a4c9ff",
-                            "surface-container": "#e5eeff",
-                            "on-secondary-container": "#00705e",
-                            "on-secondary-fixed-variant": "#005143",
-                            "primary-fixed-dim": "#a9c7ff",
-                            "on-secondary": "#ffffff",
-                            "on-primary-fixed": "#001b3d",
-                            "surface-tint": "#405f91",
-                            "error": "#ba1a1a",
-                            "tertiary-fixed": "#d4e3ff",
-                            "surface-container-highest": "#d3e4fe",
-                            "on-tertiary-fixed": "#001c39",
-                            "primary": "#001736",
-                            "on-surface": "#0b1c30",
-                            "error-container": "#ffdad6",
-                            "surface-container-lowest": "#ffffff",
-                            "on-tertiary": "#ffffff",
-                            "outline": "#747780",
-                            "on-surface-variant": "#43474f",
-                            "surface": "#f8f9ff",
-                            "secondary-container": "#54f8d7",
-                            "surface-container-high": "#dce9ff",
-                            "inverse-primary": "#a9c7ff",
-                            "tertiary": "#001731",
-                            "on-background": "#0b1c30",
-                            "on-primary": "#ffffff",
-                            "on-tertiary-container": "#5095e7",
-                            "background": "#f8f9ff",
-                            "secondary-fixed": "#58fbda",
-                            "surface-variant": "#d3e4fe",
-                            "on-primary-container": "#7594ca",
-                            "inverse-on-surface": "#eaf1ff"
-                        },
-                        "borderRadius": {
-                            "DEFAULT": "0.125rem",
-                            "lg": "0.25rem",
-                            "xl": "0.5rem",
-                            "full": "0.75rem"
-                        },
-                        "spacing": {
-                            "container-max": "1280px",
-                            "margin-mobile": "16px",
-                            "gutter": "24px",
-                            "margin-desktop": "48px",
-                            "unit": "4px"
-                        },
-                        "fontFamily": {
-                            "headline-xl": ["Montserrat"],
-                            "body-sm": ["Inter"],
-                            "headline-md": ["Montserrat"],
-                            "headline-lg-mobile": ["Montserrat"],
-                            "body-md": ["Inter"],
-                            "label-md": ["Inter"],
-                            "headline-lg": ["Montserrat"],
-                            "body-lg": ["Inter"],
-                            "label-sm": ["Inter"]
-                        },
-                        "fontSize": {
-                            "headline-xl": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
-                            "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
-                            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
-                            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
-                            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
-                            "label-md": ["14px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
-                            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
-                            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
-                            "label-sm": ["12px", { "lineHeight": "14px", "fontWeight": "500" }]
-                        }
-                    }
-                }
-            }
-        </script>
-        <style>
-            .tab-content {
-                display: none;
-                opacity: 0;
-                transition: opacity 0.3s ease-in-out;
-            }
-            .tab-content.active {
-                display: block;
-                opacity: 1;
-            }
-            .input-field {
-                @apply w-full px-4 py-3 bg-surface-bright border border-outline-variant rounded-lg font-body-md text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-colors;
-            }
-            .input-label {
-                @apply block mb-2 font-label-md text-on-surface-variant;
-            }
-        </style>
-    </head>
-    <body class="bg-background min-h-screen flex items-center justify-center font-body-md text-on-surface p-margin-mobile md:p-margin-desktop">
-        <!-- Auth Container -->
-        <div class="w-full max-w-[1000px] bg-surface-container-lowest rounded-xl shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col md:flex-row border border-outline-variant/30">
-            <!-- Left Side: Branding / Image -->
-            <div class="w-full md:w-1/2 bg-primary relative hidden md:block">
-                <div class="absolute inset-0 bg-gradient-to-br from-primary/90 to-primary-container/90 z-10"></div>
-                    <img class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60" data-alt="A high-quality, professional photograph of diverse university students collaborating around a modern laptop in a bright, well-lit academic library. The scene conveys a sense of rigorous study and technological innovation. The lighting is soft and natural, enhancing the cool, corporate-modern aesthetic with subtle navy blue and innovation green undertones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrygpg_OVw4IgjkbmY5cHtOCFEQNmWMEm7yCKzMClHcVhsmCUjAvrQ-1FPRVpnfAYr4wjC-76M1W7lKdQzStmT7UBB8G82HgsCBkq8kbHWtXMQUFRaDAVW29C9avNwvIA24rIBebgmqMoXAJ6dfRsLiYxOBZdl8iFTN_qigl8LhesL74xv-opDT-QekEcX9yRWf_aMvejDJG8ItdAnuMZMhknDlbp2sYZno1fQBcA2dGABqxpdXheT"/>
-                <div class="relative z-20 h-full p-12 flex flex-col justify-center text-on-primary">
-                    <div class="mb-8">
-                        <span class="material-symbols-outlined text-5xl mb-4 text-secondary-fixed">school</span>
-                        <h1 class="font-headline-lg text-headline-lg text-on-primary mb-4">Equipo Litoral</h1>
-                        <p class="font-body-lg text-body-lg text-primary-fixed-dim max-w-md">Plataforma integral de innovación educativa y robótica. Conecta con mentores, accede a catálogo de cursos y gestiona tus servicios académicos.</p>
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Iniciar sesión | Equipo Litoral</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100" data-inicio="login">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-litoral sticky-top" aria-label="Navegación principal">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="../index.html"><i class="bi bi-mortarboard-fill me-2" aria-hidden="true"></i>Equipo Litoral</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal" aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menú de navegación">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="menuPrincipal">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="../index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../catalogo/catalogo-general.html">Catálogo</a></li>
+                    </ul>
+                    <div id="nav-guest" class="d-flex gap-2">
+                        <a href="../login/login.html" class="btn btn-outline-light btn-sm">Iniciar sesión</a>
+                        <a href="../login/registro.html" class="btn btn-accent btn-sm">Registrarse</a>
+                    </div>
+                    <div id="nav-user" class="d-flex align-items-center gap-2 hidden">
+                        <a href="../gestion/detalle-gestion.html" class="btn btn-outline-light btn-sm"><i class="bi bi-person-circle me-1" aria-hidden="true"></i><span id="nav-user-name"></span></a>
+                        <button id="btn-logout" type="button" class="btn btn-accent btn-sm">Cerrar sesión</button>
                     </div>
                 </div>
             </div>
-            <!-- Right Side: Forms -->
-            <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-surface-container-lowest">
-                <!-- Mobile Header (Hidden on Desktop) -->
-                    <div class="md:hidden text-center mb-8">
-                        <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-2">Equipo Litoral</h1>
-                        <p class="font-body-sm text-body-sm text-on-surface-variant">Innovación Educativa y Robótica</p>
+        </nav>
+    </header>
+
+    <main class="auth-wrap d-flex align-items-center justify-content-center flex-grow-1 py-5 px-3">
+        <section class="auth-card card-litoral shadow-sm p-4 p-md-5" aria-labelledby="tituloAcceso">
+            <div class="text-center mb-4">
+                <span class="icon-circle mb-2"><i class="bi bi-mortarboard-fill" aria-hidden="true"></i></span>
+                <h1 class="h4 fw-bold mb-1" id="tituloAcceso">Equipo Litoral</h1>
+                <p class="text-secondary small mb-0">Innovación Educativa y Robótica</p>
+            </div>
+
+            <div class="nav nav-pills nav-fill mb-4" role="tablist">
+                <button type="button" id="tab-login" class="nav-link active" role="tab" aria-selected="true">Iniciar Sesión</button>
+                <button type="button" id="tab-register" class="nav-link" role="tab" aria-selected="false">Crear Cuenta</button>
+            </div>
+
+            <div id="login-form">
+                <h2 class="h5 fw-bold mb-3">Bienvenido de nuevo</h2>
+                <div id="login-msg" class="hidden" role="alert" aria-live="polite"></div>
+                <form id="form-login" novalidate>
+                    <div class="mb-3">
+                        <label for="login-email" class="form-label">Correo Electrónico</label>
+                        <input type="email" id="login-email" class="form-control" autocomplete="email" required>
                     </div>
-                <!-- Tab Navigation -->
-                <div class="flex border-b border-outline-variant/50 mb-8 relative">
-                    <button class="flex-1 py-4 font-label-md text-label-md text-primary border-b-2 border-primary transition-colors text-center" id="tab-login" onclick="switchTab('login')">
-                        Iniciar Sesión
-                    </button>
-                    <button class="flex-1 py-4 font-label-md text-label-md text-on-surface-variant hover:text-primary border-b-2 border-transparent transition-colors text-center" id="tab-register" onclick="switchTab('register')">
-                        Crear Cuenta
-                    </button>
+                    <div class="mb-2">
+                        <label for="login-password" class="form-label">Contraseña</label>
+                        <input type="password" id="login-password" class="form-control" autocomplete="current-password" required>
+                    </div>
+                    <div class="mb-3 text-end"><a href="#" id="link-forgot-password" class="small">¿Olvidaste tu contraseña?</a></div>
+                    <button type="submit" class="btn btn-primary w-100 fw-semibold">Iniciar Sesión</button>
+                </form>
+
+                <div id="forgot-box" class="hidden mt-2">
+                    <h3 class="h6 fw-bold">Recuperar contraseña</h3>
+                    <p class="text-secondary small">Ingresá tu correo y te enviamos un enlace para restablecerla.</p>
+                    <div id="reset-msg" class="hidden" role="alert" aria-live="polite"></div>
+                    <label for="reset-email" class="form-label">Correo Electrónico</label>
+                    <input type="email" id="reset-email" class="form-control mb-3" autocomplete="email">
+                    <button type="button" id="btn-reset" class="btn btn-primary w-100 fw-semibold mb-2">Enviar enlace de recuperación</button>
+                    <button type="button" id="btn-cancel-reset" class="btn btn-link w-100">Volver a iniciar sesión</button>
                 </div>
-                <!-- Login Form -->
-                <div class="tab-content active" id="login-form">
-                    <h2 class="font-headline-md text-headline-md text-on-surface mb-6">Bienvenido de nuevo</h2>
-                    <form class="space-y-6" onsubmit="event.preventDefault();">
-                        <div>
-                            <label class="input-label" for="login-email">Correo Electrónico</label>
-                            <div class="relative">
-                                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">mail</span>
-                                <input class="input-field pl-12" id="login-email" placeholder="ejemplo@correo.com" required="" type="email"/>
+            </div>
+
+            <div id="register-form" class="hidden">
+                <h2 class="h5 fw-bold mb-3">Únete a la comunidad</h2>
+                <div id="registro-msg" class="hidden" role="alert" aria-live="polite"></div>
+                <form id="form-registro" novalidate>
+                    <div class="mb-3">
+                        <label for="reg-name" class="form-label">Nombre Completo</label>
+                        <input type="text" id="reg-name" class="form-control" autocomplete="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reg-email" class="form-label">Correo Electrónico</label>
+                        <input type="email" id="reg-email" class="form-control" autocomplete="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reg-password" class="form-label">Contraseña</label>
+                        <input type="password" id="reg-password" class="form-control" autocomplete="new-password" aria-describedby="ayudaPassword" required>
+                        <div id="ayudaPassword" class="form-text">Mínimo 8 caracteres.</div>
+                    </div>
+                    <fieldset class="mb-4">
+                        <legend class="form-label fs-6">Rol en la plataforma</legend>
+                        <div class="row g-2 role-option">
+                            <div class="col-6">
+                                <input type="radio" class="btn-check" name="role" id="rol-estudiante" value="estudiante" checked>
+                                <label class="btn btn-outline-primary w-100" for="rol-estudiante"><i class="bi bi-mortarboard d-block fs-4" aria-hidden="true"></i>Estudiante</label>
+                            </div>
+                            <div class="col-6">
+                                <input type="radio" class="btn-check" name="role" id="rol-prestador" value="prestador">
+                                <label class="btn btn-outline-primary w-100" for="rol-prestador"><i class="bi bi-easel d-block fs-4" aria-hidden="true"></i>Prestador</label>
                             </div>
                         </div>
-                        <div>
-                            <label class="input-label flex justify-between" for="login-password">
-                                                        Contraseña
-                                                        <a class="text-secondary hover:underline font-label-sm text-label-sm" href="#">¿Olvidaste tu contraseña?</a>
-                            </label>
-                            <div class="relative">
-                                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">lock</span>
-                                <input class="input-field pl-12" id="login-password" placeholder="••••••••" required="" type="password"/>
-                            </div>
-                        </div>
-                        <button class="w-full bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md py-4 rounded-lg transition-colors shadow-sm active:scale-[0.98]" type="submit">
-                            Iniciar Sesión
-                        </button>
-                    </form>
-                </div>
-            <!-- Register Form -->
-            <div class="tab-content" id="register-form">
-                <h2 class="font-headline-md text-headline-md text-on-surface mb-6">Únete a la comunidad</h2>
-                <form class="space-y-5" onsubmit="event.preventDefault();">
-                    <div>
-                        <label class="input-label" for="reg-name">Nombre Completo</label>
-                        <div class="relative">
-                        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">person</span>
-                        <input class="input-field pl-12" id="reg-name" placeholder="Tu nombre completo" required="" type="text"/>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="input-label" for="reg-email">Correo Electrónico</label>
-                        <div class="relative">
-                        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">mail</span>
-                        <input class="input-field pl-12" id="reg-email" placeholder="ejemplo@correo.com" required="" type="email"/>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="input-label" for="reg-password">Contraseña</label>
-                        <div class="relative">
-                        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">lock</span>
-                        <input class="input-field pl-12" id="reg-password" placeholder="Mínimo 8 caracteres" required="" type="password"/>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="input-label mb-3">Rol en la plataforma</label>
-                        <div class="grid grid-cols-2 gap-4">
-                            <label class="relative flex flex-col items-center p-4 border border-outline-variant rounded-lg cursor-pointer hover:border-secondary hover:bg-surface-container transition-all group">
-                                <input checked="" class="sr-only peer" name="role" type="radio" value="estudiante"/>
-                                <div class="absolute inset-0 border-2 border-transparent peer-checked:border-secondary rounded-lg pointer-events-none transition-colors"></div>
-                                <span class="material-symbols-outlined text-outline group-hover:text-secondary peer-checked:text-secondary mb-2 text-3xl">school</span>
-                                <span class="font-label-sm text-label-sm text-on-surface-variant peer-checked:text-on-surface">Estudiante</span>
-                            </label>
-                            <label class="relative flex flex-col items-center p-4 border border-outline-variant rounded-lg cursor-pointer hover:border-secondary hover:bg-surface-container transition-all group">
-                                <input class="sr-only peer" name="role" type="radio" value="prestador"/>
-                                <div class="absolute inset-0 border-2 border-transparent peer-checked:border-secondary rounded-lg pointer-events-none transition-colors"></div>
-                                <span class="material-symbols-outlined text-outline group-hover:text-secondary peer-checked:text-secondary mb-2 text-3xl">co_present</span>
-                                <span class="font-label-sm text-label-sm text-on-surface-variant peer-checked:text-on-surface">Prestador</span>
-                            </label>
-                        </div>
-                    </div>
-                    <button class="w-full bg-secondary hover:bg-secondary-container text-on-secondary-fixed-variant font-label-md text-label-md py-4 rounded-lg transition-colors shadow-sm active:scale-[0.98] mt-2" type="submit">
-                        Crear Cuenta
-                    </button>
-                    <p class="font-body-sm text-body-sm text-on-surface-variant text-center mt-4">
-                        Al registrarte, aceptas nuestros <a class="text-primary hover:underline" href="#">Términos y Condiciones</a>
-                    </p>
+                    </fieldset>
+                    <button type="submit" class="btn btn-accent w-100">Crear Cuenta</button>
                 </form>
             </div>
-        </div>
-    </div>
-    <script>
-            function switchTab(tab) {
-                const loginForm = document.getElementById('login-form');
-                const registerForm = document.getElementById('register-form');
-                const tabLogin = document.getElementById('tab-login');
-                const tabRegister = document.getElementById('tab-register');
-                
-                const activeTabClasses = ['text-primary', 'border-primary'];
-                const inactiveTabClasses = ['text-on-surface-variant', 'border-transparent'];
+        </section>
+    </main>
 
-                if (tab === 'login') {
-                    loginForm.classList.add('active');
-                    registerForm.classList.remove('active');
-                    
-                    tabLogin.classList.remove(...inactiveTabClasses);
-                    tabLogin.classList.add(...activeTabClasses);
-                    
-                    tabRegister.classList.remove(...activeTabClasses);
-                    tabRegister.classList.add(...inactiveTabClasses);
-                } else {
-                    registerForm.classList.add('active');
-                    loginForm.classList.remove('active');
-                    
-                    tabRegister.classList.remove(...inactiveTabClasses);
-                    tabRegister.classList.add(...activeTabClasses);
-                    
-                    tabLogin.classList.remove(...activeTabClasses);
-                    tabLogin.classList.add(...inactiveTabClasses);
-                }
-            }
-        </script>
-    </body>
+    <footer class="footer-litoral py-4 mt-auto">
+        <div class="container">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-6">
+                    <strong class="text-white">Equipo Litoral</strong>
+                    <div class="small">Alejandro, Ronny, Emanuel y Sebastián · Proyecto académico del Taller Integrador</div>
+                </div>
+                <div class="col-md-6 text-md-end small">
+                    <a href="../catalogo/catalogo-general.html" class="me-3">Catálogo</a>
+                    <a href="../login/login.html">Iniciar sesión</a>
+                    <div class="mt-1">© 2026 Equipo Litoral. Todos los derechos reservados.</div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="tabs.js"></script>
+    <script type="module" src="auth.js"></script>
+    <script type="module" src="../session.js"></script>
+</body>
 </html>
