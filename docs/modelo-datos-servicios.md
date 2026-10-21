@@ -1,6 +1,6 @@
-# Modelo de datos: servicios del catálogo (RF-11)
+# Modelo de datos: servicios del catálogo (RF-11, RD-04)
 
-Los servicios educativos se guardan en la colección **`servicios`** de Firestore. Los lee el catálogo, el detalle del servicio y el flujo de adquisición. Solo un administrador los gestiona, desde el panel de administración (`admin/servicios.html`).
+Los servicios educativos se guardan en la colección **`servicios`** de Firestore. Los lee el catálogo, el detalle del servicio y el flujo de adquisición. Los gestionan el administrador, desde el panel de administración (`admin/servicios.html`), y cada prestador, solo los suyos, desde **Mis servicios** (`gestion/mis-servicios.html`).
 
 El código que implementa este modelo está en **`servicios-modelo.js`**, en la raíz del proyecto.
 
@@ -28,10 +28,25 @@ ID del documento: un identificador legible que se genera a partir del nombre, po
 | `moneda` | string | ✅ | `UYU` o `USD`. |
 | `periodo` | string | ✅ | `mes`, `curso` o `sesión`. |
 | `certificado` | boolean | | Si el servicio otorga certificado. |
+| `prestadorUid` | string o null | | **RD-04:** UID de la cuenta del prestador dueño. Solo esa cuenta (y el administrador) puede modificar el servicio. `null` = sin asignar: solo lo gestiona el administrador. |
 | `activo` | boolean | ✅ | `true`: se ve en el catálogo y se puede adquirir. `false`: dado de baja. |
-| `creadoPor` | string | ✅ | UID del administrador que lo creó. |
+| `creadoPor` | string | ✅ | UID de quien lo creó (administrador o prestador). No se puede modificar. |
 | `creadoEn` | timestamp | ✅ | Fecha de creación (servidor). |
 | `actualizadoEn` | timestamp | ✅ | Fecha de la última modificación (servidor). |
+
+## Quién gestiona cada servicio (RD-04)
+
+| Acción | Administrador | Prestador dueño (`prestadorUid` = su uid) | Otro prestador |
+|---|:---:|:---:|:---:|
+| Crear un servicio | ✅ | ✅ queda a su nombre | ✅ queda a su nombre |
+| Editar los datos | ✅ | ✅ | ❌ |
+| Dar de baja o reactivar | ✅ | ✅ | ❌ |
+| Cambiar el prestador responsable | ✅ | ❌ | ❌ |
+| Borrar el documento | ✅ | ❌ | ❌ |
+
+Las reglas de Firestore (`firestore.rules`) hacen cumplir esta tabla en el servidor. Los servicios cargados con "Cargar servicios iniciales" empiezan **sin dueño**: el administrador les asigna un prestador desde el selector **"Prestador responsable"** del formulario.
+
+La interfaz de gestión (tabla, formulario, baja y reactivación) es la misma para los dos roles y está en `servicios-gestor.js`.
 
 ## Baja lógica
 
@@ -64,7 +79,8 @@ Algunos de esos datos (precios de la mentoría y de didáctica, descripciones y 
 | `obtenerServicio(id)` | Devuelve un servicio, o `null` si no existe. |
 | `obtenerServiciosActivos()` | Servicios visibles en el catálogo, ordenados por nombre. |
 | `obtenerTodosLosServicios()` | Todos los servicios, activos y dados de baja (panel administrativo). |
-| `crearServicio(datos, uidAdmin)` | Crea un servicio y devuelve su ID. |
+| `obtenerServiciosDePrestador(uid)` | Servicios de un prestador, activos y dados de baja (Mis servicios). |
+| `crearServicio(datos, uidCreador)` | Crea un servicio y devuelve su ID. |
 | `actualizarServicio(id, datos)` | Edita un servicio. |
 | `cambiarEstadoServicio(id, activo)` | Da de baja (`false`) o reactiva (`true`). |
 | `cargarServiciosIniciales(uidAdmin)` | Crea los cinco servicios iniciales que falten. |
