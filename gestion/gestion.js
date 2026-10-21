@@ -66,14 +66,12 @@ function aplicarVistaSegunRol(rol) {
     tituloAdquisiciones.textContent = "Cursos que Dictás";
     // Solo el prestador puede dar de alta nuevos servicios
     btnNuevoServicio.classList.remove("hidden");
-    btnNuevoServicio.classList.add("flex");
   } else {
     badgeRol.textContent = "Estudiante";
     panelSubtitulo.textContent = "Tus cursos y mentorías";
     tituloAdquisiciones.textContent = "Mis Adquisiciones";
     // El estudiante no gestiona servicios propios
     btnNuevoServicio.classList.add("hidden");
-    btnNuevoServicio.classList.remove("flex");
   }
 }
 
@@ -92,11 +90,7 @@ const editarPerfilMsg = document.getElementById("editar-perfil-msg");
 function mostrarMensajeEdicion(texto, tipo = "error") {
   if (!editarPerfilMsg) return;
   editarPerfilMsg.textContent = texto;
-  editarPerfilMsg.classList.remove("hidden");
-  editarPerfilMsg.className =
-    tipo === "error"
-      ? "mb-3 px-3 py-2 rounded-lg font-body-sm text-body-sm bg-error-container text-on-error-container"
-      : "mb-3 px-3 py-2 rounded-lg font-body-sm text-body-sm bg-secondary-container text-on-secondary-fixed";
+  editarPerfilMsg.className = tipo === "error" ? "alert alert-danger py-2 mb-3" : "alert alert-success py-2 mb-3";
 }
 
 if (btnEditarPerfil) {
@@ -188,8 +182,7 @@ async function cargarAdquisicionesPanel(uid, rol) {
 
   if (rol === "prestador") {
     contenedor.replaceChildren(
-      crearElemento("p", "font-body-md text-body-md text-on-surface-variant col-span-full",
-        "Acá vas a ver los servicios que dictás.")
+      crearElemento("p", "col-12 text-secondary mb-0", "Acá vas a ver los servicios que dictás.")
     );
     return;
   }
@@ -199,14 +192,12 @@ async function cargarAdquisicionesPanel(uid, rol) {
     if (totalCursos) totalCursos.textContent = adquisiciones.length;
 
     if (adquisiciones.length === 0) {
-      const vacio = crearElemento("div",
-        "col-span-full bg-surface border border-outline-variant/30 rounded-xl p-8 text-center");
-      const enlace = crearElemento("a", "text-secondary font-label-md text-label-md hover:underline", "Explorar el catálogo");
+      const vacio = crearElemento("div", "col-12");
+      const caja = crearElemento("div", "card-litoral p-4 text-center");
+      const enlace = crearElemento("a", "", "Explorar el catálogo");
       enlace.href = "../catalogo/catalogo-general.html";
-      vacio.append(
-        crearElemento("p", "font-body-md text-body-md text-on-surface-variant mb-2", "Todavía no adquiriste servicios."),
-        enlace
-      );
+      caja.append(crearElemento("p", "text-secondary mb-2", "Todavía no adquiriste servicios."), enlace);
+      vacio.append(caja);
       contenedor.replaceChildren(vacio);
       return;
     }
@@ -217,7 +208,7 @@ async function cargarAdquisicionesPanel(uid, rol) {
   } catch (error) {
     console.error("Error al cargar las adquisiciones:", error.code, error.message);
     contenedor.replaceChildren(
-      crearElemento("p", "font-body-md text-body-md text-error col-span-full",
+      crearElemento("p", "col-12 text-danger mb-0",
         "No pudimos cargar tus adquisiciones. Recargá la página para intentar de nuevo.")
     );
   }
@@ -232,21 +223,20 @@ function crearElemento(etiqueta, clases, texto) {
 }
 
 function crearTarjetaPanel(a) {
-  const tarjeta = crearElemento("div",
-    "bg-surface border border-outline-variant/30 rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 flex flex-col h-full");
-  const estado = crearElemento("span",
-    "self-start bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-sm text-label-sm mb-3",
+  const col = crearElemento("div", "col-md-6 col-xl-4");
+  const tarjeta = crearElemento("article", "card-litoral p-4 h-100 d-flex flex-column");
+  const estado = crearElemento("span", "badge badge-accent align-self-start mb-2",
     a.estado === ESTADOS_ADQUISICION.CONFIRMADA ? "Confirmada" : a.estado);
-  const enlace = crearElemento("a", "text-secondary font-label-md text-label-md hover:underline mt-4", "Ver detalle del servicio");
+  const enlace = crearElemento("a", "mt-auto", "Ver detalle del servicio");
   enlace.href = `../catalogo/detalle.html?id=${encodeURIComponent(a.servicioId)}`;
 
   tarjeta.append(
     estado,
-    crearElemento("h3", "font-headline-md text-headline-md text-on-surface mb-1", a.servicioNombre),
-    crearElemento("p", "font-body-sm text-body-sm text-on-surface-variant mb-4", a.prestador || ""),
-    crearElemento("p", "font-body-sm text-body-sm text-on-surface-variant flex-grow",
-      `Adquirido el ${formatearFecha(a.fecha, false)} · ${formatearImporte(a)}`),
+    crearElemento("h3", "h6 fw-bold mb-1", a.servicioNombre),
+    crearElemento("p", "small text-secondary mb-3", a.prestador || ""),
+    crearElemento("p", "small mb-3", `Adquirido el ${formatearFecha(a.fecha, false)} · ${formatearImporte(a)}`),
     enlace
   );
-  return tarjeta;
+  col.append(tarjeta);
+  return col;
 }

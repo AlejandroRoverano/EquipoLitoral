@@ -73,7 +73,7 @@ Publicar reemplaza todas las reglas anteriores. Si en la consola hay reglas para
 |---|---|
 | `acceso.js` | `protegerPagina({ roles })`: sin sesión redirige al login, y sin el rol necesario muestra "Acceso denegado". Lo usa `admin/panel.js`. |
 | `catalogo/adquisicion.js` | Comprueba la sesión y el rol antes de abrir el flujo de compra. |
-| `gestion/historial.js`, `gestion/gestion.js`, `dashboard.js` | Redirigen al login si no hay sesión. |
+| `gestion/historial.js`, `gestion/gestion.js` | Redirigen al login si no hay sesión. |
 | `firestore.rules` | Hace cumplir todos los permisos sobre los datos en el servidor. |
 
 ## Pendiente de definir con el equipo
