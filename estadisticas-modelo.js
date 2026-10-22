@@ -37,6 +37,12 @@ export const COLECCION_MARCAS = "estudiantesConCompras";
 export const CALIFICACION_GENERAL = 4.8;
 export const CALIFICACION_MAXIMA = 5;
 
+// Cantidad base de estudiantes que muestra la portada, definida por el equipo.
+// No sale de Firestore: se SUMA al conteo real (estudiantesConCursos), así el
+// número sigue creciendo con cada estudiante nuevo. Para mostrar solo el dato
+// real, poner 0.
+export const ESTUDIANTES_BASE = 3467;
+
 const refEstadisticas = () => doc(db, COLECCION_ESTADISTICAS, DOC_ESTADISTICAS);
 const refMarca = (uid) => doc(db, COLECCION_MARCAS, uid);
 
@@ -45,7 +51,8 @@ const refMarca = (uid) => doc(db, COLECCION_MARCAS, uid);
 /* ------------------------------------------------------------------ */
 
 // Devuelve { estudiantes, servicios, calificacion, calificacionMaxima }.
-// Si una de las fuentes falla, su valor queda en null (la portada no inventa datos).
+// "estudiantes" es ESTUDIANTES_BASE más el conteo real (si no se pudo leer, solo la base).
+// Si falla el conteo de servicios, su valor queda en null.
 export async function obtenerEstadisticasPublicas() {
   const [estudiantes, servicios] = await Promise.all([
     getDoc(refEstadisticas())
@@ -61,7 +68,12 @@ export async function obtenerEstadisticasPublicas() {
         return null;
       })
   ]);
-  return { estudiantes, servicios, calificacion: CALIFICACION_GENERAL, calificacionMaxima: CALIFICACION_MAXIMA };
+  return {
+    estudiantes: ESTUDIANTES_BASE + (estudiantes ?? 0),
+    servicios,
+    calificacion: CALIFICACION_GENERAL,
+    calificacionMaxima: CALIFICACION_MAXIMA
+  };
 }
 
 /* ------------------------------------------------------------------ */
