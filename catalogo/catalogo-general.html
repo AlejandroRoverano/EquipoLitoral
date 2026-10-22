@@ -24,6 +24,14 @@
                         <li class="nav-item"><a class="nav-link" href="../sobre-nosotros.html">Sobre nosotros</a></li>
                         <li class="nav-item"><a class="nav-link" href="../contacto.html">Contacto</a></li>
                     </ul>
+                    <!-- RF-21: buscador de cursos y servicios (muestra los resultados en el catálogo) -->
+                    <form class="buscador-nav me-lg-3 mb-2 mb-lg-0" role="search" action="../catalogo/catalogo-general.html" method="get">
+                        <label for="busqueda-global" class="visually-hidden">Buscar cursos y servicios</label>
+                        <div class="input-group input-group-sm">
+                            <input class="form-control" type="search" id="busqueda-global" name="q" placeholder="Buscar cursos..." autocomplete="off" required>
+                            <button class="btn btn-accent" type="submit" aria-label="Buscar"><i class="bi bi-search" aria-hidden="true"></i></button>
+                        </div>
+                    </form>
                     <div id="nav-guest" class="d-flex gap-2">
                         <a href="../login/login.html" class="btn btn-outline-light btn-sm">Iniciar sesión</a>
                         <a href="../login/registro.html" class="btn btn-accent btn-sm">Registrarse</a>
@@ -37,51 +45,57 @@
         </nav>
     </header>
 
-    <main class="container py-5 flex-grow-1">
-        <header class="mb-4">
-            <h1 class="fw-bold">Catálogo de Servicios Educativos</h1>
-            <p class="text-secondary mb-0">Explora nuestra oferta académica y de mentoría diseñada para impulsar tu desarrollo profesional e institucional.</p>
-        </header>
-
-        <div class="row g-4">
-            <aside class="col-lg-3" aria-label="Filtros del catálogo">
-                <div class="card-litoral p-4">
-                    <h2 class="h6 fw-bold text-uppercase mb-3">Filtros</h2>
-                    <fieldset class="mb-3">
-                        <legend class="fs-6 fw-semibold">Categoría</legend>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="categoria" id="cat-todas" value="todas" checked>
-                                <label class="form-check-label" for="cat-todas">Todas</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="categoria" id="cat-cursos" value="cursos">
-                                <label class="form-check-label" for="cat-cursos">Cursos</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="categoria" id="cat-mentorias" value="mentorias">
-                                <label class="form-check-label" for="cat-mentorias">Mentorías</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="categoria" id="cat-robotica" value="robotica">
-                                <label class="form-check-label" for="cat-robotica">Robótica</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="categoria" id="cat-formacion" value="formacion">
-                                <label class="form-check-label" for="cat-formacion">Formación</label>
-                            </div>
-                    </fieldset>
-                    <button type="button" id="btn-limpiar" class="btn btn-outline-primary btn-sm w-100"><i class="bi bi-x-circle me-1" aria-hidden="true"></i>Limpiar Filtros</button>
+    <main class="flex-grow-1">
+        <!-- RF-20: encabezado del catálogo con buscador -->
+        <section class="hero catalogo-hero text-white">
+            <div class="container py-5">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-7">
+                        <span class="badge badge-accent mb-3 px-3 py-2">Catálogo</span>
+                        <h1 class="display-6 fw-bold mb-3">Catálogo de Servicios Educativos</h1>
+                        <p class="lead mb-0">Explorá nuestra oferta académica y de mentoría diseñada para impulsar tu desarrollo profesional e institucional.</p>
+                    </div>
+                    <div class="col-lg-5">
+                        <label for="buscador" class="visually-hidden">Buscar un servicio</label>
+                        <div class="buscador-catalogo">
+                            <i class="bi bi-search" aria-hidden="true"></i>
+                            <input type="search" id="buscador" class="form-control form-control-lg" placeholder="Buscar por nombre, tema o institución..." autocomplete="off">
+                        </div>
+                    </div>
                 </div>
-            </aside>
+            </div>
+        </section>
 
-            <section class="col-lg-9" aria-label="Listado de servicios">
+        <div class="container py-5">
+            <!-- RF-20: filtros por categoría como "chips" (mismos radios name="categoria") -->
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-4" role="group" aria-label="Filtrar por categoría">
+                <input class="btn-check" type="radio" name="categoria" id="cat-todas" value="todas" checked>
+                <label class="btn chip-filtro" for="cat-todas"><i class="bi bi-grid me-1" aria-hidden="true"></i>Todas</label>
+                <input class="btn-check" type="radio" name="categoria" id="cat-cursos" value="cursos">
+                <label class="btn chip-filtro" for="cat-cursos"><i class="bi bi-laptop me-1" aria-hidden="true"></i>Cursos</label>
+                <input class="btn-check" type="radio" name="categoria" id="cat-mentorias" value="mentorias">
+                <label class="btn chip-filtro" for="cat-mentorias"><i class="bi bi-person-video3 me-1" aria-hidden="true"></i>Mentorías</label>
+                <input class="btn-check" type="radio" name="categoria" id="cat-robotica" value="robotica">
+                <label class="btn chip-filtro" for="cat-robotica"><i class="bi bi-robot me-1" aria-hidden="true"></i>Robótica</label>
+                <input class="btn-check" type="radio" name="categoria" id="cat-formacion" value="formacion">
+                <label class="btn chip-filtro" for="cat-formacion"><i class="bi bi-easel me-1" aria-hidden="true"></i>Formación</label>
+                <button type="button" id="btn-limpiar" class="btn btn-link btn-sm text-secondary ms-sm-auto"><i class="bi bi-x-circle me-1" aria-hidden="true"></i>Limpiar filtros</button>
+            </div>
+
+            <section aria-label="Listado de servicios">
+                <p id="contador-resultados" class="text-secondary small mb-3" aria-live="polite"></p>
                 <!-- RF-11: los servicios se cargan desde Firestore (catalogo.js) -->
-                <div id="catalogo-cargando" class="text-center py-5" role="status">
-                    <div class="spinner-border text-primary" aria-hidden="true"></div>
-                    <p class="text-secondary mt-3 mb-0">Cargando servicios...</p>
+                <div id="catalogo-cargando" class="row g-4" role="status" aria-label="Cargando servicios">
+                    <div class="col-md-6 col-xl-4"><div class="tarjeta-servicio tarjeta-esqueleto" aria-hidden="true"></div></div>
+                    <div class="col-md-6 col-xl-4"><div class="tarjeta-servicio tarjeta-esqueleto" aria-hidden="true"></div></div>
+                    <div class="col-md-6 col-xl-4 d-none d-xl-block"><div class="tarjeta-servicio tarjeta-esqueleto" aria-hidden="true"></div></div>
                 </div>
                 <div id="catalogo-error" class="alert alert-danger hidden" role="alert">No pudimos cargar el catálogo. Revisá tu conexión y recargá la página.</div>
-                <div id="sin-resultados" class="alert alert-info hidden" role="status">No hay servicios en esta categoría por el momento.</div>
+                <div id="sin-resultados" class="text-center py-5 hidden" role="status">
+                    <span class="icon-circle mb-3"><i class="bi bi-search" aria-hidden="true"></i></span>
+                    <p class="fw-semibold mb-1">No encontramos servicios con esos filtros.</p>
+                    <p class="text-secondary small mb-0">Probá con otra categoría o borrá la búsqueda.</p>
+                </div>
                 <div class="row g-4" id="lista-servicios"></div>
             </section>
         </div>

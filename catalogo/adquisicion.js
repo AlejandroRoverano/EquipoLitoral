@@ -326,4 +326,6 @@ function terminarFlujo() {
   btnCancelar.textContent = "Cerrar";
   btnVerAdquisiciones.classList.remove("hidden");
   marcarComoAdquirido();
+  // RF-21: el detalle muestra el contenido del curso apenas se adquiere
+  document.dispatchEvent(new CustomEvent("servicio-adquirido"));
 }

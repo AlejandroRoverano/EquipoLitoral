@@ -114,9 +114,10 @@ service cloud.firestore {
       // ---------- materiales de estudio (RF-16) ----------
       // servicios/{servicioId}/materiales/contenido
       // Los leen quien adquirió el servicio, el prestador dueño y el administrador.
+      // RF-22: también quien tiene la prueba gratis de un día vigente.
       // Los modifican el prestador dueño y el administrador.
       match /materiales/{materialesId} {
-        allow read: if esAdmin() || esPrestadorDueno(servicioId) || adquirio(servicioId);
+        allow read: if esAdmin() || esPrestadorDueno(servicioId) || adquirio(servicioId) || pruebaVigente(servicioId);
         allow create, update: if puedeEditarContenido(servicioId)
           && request.resource.data.keys().hasOnly(['modulos', 'actualizadoEn'])
           && request.resource.data.modulos is list
@@ -147,6 +148,13 @@ service cloud.firestore {
         && get(/databases/$(database)/documents/adquisiciones/$(request.auth.uid + '_' + servicioId)).data.estado == 'confirmada';
     }
 
+    // RF-22: el usuario activó la prueba gratis de un día y todavía no pasaron 24 horas
+    function pruebaVigente(servicioId) {
+      return autenticado()
+        && exists(/databases/$(database)/documents/pruebas/$(request.auth.uid + '_' + servicioId))
+        && request.time < get(/databases/$(database)/documents/pruebas/$(request.auth.uid + '_' + servicioId)).data.inicio + duration.value(24, 'h');
+    }
+
     // ---------- adquisiciones ----------
     // Cada usuario lee solo las suyas (campo uid == request.auth.uid); el administrador lee todas
     // (RF-13: listado y detalle de adquisiciones en admin/adquisiciones.html).
@@ -163,6 +171,23 @@ service cloud.firestore {
         && servicioDisponible(request.resource.data.servicioId)
         && request.resource.data.precio == servicio(request.resource.data.servicioId).precio
         && request.resource.data.moneda == servicio(request.resource.data.servicioId).moneda;
+      allow update, delete: if esAdmin();
+    }
+
+    // ---------- pruebas gratis de un día (RF-22) ----------
+    // pruebas/{uid}_{servicioId}. Cada usuario lee solo las suyas; el administrador lee todas.
+    // Solo un estudiante la crea, a su nombre, de un servicio activo y con la hora del servidor.
+    // No se puede modificar ni volver a crear: una sola prueba por curso.
+    match /pruebas/{pruebaId} {
+      allow read: if autenticado()
+        && (resource == null || resource.data.uid == request.auth.uid || esAdmin());
+      allow create: if esEstudiante()
+        && request.resource.data.keys().hasOnly(['uid', 'servicioId', 'servicioNombre', 'inicio'])
+        && request.resource.data.uid == request.auth.uid
+        && pruebaId == request.auth.uid + '_' + request.resource.data.servicioId
+        && request.resource.data.servicioNombre is string
+        && request.resource.data.inicio == request.time
+        && servicioDisponible(request.resource.data.servicioId);
       allow update, delete: if esAdmin();
     }
 
