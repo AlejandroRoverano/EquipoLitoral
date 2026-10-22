@@ -22,6 +22,7 @@ import { COLECCION_SERVICIOS, esEnlaceValido } from "./servicios-modelo.js";
 export const TIPOS_MATERIAL = {
   lectura: "Lectura",
   video: "Video",
+  imagen: "Imagen",
   enlace: "Enlace"
 };
 
@@ -29,6 +30,7 @@ export const TIPOS_MATERIAL = {
 export const ICONOS_MATERIAL = {
   lectura: "bi-file-earmark-text",
   video: "bi-play-btn",
+  imagen: "bi-image",
   enlace: "bi-link-45deg"
 };
 

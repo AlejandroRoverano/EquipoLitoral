@@ -170,5 +170,20 @@ function crearMaterial(mat) {
     marco.append(iframe);
     li.append(marco);
   }
+
+  // Las imágenes también se ven dentro de la página (solo enlaces https://)
+  if (mat.tipo === "imagen" && esEnlaceValido(mat.enlace)) {
+    const imagen = document.createElement("img");
+    imagen.src = mat.enlace;
+    imagen.alt = mat.titulo;
+    imagen.loading = "lazy";
+    imagen.referrerPolicy = "no-referrer";
+    imagen.className = "img-fluid rounded border mt-3";
+    imagen.style.maxHeight = "360px";
+    imagen.addEventListener("error", () => {
+      imagen.replaceWith(crear("p", "small text-danger mt-3 mb-0", "No se pudo cargar la imagen."));
+    });
+    li.append(imagen);
+  }
   return li;
 }
