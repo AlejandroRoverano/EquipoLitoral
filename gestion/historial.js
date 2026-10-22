@@ -18,6 +18,8 @@ import {
   nombreMedioPago,
   ESTADOS_ADQUISICION
 } from "../adquisiciones-modelo.js";
+import { obtenerProgreso, calcularPorcentaje } from "../progreso-modelo.js";
+import { urlCertificado } from "../certificados-modelo.js";
 
 const cargando = document.getElementById("historial-cargando");
 const vacio = document.getElementById("historial-vacio");
@@ -58,6 +60,7 @@ onAuthStateChanged(auth, async (user) => {
     mostrarSolo(null);
     mostrarResumen(adquisiciones);
     lista.replaceChildren(...adquisiciones.map(crearTarjeta));
+    adquisiciones.forEach((a) => mostrarProgreso(user.uid, a));
   } catch (error) {
     console.error("Error al cargar el historial:", error.code, error.message);
     cajaError.textContent =
@@ -137,10 +140,46 @@ function crearTarjeta(a) {
     const icono = crear("i", "bi bi-journal-text me-1");
     icono.setAttribute("aria-hidden", "true");
     materiales.append(icono, "Ver materiales");
-    acciones.append(materiales);
+    // RF-24: progreso del curso (se completa con mostrarProgreso)
+    const progreso = crear("div", "progreso-historial mb-3 hidden");
+    progreso.id = `progreso-${a.id}`;
+    acciones.append(progreso, materiales);
     tarjeta.append(encabezado, datos, acciones);
   } else {
     tarjeta.append(encabezado, datos);
   }
   return tarjeta;
+}
+
+// RF-24 / RF-25: barra de progreso y acceso al certificado, si ya lo obtuvo
+async function mostrarProgreso(uid, a) {
+  const caja = document.getElementById(`progreso-${a.id}`);
+  if (!caja) return;
+  try {
+    const progreso = await obtenerProgreso(uid, a.servicioId);
+    if (!progreso || !progreso.total) return;
+    const porcentaje = calcularPorcentaje((progreso.vistos || []).length, progreso.total);
+    const cabecera = crear("div", "d-flex justify-content-between small mb-1");
+    cabecera.append(crear("span", "fw-semibold", "Progreso"), crear("span", "text-secondary", `${porcentaje} %`));
+    const barra = crear("div", "progress");
+    barra.setAttribute("role", "progressbar");
+    barra.setAttribute("aria-label", `Progreso en ${a.servicioNombre}`);
+    barra.setAttribute("aria-valuenow", String(porcentaje));
+    barra.setAttribute("aria-valuemin", "0");
+    barra.setAttribute("aria-valuemax", "100");
+    barra.style.height = "8px";
+    const relleno = crear("div", "progress-bar bg-success");
+    relleno.style.width = `${porcentaje}%`;
+    barra.append(relleno);
+    caja.append(cabecera, barra);
+    if (progreso.certificadoCodigo) {
+      const enlace = crear("a", "small d-inline-block mt-2");
+      enlace.href = urlCertificado(progreso.certificadoCodigo);
+      enlace.textContent = "Ver mi certificado";
+      caja.append(enlace);
+    }
+    caja.classList.remove("hidden");
+  } catch (error) {
+    console.error("No se pudo leer el progreso:", error.code, error.message);
+  }
 }

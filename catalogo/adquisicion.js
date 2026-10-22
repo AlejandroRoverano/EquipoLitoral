@@ -141,6 +141,7 @@ const esperar = (ms) => new Promise((resolver) => setTimeout(resolver, ms));
 
 onAuthStateChanged(auth, async (user) => {
   usuarioActual = user;
+  rolActual = ROLES.ESTUDIANTE; // se vuelve a leer para el usuario actual
 
   // Servicio inexistente o dado de baja: detalle.js ya mostró el aviso correspondiente
   if (!disponible) return;

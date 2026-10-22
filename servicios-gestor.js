@@ -259,7 +259,9 @@ export function iniciarGestionServicios(opciones) {
       campo.disabled = false;
     });
     const apertura = ++aperturaFormulario;
-    if (servicio?.tieneClasePrueba) {
+    // Se consulta siempre al editar: si el servicio no la tuviera marcada y se guardara
+    // con los campos vacíos, la clase existente se borraría.
+    if (servicio) {
       camposClase.forEach((campo) => (campo.disabled = true));
       btnGuardar.disabled = true;
       $("srv-clase-titulo").placeholder = "Cargando la clase de prueba...";

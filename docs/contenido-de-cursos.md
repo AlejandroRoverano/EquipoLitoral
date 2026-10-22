@@ -24,8 +24,10 @@ también; el resto se abre en una pestaña nueva. Solo se aceptan enlaces `https
 ## Cómo agregar más unidades
 
 El prestador dueño (o el administrador) edita los materiales desde **Mis servicios**; no hace falta tocar el código.
-`contenido-inicial.js` solo contiene el contenido de ejemplo de los ocho cursos iniciales (los cinco originales y los tres
-agregados en RF-21: Desarrollo Web desde Cero, Introducción a la Ciberseguridad y Robótica para Principiantes con micro:bit).
+`contenido-inicial.js` solo contiene el contenido de ejemplo de los catorce cursos iniciales: los cinco originales, los tres
+agregados en RF-21 (Desarrollo Web desde Cero, Introducción a la Ciberseguridad y Robótica para Principiantes con micro:bit)
+y los seis de RF-23 (Inteligencia Artificial para Todos, Mentoría para Proyectos Finales, Tecnología Educativa en el Aula,
+Creá tu Videojuego con Scratch, Taller de Domótica con Arduino y Pensamiento Computacional para Docentes).
 
 ## Cómo cargar los cursos nuevos en un catálogo que ya tiene servicios
 

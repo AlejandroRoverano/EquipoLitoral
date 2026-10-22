@@ -35,7 +35,7 @@ const panelSubtitulo = document.getElementById("panel-subtitulo");
 onAuthStateChanged(auth, async (user) => {
   // --- Auth-guard: sin sesión, no hay acceso a esta página ---
   if (!user) {
-    window.location.href = "../login/login.html";
+    window.location.href = `../login/login.html?volver=${encodeURIComponent(window.location.href)}`;
     return;
   }
 

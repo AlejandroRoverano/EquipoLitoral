@@ -32,6 +32,12 @@ function actualizarEnlaceFooter(haySesion) {
   });
 }
 
+// Elementos marcados con data-solo-visitantes (por ejemplo "Crear cuenta gratis")
+// se ocultan cuando hay una sesión iniciada.
+function actualizarSoloVisitantes(haySesion) {
+  document.querySelectorAll("[data-solo-visitantes]").forEach((el) => el.classList.toggle("hidden", haySesion));
+}
+
 // Detecta el estado de la sesión en tiempo real.
 // Se ejecuta automáticamente al cargar la página y cada vez que cambia
 // (login, logout, o expiración de la sesión en otra pestaña).
@@ -44,12 +50,14 @@ onAuthStateChanged(auth, (user) => {
       navUserName.textContent = user.displayName || user.email;
     }
     actualizarEnlaceFooter(true);
+    actualizarSoloVisitantes(true);
     mostrarEnlaceAdmin(user.uid);
   } else {
     // No hay ningún usuario autenticado
     navGuest?.classList.remove("hidden");
     navUser?.classList.add("hidden");
     actualizarEnlaceFooter(false);
+    actualizarSoloVisitantes(false);
   }
 });
 

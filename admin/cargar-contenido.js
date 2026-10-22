@@ -52,7 +52,13 @@ if (acceso) {
           await updateDoc(doc(db, COLECCION_SERVICIOS, id), { tieneClasePrueba: true, actualizadoEn: serverTimestamp() });
           log(`- ${servicio.nombre}: clase de prueba cargada`);
         } else {
-          log(`- ${servicio.nombre}: ya tiene clase de prueba (no se modifica)`);
+          // Corrige servicios cargados antes: la clase existía pero el botón no aparecía
+          if (!servicio.tieneClasePrueba) {
+            await updateDoc(doc(db, COLECCION_SERVICIOS, id), { tieneClasePrueba: true, actualizadoEn: serverTimestamp() });
+            log(`- ${servicio.nombre}: ya tenía clase de prueba (se activó el botón en el detalle)`);
+          } else {
+            log(`- ${servicio.nombre}: ya tiene clase de prueba (no se modifica)`);
+          }
         }
 
         if (!hayMateriales || sobrescribir) {

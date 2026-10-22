@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- RNF-11: modo oscuro y tamaño de letra (antes de dibujar la página) -->
+    <script src="preferencias.js"></script>
     <title>Sobre nosotros | Equipo Litoral</title>
     <meta name="description" content="Conocé al Equipo Litoral y los servicios educativos que ofrece la plataforma: cursos, talleres de robótica, mentorías y formación docente.">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -71,6 +73,33 @@
                         <p class="text-secondary mb-0">Facilitar el acceso a una educación tecnológica de calidad, conectando a quienes quieren aprender con quienes saben enseñar.</p>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- RF-23: misión, visión y valores -->
+        <section class="container pb-5" aria-labelledby="tituloMision">
+            <h2 class="visually-hidden" id="tituloMision">Misión, visión y valores</h2>
+            <div class="row g-4">
+                <div class="col-md-4"><article class="card-litoral p-4 h-100">
+                    <span class="icon-circle mb-3"><i class="bi bi-flag" aria-hidden="true"></i></span>
+                    <h3 class="h5 fw-bold">Misión</h3>
+                    <p class="text-secondary mb-0">Acercar propuestas educativas en tecnología de calidad a estudiantes, docentes e instituciones, con información clara y un acceso simple.</p>
+                </article></div>
+                <div class="col-md-4"><article class="card-litoral p-4 h-100">
+                    <span class="icon-circle mb-3"><i class="bi bi-eye" aria-hidden="true"></i></span>
+                    <h3 class="h5 fw-bold">Visión</h3>
+                    <p class="text-secondary mb-0">Ser un punto de encuentro de referencia entre quienes quieren aprender tecnología y quienes saben enseñarla.</p>
+                </article></div>
+                <div class="col-md-4"><article class="card-litoral p-4 h-100">
+                    <span class="icon-circle mb-3"><i class="bi bi-heart" aria-hidden="true"></i></span>
+                    <h3 class="h5 fw-bold">Valores</h3>
+                    <ul class="text-secondary mb-0 ps-3">
+                        <li>Accesibilidad para todas las personas.</li>
+                        <li>Calidad en cada propuesta.</li>
+                        <li>Trabajo en equipo y colaboración.</li>
+                        <li>Seguridad y cuidado de los datos.</li>
+                    </ul>
+                </article></div>
             </div>
         </section>
 
@@ -150,37 +179,92 @@
             </ol>
         </section>
 
+        <!-- RF-23: recorrido del proyecto -->
+        <section class="container py-5" aria-labelledby="tituloRecorrido">
+            <div class="text-center mx-auto mb-5" style="max-width: 640px;">
+                <h2 class="fw-bold" id="tituloRecorrido">Nuestro recorrido</h2>
+                <p class="text-secondary mb-0">Cómo fue creciendo la plataforma durante el Taller Integrador.</p>
+            </div>
+            <ol class="linea-tiempo list-unstyled mx-auto mb-0" style="max-width: 760px;">
+                <li>
+                    <span class="linea-tiempo__fecha">Agosto 2026</span>
+                    <h3 class="h6 fw-bold mb-1">El punto de partida</h3>
+                    <p class="text-secondary small mb-0">Definimos la idea, armamos la estructura base del proyecto y conectamos la plataforma con Firebase.</p>
+                </li>
+                <li>
+                    <span class="linea-tiempo__fecha">Septiembre 2026</span>
+                    <h3 class="h6 fw-bold mb-1">Usuarios y publicación</h3>
+                    <p class="text-secondary small mb-0">Implementamos el registro, el inicio de sesión y la recuperación de contraseña, y publicamos el sitio en Firebase Hosting.</p>
+                </li>
+                <li>
+                    <span class="linea-tiempo__fecha">Octubre 2026</span>
+                    <h3 class="h6 fw-bold mb-1">Catálogo, adquisiciones y administración</h3>
+                    <p class="text-secondary small mb-0">Rediseñamos el sitio con Bootstrap, llevamos el catálogo a Firestore y sumamos las adquisiciones con pago simulado, los roles y el panel administrativo.</p>
+                </li>
+                <li>
+                    <span class="linea-tiempo__fecha">Versión final</span>
+                    <h3 class="h6 fw-bold mb-1">Contenido de los cursos</h3>
+                    <p class="text-secondary small mb-0">Agregamos las unidades de cada curso, la clase de prueba, la prueba gratis de un día, el buscador y nuevos cursos.</p>
+                </li>
+            </ol>
+        </section>
+
         <section class="bg-white border-top border-bottom py-5" aria-labelledby="tituloEquipo">
             <div class="container">
                 <div class="text-center mx-auto mb-5" style="max-width: 640px;">
                     <h2 class="fw-bold" id="tituloEquipo">El equipo</h2>
-                    <p class="text-secondary mb-0">Las personas detrás de Equipo Litoral.</p>
+                    <p class="text-secondary mb-0">Somos cuatro estudiantes y cada uno aportó desde su lugar.</p>
                 </div>
                 <div class="row g-4 justify-content-center">
                 <div class="col-6 col-md-3"><article class="card-litoral p-4 h-100 text-center">
                     <span class="icon-circle mb-3 fs-4 fw-bold" style="width:4rem;height:4rem;" aria-hidden="true">A</span>
-                    <h3 class="h6 fw-bold mb-0">Alejandro</h3>
+                    <h3 class="h6 fw-bold mb-1">Alejandro</h3>
+                    <p class="text-secondary small mb-0">Estructura del proyecto, documentación y testing</p>
                 </article></div>
                 <div class="col-6 col-md-3"><article class="card-litoral p-4 h-100 text-center">
                     <span class="icon-circle mb-3 fs-4 fw-bold" style="width:4rem;height:4rem;" aria-hidden="true">R</span>
-                    <h3 class="h6 fw-bold mb-0">Ronny</h3>
+                    <h3 class="h6 fw-bold mb-1">Ronny</h3>
+                    <p class="text-secondary small mb-0">Diseño visual, Bootstrap y contenido de los cursos</p>
                 </article></div>
                 <div class="col-6 col-md-3"><article class="card-litoral p-4 h-100 text-center">
                     <span class="icon-circle mb-3 fs-4 fw-bold" style="width:4rem;height:4rem;" aria-hidden="true">E</span>
-                    <h3 class="h6 fw-bold mb-0">Emanuel</h3>
+                    <h3 class="h6 fw-bold mb-1">Emanuel</h3>
+                    <p class="text-secondary small mb-0">Firebase, autenticación y publicación del sitio</p>
                 </article></div>
                 <div class="col-6 col-md-3"><article class="card-litoral p-4 h-100 text-center">
                     <span class="icon-circle mb-3 fs-4 fw-bold" style="width:4rem;height:4rem;" aria-hidden="true">S</span>
-                    <h3 class="h6 fw-bold mb-0">Sebastián</h3>
+                    <h3 class="h6 fw-bold mb-1">Sebastián</h3>
+                    <p class="text-secondary small mb-0">Planificación, adquisiciones y panel administrativo</p>
                 </article></div>
                 </div>
             </div>
         </section>
 
+        <!-- RF-23: tecnologías -->
+        <section class="container py-5" aria-labelledby="tituloTecnologias">
+            <div class="text-center mx-auto mb-4" style="max-width: 640px;">
+                <h2 class="fw-bold" id="tituloTecnologias">Tecnologías que usamos</h2>
+                <p class="text-secondary mb-0">Herramientas con las que construimos y organizamos la plataforma.</p>
+            </div>
+            <ul class="d-flex flex-wrap justify-content-center gap-2 list-unstyled mb-0">
+                <li class="chip-tecnologia"><i class="bi bi-filetype-html" aria-hidden="true"></i>HTML</li>
+                <li class="chip-tecnologia"><i class="bi bi-filetype-css" aria-hidden="true"></i>CSS</li>
+                <li class="chip-tecnologia"><i class="bi bi-filetype-js" aria-hidden="true"></i>JavaScript</li>
+                <li class="chip-tecnologia"><i class="bi bi-bootstrap" aria-hidden="true"></i>Bootstrap 5</li>
+                <li class="chip-tecnologia"><i class="bi bi-fire" aria-hidden="true"></i>Firebase</li>
+                <li class="chip-tecnologia"><i class="bi bi-database" aria-hidden="true"></i>Firestore</li>
+                <li class="chip-tecnologia"><i class="bi bi-github" aria-hidden="true"></i>GitHub</li>
+                <li class="chip-tecnologia"><i class="bi bi-code-square" aria-hidden="true"></i>Visual Studio Code</li>
+            </ul>
+        </section>
+
         <section class="container py-5 text-center">
             <h2 class="fw-bold">¿Empezamos?</h2>
             <p class="text-secondary">Conocé todos los servicios disponibles en la plataforma.</p>
-            <a class="btn btn-accent btn-lg" href="catalogo/catalogo-general.html">Explorar catálogo</a>
+            <div class="d-flex flex-wrap justify-content-center gap-2">
+                <a class="btn btn-accent btn-lg" href="catalogo/catalogo-general.html">Explorar catálogo</a>
+                <a class="btn btn-outline-primary btn-lg" href="contacto.html">Contactanos</a>
+            </div>
         </section>
     </main>
 
@@ -193,6 +277,7 @@
                 </div>
                 <div class="col-md-6 text-md-end small">
                     <a href="catalogo/catalogo-general.html" class="me-3">Catálogo</a>
+                    <a href="certificado.html" class="me-3">Verificar certificado</a>
                     <a href="login/login.html">Iniciar sesión</a>
                     <div class="mt-1">© 2026 Equipo Litoral. Todos los derechos reservados.</div>
                 </div>
