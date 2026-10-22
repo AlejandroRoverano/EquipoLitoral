@@ -14,7 +14,7 @@ Plataforma web de servicios educativos (cursos, talleres y mentorías). Proyecto
 
 | Carpeta o archivo | Contenido |
 |---|---|
-| `index.html` | Página de inicio. |
+| `index.html` | Página de inicio, con las estadísticas de la plataforma (RF-18, `inicio.js`). |
 | `sobre-nosotros.html` | Página "Sobre nosotros": quiénes somos, qué ofrecemos y el equipo (RF-17). |
 | `catalogo/` | Catálogo de servicios, detalle, clase de prueba gratuita y flujo de adquisición. |
 | `login/` | Registro, inicio de sesión y recuperación de contraseña. |
@@ -25,6 +25,7 @@ Plataforma web de servicios educativos (cursos, talleres y mentorías). Proyecto
 | `acceso.js` | Protección de páginas por sesión y rol. |
 | `adquisiciones-modelo.js` | Lectura y escritura de adquisiciones y pagos en Firestore. |
 | `servicios-modelo.js` | Lectura y escritura de los servicios del catálogo en Firestore. |
+| `estadisticas-modelo.js` | Estadísticas públicas de la portada sin exponer datos personales (RF-18). |
 | `materiales-modelo.js` | Lectura y escritura de los materiales de cada servicio (RF-16). |
 | `materiales-editor.js` | Ventana para cargar los materiales por módulos (RF-16). |
 | `servicios-gestor.js` | Interfaz común para gestionar servicios (panel administrativo y Mis servicios). |
@@ -39,13 +40,15 @@ Plataforma web de servicios educativos (cursos, talleres y mentorías). Proyecto
 - [Modelo de datos de adquisiciones](docs/modelo-datos-adquisiciones.md) (RD-08)
 - [Modelo de datos de servicios](docs/modelo-datos-servicios.md) (RF-11, RD-04, RF-15, RF-16)
 - [Indicadores del panel administrativo](docs/indicadores-panel.md) (RF-14)
+- [Estadísticas públicas de la portada](docs/estadisticas-publicas.md) (RF-18)
 
 ## Primeros pasos con Firestore
 
 1. Publicar las reglas: `firebase deploy --only firestore:rules` (ver la [matriz de permisos](docs/matriz-de-permisos.md)).
 2. Asignar el rol `administrador` al **primer** usuario desde la consola de Firebase. Los siguientes se pueden asignar desde **Administración → Usuarios**.
 3. Con ese usuario, entrar a **Administración → Servicios** y tocar **"Cargar servicios iniciales"** para que el catálogo tenga contenido.
-4. Asignar a cada servicio su **prestador responsable** (editar el servicio → selector "Prestador responsable"), para que ese prestador lo pueda gestionar desde **Mis servicios**.
+4. En **Administración → Inicio**, tocar **"Recalcular estadísticas"** para que la portada cuente a los estudiantes que ya compraron.
+5. Asignar a cada servicio su **prestador responsable** (editar el servicio → selector "Prestador responsable"), para que ese prestador lo pueda gestionar desde **Mis servicios**.
 
 ## Cómo trabajar en el repositorio
 

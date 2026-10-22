@@ -37,6 +37,8 @@ El rol se guarda en el campo `rol` del documento `usuarios/{uid}` en Firestore.
 | Cargar o editar la clase de prueba (RF-15) | ❌ | ❌ | ✅ solo de sus servicios | ✅ |
 | Ver los materiales de un servicio (`gestion/materiales.html`, RF-16) | ➡️ | ✅ si lo adquirió | ✅ solo de sus servicios | ✅ |
 | Cargar o editar materiales (RF-16) | ❌ | ❌ | ✅ solo de sus servicios | ✅ |
+| Ver las estadísticas de la portada (RF-18) | ✅ | ✅ | ✅ | ✅ |
+| Recalcular las estadísticas públicas (RF-18) | ❌ | ❌ | ❌ | ✅ |
 | Ver los indicadores del estado general de la plataforma en `admin/panel.html` (RF-14) | ❌ | ❌ | ❌ | ✅ |
 | Ver el listado de usuarios: nombre, correo, rol, fecha de registro y cantidad de adquisiciones (RF-12) | ❌ | ❌ | ❌ | ✅ |
 | Cambiar el rol de otro usuario (RF-12) | ❌ | ❌ | ❌ | ✅ |
@@ -61,6 +63,8 @@ Las reglas están en **`firestore.rules`**, en la raíz del repositorio. Son la 
 |---|---|---|---|---|
 | `usuarios/{uid}` | El propio usuario o un administrador. | El propio usuario, solo con rol `estudiante` o `prestador`. | El propio usuario, **sin cambiar su rol**. Un administrador puede cambiar **solo el rol** de otro usuario, nunca el suyo. | Solo un administrador. |
 | `servicios/{id}` | Todos, incluidos los visitantes. | Un administrador, o un prestador **a su propio nombre** (`prestadorUid` = su uid). | Un administrador, o el **prestador dueño**, sin poder pasarle el servicio a otro. | Solo un administrador (en la práctica se usa la baja lógica, `activo: false`). |
+| `estadisticas/{id}` (RF-18) | Todos, incluidos los visitantes (solo contiene el total). | El administrador, o un estudiante que suma 1 una única vez con su primera adquisición. | Igual que crear. | Nadie. |
+| `estudiantesConCompras/{uid}` (RF-18) | El propio estudiante o el administrador. | El propio estudiante con una adquisición existente, o el administrador. | El administrador. | El administrador. |
 | `servicios/{id}/materiales/{doc}` (RF-16) | Quien adquirió el servicio (adquisición confirmada), el prestador dueño o el administrador. | El administrador o el prestador dueño. | El administrador o el prestador dueño. | El administrador o el prestador dueño. |
 | `servicios/{id}/clasePrueba/{doc}` (RF-15) | Cualquier usuario con sesión iniciada. | El administrador o el prestador dueño del servicio. | El administrador o el prestador dueño del servicio. | El administrador o el prestador dueño del servicio. |
 | `adquisiciones/{uid}_{servicioId}` | El dueño (`uid == request.auth.uid`) o un administrador. | Solo un estudiante, a su propio nombre, de un servicio activo y con el precio del catálogo. | Solo un administrador. | Solo un administrador. |

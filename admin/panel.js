@@ -30,6 +30,7 @@ import {
   porcentajePagosRechazados,
   adquisicionesPorMes
 } from "../indicadores-modelo.js";
+import { recalcularEstadisticas, obtenerDocumentoEstadisticas } from "../estadisticas-modelo.js";
 
 const acceso = await protegerPagina({ roles: [ROLES.ADMINISTRADOR] });
 
@@ -39,6 +40,55 @@ if (acceso) {
   $("admin-verificando").classList.add("hidden");
   $("admin-contenido").classList.remove("hidden");
   cargarIndicadores();
+  iniciarEstadisticasPublicas();
+}
+
+/* ------------------------------------------------------------------ */
+/* RF-18: estadísticas públicas de la portada                          */
+/* ------------------------------------------------------------------ */
+// El total de estudiantes se actualiza solo en cada primera compra. Este botón
+// lo recalcula desde todas las adquisiciones (por ejemplo, para contar a quienes
+// compraron antes de que existiera la función).
+
+async function mostrarEstadisticasPublicas() {
+  const texto = $("estadisticas-publicas-texto");
+  try {
+    const datos = await obtenerDocumentoEstadisticas();
+    texto.textContent = datos
+      ? `La portada muestra ${datos.estudiantesConCursos.toLocaleString("es-UY")} ` +
+        `${datos.estudiantesConCursos === 1 ? "estudiante que realizó" : "estudiantes que realizaron"} servicios` +
+        (datos.actualizadoEn ? ` (actualizado el ${formatearFecha(datos.actualizadoEn)}).` : ".")
+      : "Todavía no se calcularon. La portada muestra 0 estudiantes: tocá \"Recalcular estadísticas\".";
+  } catch (error) {
+    console.error("No se pudieron leer las estadísticas públicas:", error.code, error.message);
+    texto.textContent = "No se pudieron consultar las estadísticas públicas.";
+  }
+}
+
+function iniciarEstadisticasPublicas() {
+  mostrarEstadisticasPublicas();
+  const boton = $("btn-recalcular-estadisticas");
+  const msg = $("estadisticas-publicas-msg");
+  boton.addEventListener("click", async () => {
+    boton.disabled = true;
+    msg.className = "w-100 small text-secondary";
+    msg.textContent = "Recalculando...";
+    try {
+      const total = await recalcularEstadisticas(acceso.user.uid);
+      msg.className = "w-100 alert alert-success small py-2 mb-0";
+      msg.textContent = `Listo: ${total} ${total === 1 ? "estudiante realizó" : "estudiantes realizaron"} al menos un servicio.`;
+      await mostrarEstadisticasPublicas();
+    } catch (error) {
+      console.error("No se pudieron recalcular las estadísticas:", error.code, error.message);
+      msg.className = "w-100 alert alert-danger small py-2 mb-0";
+      msg.textContent =
+        error.code === "permission-denied"
+          ? "Firestore rechazó la operación: tu usuario no tiene permisos de administrador en la base de datos."
+          : "No se pudieron recalcular las estadísticas. Intentá de nuevo.";
+    } finally {
+      boton.disabled = false;
+    }
+  });
 }
 
 /* ------------------------------------------------------------------ */
