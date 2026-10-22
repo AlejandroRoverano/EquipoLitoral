@@ -95,6 +95,30 @@ service cloud.firestore {
           && request.resource.data.prestadorUid == request.auth.uid
           && request.resource.data.creadoPor == resource.data.creadoPor);
       allow delete: if esAdmin();
+
+      // ---------- clase de prueba gratuita (RF-15) ----------
+      // servicios/{servicioId}/clasePrueba/contenido
+      // La lee cualquier usuario con sesión iniciada (no hace falta adquirir el servicio).
+      // La modifican el administrador o el prestador dueño del servicio.
+      // Se usa getAfter() porque la clase se guarda en el mismo lote que el servicio
+      // (al crear un servicio nuevo, el documento todavía no existe antes del lote).
+      match /clasePrueba/{claseId} {
+        allow read: if autenticado();
+        allow create, update: if puedeEditarClase(servicioId)
+          && request.resource.data.keys().hasOnly(['titulo', 'descripcion', 'enlace', 'actualizadoEn'])
+          && request.resource.data.titulo is string
+          && request.resource.data.descripcion is string
+          && request.resource.data.enlace is string
+          && request.resource.data.enlace.matches('https://.+');
+        allow delete: if puedeEditarClase(servicioId);
+      }
+    }
+
+    // RF-15: administrador, o prestador dueño del servicio después del cambio
+    function puedeEditarClase(servicioId) {
+      return esAdmin()
+        || (esPrestador()
+          && getAfter(/databases/$(database)/documents/servicios/$(servicioId)).data.prestadorUid == request.auth.uid);
     }
 
     // ---------- adquisiciones ----------

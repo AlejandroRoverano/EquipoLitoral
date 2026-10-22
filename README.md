@@ -15,7 +15,7 @@ Plataforma web de servicios educativos (cursos, talleres y mentorías). Proyecto
 | Carpeta o archivo | Contenido |
 |---|---|
 | `index.html` | Página de inicio. |
-| `catalogo/` | Catálogo de servicios, detalle y flujo de adquisición. |
+| `catalogo/` | Catálogo de servicios, detalle, clase de prueba gratuita y flujo de adquisición. |
 | `login/` | Registro, inicio de sesión y recuperación de contraseña. |
 | `gestion/` | Panel del usuario, historial de adquisiciones y "Mis servicios" del prestador. |
 | `admin/` | Panel de administración (solo administradores): inicio, gestión de servicios, de usuarios y de adquisiciones. |
@@ -34,7 +34,7 @@ Plataforma web de servicios educativos (cursos, talleres y mentorías). Proyecto
 
 - [Matriz de permisos y restricciones de acceso](docs/matriz-de-permisos.md) (RNF-10)
 - [Modelo de datos de adquisiciones](docs/modelo-datos-adquisiciones.md) (RD-08)
-- [Modelo de datos de servicios](docs/modelo-datos-servicios.md) (RF-11, RD-04)
+- [Modelo de datos de servicios](docs/modelo-datos-servicios.md) (RF-11, RD-04, RF-15)
 - [Indicadores del panel administrativo](docs/indicadores-panel.md) (RF-14)
 
 ## Primeros pasos con Firestore

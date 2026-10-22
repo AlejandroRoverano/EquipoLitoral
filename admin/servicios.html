@@ -227,6 +227,25 @@
                             <select id="srv-periodo" class="form-select" required></select>
                         </div>
                     </div>
+
+                    <h3 class="h6 fw-bold text-uppercase text-secondary mt-4 mb-1">Clase de prueba gratuita</h3>
+                    <p class="form-text mt-0 mb-3">Opcional. Si la completás, el detalle del servicio muestra el botón "Clase de prueba gratuita" y cualquier usuario con sesión iniciada la puede ver sin adquirir el servicio.</p>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="srv-clase-titulo" class="form-label">Título de la clase</label>
+                            <input type="text" id="srv-clase-titulo" class="form-control" maxlength="100" placeholder="Ej: Clase 1 - Tu primer circuito">
+                        </div>
+                        <div class="col-12">
+                            <label for="srv-clase-descripcion" class="form-label">Descripción</label>
+                            <textarea id="srv-clase-descripcion" class="form-control" rows="3"></textarea>
+                            <div class="form-text">Qué se va a ver en la clase. Dejá una línea en blanco para separar párrafos.</div>
+                        </div>
+                        <div class="col-12">
+                            <label for="srv-clase-enlace" class="form-label">Enlace al video o material</label>
+                            <input type="url" id="srv-clase-enlace" class="form-control" placeholder="https://www.youtube.com/watch?v=...">
+                            <div class="form-text">Si es un video de YouTube, se va a ver dentro de la página. Si no, se muestra un botón para abrir el enlace.</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancelar</button>

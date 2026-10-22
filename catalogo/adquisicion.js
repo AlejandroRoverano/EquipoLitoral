@@ -175,11 +175,13 @@ btnAdquirir.addEventListener("click", () => {
 
   // Sin sesión: no puede adquirir, se le invita a iniciar sesión
   if (!usuarioActual) {
+    // Después de entrar, el login trae al usuario de vuelta a este servicio
+    const volver = `?volver=${encodeURIComponent(window.location.href)}`;
     mostrarAviso(
       'Para adquirir este servicio necesitás iniciar sesión.' +
       '<div class="d-flex gap-2 mt-2">' +
-      '<a href="../login/login.html" class="btn btn-primary btn-sm">Iniciar sesión</a>' +
-      '<a href="../login/registro.html" class="btn btn-outline-primary btn-sm">Registrarse</a>' +
+      `<a href="../login/login.html${volver}" class="btn btn-primary btn-sm">Iniciar sesión</a>` +
+      `<a href="../login/registro.html${volver}" class="btn btn-outline-primary btn-sm">Registrarse</a>` +
       '</div>',
       "warning"
     );

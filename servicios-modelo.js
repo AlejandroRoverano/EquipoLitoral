@@ -7,6 +7,10 @@
 //
 // Colección: servicios/{servicioId}
 //   - El ID es un "slug" legible generado a partir del nombre (ej: taller-robotica).
+//   - RF-15: la clase de prueba gratuita se guarda aparte, en
+//     servicios/{servicioId}/clasePrueba/contenido, porque solo la pueden leer
+//     usuarios con sesión iniciada (el documento del servicio es público).
+//     El servicio solo guarda "tieneClasePrueba" para mostrar u ocultar el botón.
 //   - La baja es lógica: el campo "activo" pasa a false y el servicio deja de
 //     mostrarse en el catálogo, pero se conserva (las adquisiciones lo referencian).
 //   - RD-04: cada servicio puede tener un prestador dueño (campo "prestadorUid").
@@ -19,7 +23,6 @@ import {
   doc,
   getDoc,
   getDocs,
-  setDoc,
   updateDoc,
   query,
   where,
@@ -44,6 +47,14 @@ export const CATEGORIAS = {
 export const MODALIDADES = ["Presencial", "Virtual", "Híbrida"];
 export const MONEDAS = ["UYU", "USD"];
 export const PERIODOS = ["mes", "curso", "sesión"];
+
+// RF-15: ubicación de la clase de prueba de cada servicio
+const SUBCOLECCION_CLASE = "clasePrueba";
+const DOC_CLASE = "contenido";
+
+function refClasePrueba(servicioId) {
+  return doc(db, COLECCION_SERVICIOS, servicioId, SUBCOLECCION_CLASE, DOC_CLASE);
+}
 
 /* ------------------------------------------------------------------ */
 /* Utilidades                                                          */
@@ -76,6 +87,43 @@ export function formatearFechaInicio(fechaISO) {
   return fecha.toLocaleDateString("es-UY", { day: "numeric", month: "long", year: "numeric" });
 }
 
+// RF-15: true si el texto es un enlace web seguro (https://...)
+export function esEnlaceValido(texto) {
+  try {
+    return new URL(texto).protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+// RF-15: ID de un video de YouTube a partir de su enlace, o null si no es de YouTube.
+// Acepta youtube.com/watch?v=..., youtu.be/..., youtube.com/embed/... y youtube.com/shorts/...
+export function idVideoYoutube(enlace) {
+  try {
+    const url = new URL(enlace);
+    const host = url.hostname.replace(/^www\.|^m\./, "");
+    let id = null;
+    if (host === "youtu.be") id = url.pathname.slice(1);
+    else if (host === "youtube.com" || host === "youtube-nocookie.com") {
+      id = url.searchParams.get("v") || url.pathname.match(/^\/(?:embed|shorts)\/([^/]+)/)?.[1] || null;
+    }
+    return id && /^[A-Za-z0-9_-]{11}$/.test(id) ? id : null;
+  } catch {
+    return null;
+  }
+}
+
+// RF-15: deja la clase de prueba con sus campos limpios, o null si está vacía
+function normalizarClase(clase) {
+  if (!clase) return null;
+  const limpia = {
+    titulo: (clase.titulo || "").trim(),
+    descripcion: (clase.descripcion || "").trim(),
+    enlace: (clase.enlace || "").trim()
+  };
+  return limpia.titulo || limpia.descripcion || limpia.enlace ? limpia : null;
+}
+
 // Devuelve una lista de errores (vacía si los datos son válidos)
 export function validarServicio(datos) {
   const errores = [];
@@ -93,6 +141,13 @@ export function validarServicio(datos) {
   if (!PERIODOS.includes(datos.periodo)) errores.push("Elegí el período del precio.");
   if (datos.cupo !== null && (!Number.isInteger(datos.cupo) || datos.cupo < 1)) {
     errores.push("El cupo debe ser un número entero mayor a 0, o quedar vacío.");
+  }
+  // RF-15: la clase de prueba es opcional, pero si se carga tiene que estar completa
+  const clase = normalizarClase(datos.clasePrueba);
+  if (clase) {
+    if (clase.titulo.length < 3) errores.push("La clase de prueba necesita un título de al menos 3 caracteres.");
+    if (!clase.descripcion) errores.push("Escribí una descripción para la clase de prueba.");
+    if (!esEnlaceValido(clase.enlace)) errores.push("El enlace de la clase de prueba tiene que ser una dirección web que empiece con https://.");
   }
   return errores;
 }
@@ -119,7 +174,9 @@ function normalizar(datos) {
     periodo: datos.periodo,
     certificado: Boolean(datos.certificado),
     // RD-04: cuenta del prestador dueño del servicio (null = sin asignar)
-    prestadorUid: datos.prestadorUid || null
+    prestadorUid: datos.prestadorUid || null,
+    // RF-15: indica si el servicio tiene clase de prueba (el contenido va aparte)
+    tieneClasePrueba: Boolean(normalizarClase(datos.clasePrueba))
   };
 }
 
@@ -154,6 +211,13 @@ export async function obtenerServiciosDePrestador(uid) {
   return resultado.docs.map(convertir).sort(porNombre);
 }
 
+// RF-15: clase de prueba de un servicio ({ titulo, descripcion, enlace }), o null.
+// Requiere sesión iniciada (firestore.rules).
+export async function obtenerClasePrueba(servicioId) {
+  const snap = await getDoc(refClasePrueba(servicioId));
+  return snap.exists() ? snap.data() : null;
+}
+
 // Todos los servicios, activos e inactivos (panel administrativo)
 export async function obtenerTodosLosServicios() {
   const resultado = await getDocs(collection(db, COLECCION_SERVICIOS));
@@ -172,22 +236,36 @@ export async function crearServicio(datos, uidCreador) {
   for (let n = 2; await obtenerServicio(id); n++) {
     id = `${base}-${n}`;
   }
-  await setDoc(doc(db, COLECCION_SERVICIOS, id), {
+  // El servicio y su clase de prueba se guardan juntos (todo o nada)
+  const lote = writeBatch(db);
+  lote.set(doc(db, COLECCION_SERVICIOS, id), {
     ...normalizar(datos),
     activo: true,
     creadoPor: uidCreador,
     creadoEn: serverTimestamp(),
     actualizadoEn: serverTimestamp()
   });
+  guardarClaseEnLote(lote, id, datos.clasePrueba);
+  await lote.commit();
   return id;
 }
 
-// Edita los datos de un servicio existente (el ID no cambia)
+// RF-15: agrega al lote el guardado (o el borrado, si quedó vacía) de la clase de prueba
+function guardarClaseEnLote(lote, servicioId, clasePrueba) {
+  const clase = normalizarClase(clasePrueba);
+  if (clase) lote.set(refClasePrueba(servicioId), { ...clase, actualizadoEn: serverTimestamp() });
+  else lote.delete(refClasePrueba(servicioId));
+}
+
+// Edita los datos de un servicio existente (el ID no cambia) y su clase de prueba
 export async function actualizarServicio(id, datos) {
-  await updateDoc(doc(db, COLECCION_SERVICIOS, id), {
+  const lote = writeBatch(db);
+  lote.update(doc(db, COLECCION_SERVICIOS, id), {
     ...normalizar(datos),
     actualizadoEn: serverTimestamp()
   });
+  guardarClaseEnLote(lote, id, datos.clasePrueba);
+  await lote.commit();
 }
 
 // Baja lógica (activo = false) o reactivación (activo = true)
