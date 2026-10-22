@@ -41,6 +41,7 @@ Plataforma web de servicios educativos (cursos, talleres y mentorías). Proyecto
 - [Modelo de datos de servicios](docs/modelo-datos-servicios.md) (RF-11, RD-04, RF-15, RF-16)
 - [Indicadores del panel administrativo](docs/indicadores-panel.md) (RF-14)
 - [Estadísticas públicas de la portada](docs/estadisticas-publicas.md) (RF-18)
+- [Progreso, certificados, reseñas y accesibilidad](docs/progreso-certificados-resenas.md) (RF-24, RF-25, RF-26, RNF-11)
 
 ## Primeros pasos con Firestore
 

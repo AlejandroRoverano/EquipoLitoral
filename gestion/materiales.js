@@ -11,6 +11,7 @@ import { obtenerServicio } from "../servicios-modelo.js";
 import { obtenerAdquisicion, ESTADOS_ADQUISICION } from "../adquisiciones-modelo.js";
 import { obtenerMateriales, contarMateriales } from "../materiales-modelo.js";
 import { crearModulo } from "../materiales-vista.js";
+import { crearBloqueProgreso, iniciarProgreso } from "../progreso-vista.js";
 
 const $ = (id) => document.getElementById(id);
 
@@ -71,7 +72,19 @@ if (acceso) {
         );
       } else {
         const modulos = await obtenerMateriales(servicio.id);
-        renderizar(servicio, modulos, urlDetalle);
+        // RF-24: el estudiante marca los materiales vistos y ve su progreso
+        let progreso = null;
+        let bloque = null;
+        if (rol === ROLES.ESTUDIANTE && modulos.length > 0) {
+          try {
+            const ui = crearBloqueProgreso();
+            progreso = await iniciarProgreso({ user, servicio, modulos, adquirido: true, ui });
+            bloque = ui.bloque;
+          } catch (error) {
+            console.error("No se pudo cargar el progreso:", error.code, error.message);
+          }
+        }
+        renderizar(servicio, modulos, urlDetalle, progreso, bloque);
       }
     }
   } catch (error) {
@@ -90,7 +103,7 @@ if (acceso) {
 /* Presentación                                                        */
 /* ------------------------------------------------------------------ */
 
-function renderizar(servicio, modulos, urlDetalle) {
+function renderizar(servicio, modulos, urlDetalle, progreso = null, bloqueProgreso = null) {
   $("materiales-servicio").textContent = servicio.nombre;
   const total = contarMateriales(modulos);
   $("materiales-subtitulo").textContent = [
@@ -100,6 +113,7 @@ function renderizar(servicio, modulos, urlDetalle) {
   $("materiales-detalle").href = urlDetalle;
 
   $("materiales-vacio").classList.toggle("hidden", modulos.length > 0);
-  $("materiales-modulos").replaceChildren(...modulos.map((m, i) => crearModulo(m, i)));
+  if (bloqueProgreso) $("materiales-modulos").before(bloqueProgreso);
+  $("materiales-modulos").replaceChildren(...modulos.map((m, i) => crearModulo(m, i, "modulo", progreso)));
   mostrar("materiales-contenido");
 }

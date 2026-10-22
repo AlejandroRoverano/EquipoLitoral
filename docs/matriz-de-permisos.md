@@ -38,6 +38,12 @@ El rol se guarda en el campo `rol` del documento `usuarios/{uid}` en Firestore.
 | Ver los materiales de un servicio (`gestion/materiales.html`, RF-16) | ➡️ | ✅ si lo adquirió | ✅ solo de sus servicios | ✅ |
 | Ver el contenido del curso en el detalle (RF-21) | ❌ bloqueado | ✅ si lo adquirió o tiene la prueba de un día vigente | ✅ solo de sus servicios | ✅ |
 | Activar la prueba gratis de un día (RF-22) | ➡️ | ✅ una vez por curso, si no lo adquirió | ❌ aviso | ❌ aviso |
+| Marcar materiales como vistos y ver su progreso (RF-24) | ❌ | ✅ si lo adquirió o tiene la prueba vigente | – | – |
+| Obtener el certificado de un curso (RF-25) | ❌ | ✅ si lo adquirió, el curso da certificado y completó el 100 % | ❌ | ❌ |
+| Verificar un certificado (`certificado.html`, RF-25) | ✅ | ✅ | ✅ | ✅ |
+| Ver opiniones de un curso (RF-26) | ✅ | ✅ | ✅ | ✅ |
+| Escribir, editar o borrar su opinión (RF-26) | ❌ | ✅ solo si adquirió el curso | ❌ | ❌ (puede borrar cualquiera) |
+| Modo oscuro y tamaño de letra (RNF-11) | ✅ | ✅ | ✅ | ✅ |
 | Cargar o editar materiales (RF-16) | ❌ | ❌ | ✅ solo de sus servicios | ✅ |
 | Ver las estadísticas de la portada (RF-18) | ✅ | ✅ | ✅ | ✅ |
 | Recalcular las estadísticas públicas (RF-18) | ❌ | ❌ | ❌ | ✅ |
@@ -69,6 +75,9 @@ Las reglas están en **`firestore.rules`**, en la raíz del repositorio. Son la 
 | `estudiantesConCompras/{uid}` (RF-18) | El propio estudiante o el administrador. | El propio estudiante con una adquisición existente, o el administrador. | El administrador. | El administrador. |
 | `servicios/{id}/materiales/{doc}` (RF-16) | Quien adquirió el servicio (adquisición confirmada), quien tiene la prueba gratis de un día vigente (RF-22), el prestador dueño o el administrador. | El administrador o el prestador dueño. | El administrador o el prestador dueño. | El administrador o el prestador dueño. |
 | `servicios/{id}/clasePrueba/{doc}` (RF-15) | Cualquier usuario con sesión iniciada. | El administrador o el prestador dueño del servicio. | El administrador o el prestador dueño del servicio. | El administrador o el prestador dueño del servicio. |
+| `progreso/{uid}_{servicioId}` (RF-24) | El dueño o un administrador. | El dueño, si adquirió el curso o tiene la prueba vigente. `completado` tiene que coincidir con vistos/total. | Igual que crear; el código de certificado no se puede cambiar. | Solo un administrador. |
+| `certificados/{codigo}` (RF-25) | Todos (para verificar). | Solo el estudiante, con el curso adquirido, que da certificado, con el progreso completo y sin certificado anterior. | Solo un administrador. | Solo un administrador. |
+| `resenas/{uid}_{servicioId}` (RF-26) | Todos. | Solo un estudiante con el curso adquirido; puntaje entero de 1 a 5 y comentario de hasta 600 caracteres. | Igual que crear. | El autor o un administrador. |
 | `pruebas/{uid}_{servicioId}` (RF-22) | El dueño o un administrador. | Solo un estudiante, a su nombre, de un servicio activo y con la hora del servidor. Una vez por curso. | Solo un administrador. | Solo un administrador. |
 | `adquisiciones/{uid}_{servicioId}` | El dueño (`uid == request.auth.uid`) o un administrador. | Solo un estudiante, a su propio nombre, de un servicio activo y con el precio del catálogo. | Solo un administrador. | Solo un administrador. |
 | `pagos/{id}` | El dueño o un administrador. | Solo un estudiante, a su nombre y con `simulado: true`. | Nadie. | Nadie. |

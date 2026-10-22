@@ -133,3 +133,116 @@ h1, h2, h3, h4, h5, h6, .navbar-brand { font-family: "Montserrat", "Inter", sans
 /* RF-21: contenido del curso bloqueado en el detalle */
 .contenido-bloqueado { background: linear-gradient(135deg, var(--el-surface) 0%, #fff 100%); border-style: dashed; }
 .contenido-bloqueado:hover { transform: none; box-shadow: none; }
+
+/* RF-23: inicio y "Sobre nosotros" más completos */
+.tarjeta-categoria .icon-circle { transition: background .2s, color .2s; }
+.tarjeta-categoria:hover .icon-circle { background: var(--el-green); color: #fff; }
+.banner-prueba { background: linear-gradient(135deg, var(--el-green) 0%, var(--el-navy-2) 100%); position: relative; overflow: hidden; }
+.banner-prueba::after { content: ""; position: absolute; right: -4rem; bottom: -6rem; width: 16rem; height: 16rem; border-radius: 50%;
+  background: var(--el-mint); opacity: .12; pointer-events: none; }
+.linea-tiempo { position: relative; padding-left: 2rem; }
+.linea-tiempo::before { content: ""; position: absolute; left: .55rem; top: .4rem; bottom: .4rem; width: 2px; background: #d3e4fe; }
+.linea-tiempo li { position: relative; padding-bottom: 1.75rem; }
+.linea-tiempo li:last-child { padding-bottom: 0; }
+.linea-tiempo li::before { content: ""; position: absolute; left: -1.85rem; top: .3rem; width: 1rem; height: 1rem; border-radius: 50%;
+  background: var(--el-green); box-shadow: 0 0 0 4px var(--el-surface); }
+.linea-tiempo__fecha { display: inline-block; font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--el-green); margin-bottom: .25rem; }
+.chip-tecnologia { display: inline-flex; align-items: center; gap: .45rem; padding: .5rem 1rem; border-radius: 999px; background: #fff;
+  border: 1px solid #d3e4fe; font-weight: 500; }
+.chip-tecnologia .bi { color: var(--el-green); }
+
+/* RF-24: progreso del curso */
+.bloque-progreso .progress { height: .6rem; }
+.casilla-visto { width: 1.25rem; height: 1.25rem; cursor: pointer; }
+.material-visto .fw-semibold { text-decoration: line-through; text-decoration-color: rgba(0,107,90,.5); opacity: .75; }
+
+/* RF-26: reseñas */
+.estrellas-input { display: inline-flex; flex-direction: row-reverse; gap: .25rem; }
+.estrellas-input input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.estrellas-input label { font-size: 1.75rem; line-height: 1; color: #cfd8e6; cursor: pointer; transition: color .15s; }
+.estrellas-input input:checked ~ label,
+.estrellas-input label:hover,
+.estrellas-input label:hover ~ label { color: #f5b301; }
+.estrellas-input input:focus-visible + label { outline: 3px solid var(--el-mint); outline-offset: 2px; border-radius: .25rem; }
+.resena:hover { transform: none; box-shadow: none; }
+.calificacion-tarjeta { color: #b07d00; font-weight: 600; }
+.calificacion-tarjeta .bi { color: #f5b301; }
+
+/* RF-25: certificado */
+.certificado { box-sizing: border-box; max-width: 900px; aspect-ratio: 1.414 / 1; background: #fff; color: #0b1c30; padding: 1.25rem;
+  border-radius: .5rem; box-shadow: 0 1rem 2.5rem rgba(0,23,54,.15); }
+.certificado__borde { height: 100%; border: 3px double var(--el-green); border-radius: .35rem; padding: 6% 8%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+  background: radial-gradient(circle at top right, rgba(84,248,215,.15), transparent 40%),
+              radial-gradient(circle at bottom left, rgba(0,43,91,.08), transparent 45%); }
+.certificado p { margin: 0; }
+.certificado__marca { font-family: "Montserrat", sans-serif; font-weight: 700; color: var(--el-navy-2); font-size: 1.1rem; margin-bottom: 4% !important; }
+.certificado__titulo { font-family: "Montserrat", sans-serif; font-weight: 700; font-size: clamp(1.3rem, 3.5vw, 2.3rem);
+  color: var(--el-green); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 3% !important; }
+.certificado__texto { color: #43474f; font-size: clamp(.85rem, 1.6vw, 1.05rem); }
+.certificado__nombre { font-family: "Montserrat", sans-serif; font-weight: 700; font-size: clamp(1.5rem, 4.2vw, 2.7rem);
+  color: var(--el-navy); border-bottom: 2px solid #d3e4fe; padding: 0 1.5rem .4rem; margin: 2% 0 !important; }
+.certificado__curso { font-family: "Montserrat", sans-serif; font-weight: 600; font-size: clamp(1.05rem, 2.6vw, 1.6rem);
+  color: var(--el-navy-2); margin: 1.5% 0 !important; }
+.certificado__pie { width: 100%; display: flex; justify-content: space-between; gap: 1rem; margin-top: 7%; }
+.certificado__dato-titulo { font-size: .7rem; text-transform: uppercase; letter-spacing: .05em; color: #6b7280; }
+.certificado__dato { font-weight: 600; font-size: clamp(.8rem, 1.5vw, 1rem); }
+.certificado__verificar { font-size: .7rem; color: #6b7280; margin-top: 2% !important; }
+@media (max-width: 575.98px) { .certificado { aspect-ratio: auto; } .certificado__borde { padding: 10% 6%; } }
+
+@media print {
+  @page { size: A4 landscape; margin: 0; }
+  html, body { margin: 0 !important; padding: 0 !important; background: #fff !important; font-size: 100% !important; }
+  header, footer, .no-imprimir { display: none !important; }
+  main, main section { padding: 0 !important; margin: 0 !important; max-width: none !important; }
+  #cert-resultado { margin: 0 !important; }
+  .certificado { max-width: none; width: 297mm; height: 200mm; aspect-ratio: auto; padding: 10mm; margin: 0 !important; overflow: hidden;
+    box-shadow: none; border-radius: 0; break-inside: avoid; page-break-inside: avoid;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .certificado__marca { font-size: 14pt; }
+  .certificado__titulo { font-size: 28pt; }
+  .certificado__texto { font-size: 13pt; }
+  .certificado__nombre { font-size: 34pt; }
+  .certificado__curso { font-size: 20pt; }
+  .certificado__dato { font-size: 12pt; }
+  .certificado__dato-titulo, .certificado__verificar { font-size: 9pt; }
+}
+
+/* RNF-11: accesibilidad. Modo oscuro (data-bs-theme="dark", lo pone preferencias.js) */
+.menu-preferencias .dropdown-menu { z-index: 1050; }
+[data-bs-theme="dark"] {
+  --bs-body-bg: #0b1422;
+  --bs-body-color: #e3eaf5;
+  --bs-secondary-color: #a9b6c9;
+  --bs-tertiary-bg: #122036;
+  --bs-border-color: #26385a;
+  --bs-link-color: #7fe9d3;
+  --bs-link-color-rgb: 127, 233, 211;
+  --bs-link-hover-color: var(--el-mint);
+  --bs-link-hover-color-rgb: 84, 248, 215;
+  --el-surface: #16284a;
+  color-scheme: dark;
+}
+[data-bs-theme="dark"] .bg-white { background-color: #0f1b2e !important; }
+[data-bs-theme="dark"] .card-litoral,
+[data-bs-theme="dark"] .tarjeta-servicio,
+[data-bs-theme="dark"] .chip-filtro,
+[data-bs-theme="dark"] .chip-tecnologia { background: #13223a; border-color: #26385a; color: var(--bs-body-color); }
+[data-bs-theme="dark"] .tarjeta-servicio__pie { border-top-color: #26385a; }
+[data-bs-theme="dark"] .tarjeta-servicio__categoria { background: rgba(11,20,34,.9); color: #e3eaf5; }
+[data-bs-theme="dark"] .btn-check:checked + .chip-filtro { background: var(--el-green); border-color: var(--el-green); color: #fff; }
+[data-bs-theme="dark"] .btn-outline-primary { --bs-btn-color: #9cc3ff; --bs-btn-border-color: #5b86c4; --bs-btn-hover-bg: #2b4f86;
+  --bs-btn-hover-border-color: #2b4f86; --bs-btn-hover-color: #fff; --bs-btn-active-bg: #2b4f86; --bs-btn-active-color: #fff; }
+[data-bs-theme="dark"] .text-success { color: #5fe0b5 !important; }
+[data-bs-theme="dark"] .icon-circle { color: #5fe0b5; }
+[data-bs-theme="dark"] .contenido-bloqueado,
+[data-bs-theme="dark"] .auth-wrap { background: linear-gradient(135deg, #13223a 0%, #0b1422 100%); }
+[data-bs-theme="dark"] .tarjeta-esqueleto { background: linear-gradient(90deg, #13223a 25%, #1a2d4a 50%, #13223a 75%); background-size: 200% 100%; }
+[data-bs-theme="dark"] .linea-tiempo::before { background: #26385a; }
+[data-bs-theme="dark"] .linea-tiempo li::before { box-shadow: 0 0 0 4px #0b1422; }
+[data-bs-theme="dark"] .estrellas-base { color: #34486a; }
+[data-bs-theme="dark"] .calificacion-tarjeta { color: #f5c542; }
+[data-bs-theme="dark"] .badge.text-bg-light { background-color: #1d3050 !important; color: #e3eaf5 !important; }
+[data-bs-theme="dark"] .buscador-catalogo .bi { color: #6b7a90; }
+[data-bs-theme="dark"] .certificado { box-shadow: 0 1rem 2.5rem rgba(0,0,0,.5); }

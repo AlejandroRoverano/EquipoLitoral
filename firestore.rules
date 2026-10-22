@@ -191,6 +191,75 @@ service cloud.firestore {
       allow update, delete: if esAdmin();
     }
 
+    // ---------- progreso en los cursos (RF-24) ----------
+    // progreso/{uid}_{servicioId}. Cada estudiante lee y guarda solo el suyo; el administrador lo lee.
+    // Solo se guarda si adquirió el curso o tiene la prueba gratis vigente.
+    // "completado" tiene que coincidir con vistos/total, y el código del certificado (RF-25),
+    // una vez guardado, no se puede cambiar ni quitar.
+    match /progreso/{progresoId} {
+      allow read: if autenticado()
+        && (resource == null || resource.data.uid == request.auth.uid || esAdmin());
+      allow create, update: if autenticado()
+        && request.resource.data.keys().hasOnly(['uid', 'servicioId', 'vistos', 'total', 'completado', 'actualizadoEn', 'certificadoCodigo'])
+        && request.resource.data.uid == request.auth.uid
+        && progresoId == request.auth.uid + '_' + request.resource.data.servicioId
+        && request.resource.data.vistos is list
+        && request.resource.data.vistos.size() <= 900
+        && request.resource.data.total is int
+        && request.resource.data.completado == (request.resource.data.total > 0 && request.resource.data.vistos.size() >= request.resource.data.total)
+        && (adquirio(request.resource.data.servicioId) || pruebaVigente(request.resource.data.servicioId))
+        && (resource == null || !('certificadoCodigo' in resource.data)
+          || request.resource.data.certificadoCodigo == resource.data.certificadoCodigo);
+      allow delete: if esAdmin();
+    }
+
+    // ---------- certificados (RF-25) ----------
+    // certificados/{codigo}. Lectura pública: cualquiera puede verificar un código.
+    // Solo lo emite el propio estudiante, con el curso adquirido, que da certificado,
+    // con el progreso completo y sin un certificado anterior. Se crea en el mismo lote
+    // que guarda el código en su progreso. Nadie lo modifica (salvo el administrador).
+    match /certificados/{codigo} {
+      allow read: if true;
+      allow create: if esEstudiante()
+        && request.resource.data.keys().hasOnly(['codigo', 'uid', 'nombre', 'servicioId', 'servicioNombre', 'prestador', 'emitidoEn'])
+        && request.resource.data.codigo == codigo
+        && codigo.matches('EL-[A-Z0-9]{4}-[A-Z0-9]{4}')
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.emitidoEn == request.time
+        && request.resource.data.nombre is string
+        && request.resource.data.nombre.size() > 0
+        && request.resource.data.nombre.size() <= 100
+        && adquirio(request.resource.data.servicioId)
+        && servicio(request.resource.data.servicioId).certificado == true
+        && request.resource.data.servicioNombre == servicio(request.resource.data.servicioId).nombre
+        && get(/databases/$(database)/documents/progreso/$(request.auth.uid + '_' + request.resource.data.servicioId)).data.completado == true
+        && !('certificadoCodigo' in get(/databases/$(database)/documents/progreso/$(request.auth.uid + '_' + request.resource.data.servicioId)).data)
+        && getAfter(/databases/$(database)/documents/progreso/$(request.auth.uid + '_' + request.resource.data.servicioId)).data.certificadoCodigo == codigo;
+      allow update, delete: if esAdmin();
+    }
+
+    // ---------- reseñas (RF-26) ----------
+    // resenas/{uid}_{servicioId}. Lectura pública. Solo un estudiante con el curso adquirido
+    // escribe la suya (puntaje entero de 1 a 5 y comentario de hasta 600 caracteres).
+    // La borra su autor o el administrador.
+    match /resenas/{resenaId} {
+      allow read: if true;
+      allow create, update: if esEstudiante()
+        && request.resource.data.keys().hasOnly(['uid', 'servicioId', 'nombre', 'puntaje', 'comentario', 'fecha'])
+        && request.resource.data.uid == request.auth.uid
+        && resenaId == request.auth.uid + '_' + request.resource.data.servicioId
+        && request.resource.data.puntaje is int
+        && request.resource.data.puntaje >= 1
+        && request.resource.data.puntaje <= 5
+        && request.resource.data.comentario is string
+        && request.resource.data.comentario.size() <= 600
+        && request.resource.data.nombre is string
+        && request.resource.data.nombre.size() <= 60
+        && request.resource.data.fecha == request.time
+        && adquirio(request.resource.data.servicioId);
+      allow delete: if (autenticado() && resource.data.uid == request.auth.uid) || esAdmin();
+    }
+
     // ---------- pagos (simulados, RNF-09) ----------
     // Cada usuario lee solo sus pagos; el administrador lee todos (RF-13: detalle de la adquisición).
     // Son un registro histórico: nadie los modifica ni los borra.

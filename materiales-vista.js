@@ -16,7 +16,9 @@ function crear(etiqueta, clases, texto) {
 }
 
 // Un módulo como ítem de acordeón. "prefijo" evita ids repetidos si hay más de un acordeón.
-export function crearModulo(modulo, i, prefijo = "modulo") {
+// RF-24: si se pasa "progreso" ({ vistos: Set, alMarcar(clave, marcado) }), cada material
+// tiene una casilla para marcarlo como visto.
+export function crearModulo(modulo, i, prefijo = "modulo", progreso = null) {
   const idCuerpo = `${prefijo}-${i}`;
   const item = crear("div", "accordion-item");
 
@@ -37,7 +39,7 @@ export function crearModulo(modulo, i, prefijo = "modulo") {
   cuerpo.id = idCuerpo;
   const contenido = crear("div", "accordion-body p-0");
   const lista = crear("ul", "list-group list-group-flush");
-  modulo.materiales.forEach((mat) => lista.append(crearMaterial(mat)));
+  modulo.materiales.forEach((mat, j) => lista.append(crearMaterial(mat, `${i}-${j}`, progreso)));
   contenido.append(lista);
   cuerpo.append(contenido);
 
@@ -45,9 +47,24 @@ export function crearModulo(modulo, i, prefijo = "modulo") {
   return item;
 }
 
-export function crearMaterial(mat) {
+export function crearMaterial(mat, clave = null, progreso = null) {
   const li = crear("li", "list-group-item py-3");
   const fila = crear("div", "d-flex flex-wrap align-items-center gap-3");
+
+  // RF-24: casilla "visto"
+  if (progreso && clave) {
+    const casilla = crear("input", "form-check-input casilla-visto mt-0 flex-shrink-0");
+    casilla.type = "checkbox";
+    casilla.checked = progreso.vistos.has(clave);
+    casilla.title = "Marcar como visto";
+    casilla.setAttribute("aria-label", `Marcar "${mat.titulo}" como visto`);
+    li.classList.toggle("material-visto", casilla.checked);
+    casilla.addEventListener("change", () => {
+      li.classList.toggle("material-visto", casilla.checked);
+      progreso.alMarcar(clave, casilla.checked);
+    });
+    fila.append(casilla);
+  }
 
   const icono = crear("i", `bi ${ICONOS_MATERIAL[mat.tipo] || "bi-link-45deg"} fs-4 text-success`);
   icono.setAttribute("aria-hidden", "true");

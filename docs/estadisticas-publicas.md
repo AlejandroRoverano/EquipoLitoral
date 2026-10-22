@@ -4,13 +4,13 @@ La página de inicio muestra, antes del pie de página, tres datos de la platafo
 
 | Dato | De dónde sale | ¿Se actualiza solo? |
 |---|---|---|
-| **Estudiantes que realizaron nuestros servicios** | Un número base fijo (`ESTUDIANTES_BASE = 3467` en `estadisticas-modelo.js`) **más** el documento público `estadisticas/general` (campo `estudiantesConCursos`). | ✅ Sube en 1 con la **primera** adquisición de cada estudiante. |
+| **Estudiantes que realizaron nuestros servicios** | El documento público `estadisticas/general` (campo `estudiantesConCursos`). `ESTUDIANTES_BASE` está en `0`: solo se muestra el dato real. | ✅ Sube en 1 con la **primera** adquisición de cada estudiante. |
 | **Servicios ofrecidos en el catálogo** | Cantidad de servicios activos de la colección `servicios`, que ya es pública. | ✅ Siempre refleja el catálogo actual. |
-| **Calificación 4,8 / 5** | Valor fijo `CALIFICACION_GENERAL` en `estadisticas-modelo.js`. | ❌ Lo define el equipo. Se reemplazará por el promedio real con las valoraciones (RF-19). |
+| **Calificación de los estudiantes** | Promedio real de todas las reseñas (`resenas`, RF-26). Si no hay reseñas se muestra "–". | ✅ Cambia con cada reseña de un comprador. |
 
 El código está en `estadisticas-modelo.js` (datos) e `inicio.js` (sección de la portada).
 
-> **Número base:** el equipo definió que la portada muestre 3.467 estudiantes como punto de partida. Ese valor **no sale de Firestore**: se suma al conteo real. Para mostrar solo el dato real, hay que cambiar `ESTUDIANTES_BASE` a `0`.
+> **Solo datos reales:** la portada ya no usa números fijos. El total de estudiantes sale de Firestore y la calificación es el promedio de las reseñas de quienes adquirieron cursos.
 
 ## El problema: mostrar un total sin exponer datos
 

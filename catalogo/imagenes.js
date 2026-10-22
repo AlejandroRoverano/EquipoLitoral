@@ -16,7 +16,14 @@ const POR_SERVICIO = {
   // RF-21: cursos nuevos
   "desarrollo-web": "desarrollo-web.svg",
   "ciberseguridad-basica": "ciberseguridad.svg",
-  "robotica-principiantes": "robotica-principiantes.svg"
+  "robotica-principiantes": "robotica-principiantes.svg",
+  // RF-23
+  "inteligencia-artificial": "inteligencia-artificial.svg",
+  "mentoria-proyectos": "mentoria-proyectos.svg",
+  "tecnologia-educativa": "tecnologia-educativa.svg",
+  "videojuegos-scratch": "videojuegos-scratch.svg",
+  "domotica-arduino": "domotica-arduino.svg",
+  "pensamiento-computacional": "pensamiento-computacional.svg"
 };
 
 const POR_CATEGORIA = {

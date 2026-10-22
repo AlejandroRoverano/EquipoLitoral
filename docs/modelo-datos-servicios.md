@@ -171,5 +171,5 @@ Las funciones de los materiales están en **`materiales-modelo.js`**: `obtenerMa
 | `crearServicio(datos, uidCreador)` | Crea un servicio y devuelve su ID. |
 | `actualizarServicio(id, datos)` | Edita un servicio. |
 | `cambiarEstadoServicio(id, activo)` | Da de baja (`false`) o reactiva (`true`). |
-| `cargarServiciosIniciales(uidAdmin)` | Crea los servicios iniciales que falten (cinco originales y tres de RF-21). |
+| `cargarServiciosIniciales(uidAdmin)` | Crea los servicios iniciales que falten (cinco originales, tres de RF-21 y seis de RF-23). |
 | `validarServicio(datos)` | Devuelve la lista de errores del formulario (vacía si está bien). |

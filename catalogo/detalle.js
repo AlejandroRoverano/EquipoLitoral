@@ -16,6 +16,8 @@ import { obtenerRol, ROLES } from "../acceso.js";
 import { obtenerAdquisicion, ESTADOS_ADQUISICION } from "../adquisiciones-modelo.js";
 import { obtenerMateriales, contarMateriales } from "../materiales-modelo.js";
 import { crearModulo } from "../materiales-vista.js";
+import { crearBloqueProgreso, iniciarProgreso } from "../progreso-vista.js";
+import { iniciarResenas } from "./resenas-detalle.js";
 import {
   obtenerPrueba,
   activarPrueba,
@@ -71,8 +73,13 @@ async function cargar() {
   renderizar(servicio);
   cargarRelacionados(servicio);
   cargarContenido(servicio);
-  // Si lo adquiere desde esta misma página, se muestra el contenido sin recargar
-  document.addEventListener("servicio-adquirido", () => cargarContenido(servicio));
+  // RF-26: opiniones de los estudiantes
+  const resenas = iniciarResenas(servicio);
+  // Si lo adquiere desde esta misma página, se muestran el contenido y el formulario de reseña sin recargar
+  document.addEventListener("servicio-adquirido", () => {
+    cargarContenido(servicio);
+    resenas.recargar();
+  });
 
   // Datos que usa el flujo de adquisición (resumen y registro)
   return {
@@ -204,6 +211,7 @@ async function cargarContenido(servicio) {
   clearTimeout(temporizadorPrueba);
   mostrarContenido("contenido-cargando");
   $("contenido-resumen").classList.add("hidden");
+  $("contenido-progreso").replaceChildren();
   $("btn-prueba-dia").classList.add("hidden");
   $("estado-prueba").classList.add("hidden");
 
@@ -216,7 +224,7 @@ async function cargarContenido(servicio) {
 
     // RF-22: la prueba se ofrece si nunca la usó, no compró el curso y el curso está activo
     // (sin sesión también se muestra: al tocarla se le pide iniciar sesión)
-    const ofrecerPrueba = servicio.activo && !adquirido && !prueba && (!user || rol === ROLES.ESTUDIANTE);
+    const ofrecerPrueba = servicio.activo && servicio.tieneMateriales && !adquirido && !prueba && (!user || rol === ROLES.ESTUDIANTE);
     $("btn-prueba-dia").classList.toggle("hidden", !ofrecerPrueba);
 
     if (prueba && !adquirido) {
@@ -266,7 +274,18 @@ async function cargarContenido(servicio) {
     const resumen = $("contenido-resumen");
     resumen.textContent = `${modulos.length} ${modulos.length === 1 ? "unidad" : "unidades"} · ${total} ${total === 1 ? "material" : "materiales"}`;
     resumen.classList.remove("hidden");
-    $("contenido-modulos").replaceChildren(...modulos.map((m, i) => crearModulo(m, i, "contenido-unidad")));
+    // RF-24: el estudiante (con el curso adquirido o la prueba gratis) marca lo que ya vio
+    let progreso = null;
+    if (user && rol === ROLES.ESTUDIANTE) {
+      try {
+        const ui = crearBloqueProgreso();
+        progreso = await iniciarProgreso({ user, servicio, modulos, adquirido, ui });
+        $("contenido-progreso").replaceChildren(ui.bloque);
+      } catch (error) {
+        console.error("No se pudo cargar el progreso:", error.code, error.message);
+      }
+    }
+    $("contenido-modulos").replaceChildren(...modulos.map((m, i) => crearModulo(m, i, "contenido-unidad", progreso)));
     mostrarContenido("contenido-modulos");
   } catch (error) {
     console.error("Error al cargar el contenido del curso:", error.code, error.message);
@@ -308,6 +327,8 @@ async function activarPruebaDia() {
       mostrarEstadoPrueba("Ya usaste la prueba gratis de este curso.", "secondary");
     } else if (!servicio.activo) {
       mostrarEstadoPrueba("Este servicio ya no está disponible.", "secondary");
+    } else if (!servicio.tieneMateriales) {
+      mostrarEstadoPrueba("Este curso todavía no tiene unidades cargadas, así que la prueba gratis no está disponible por ahora.", "info");
     } else {
       await activarPrueba(user.uid, servicio);
       await cargarContenido(servicio);

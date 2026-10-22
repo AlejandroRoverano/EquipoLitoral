@@ -26,22 +26,19 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 import { obtenerServiciosActivos } from "./servicios-modelo.js";
 import { obtenerTodasLasAdquisiciones, ESTADOS_ADQUISICION } from "./adquisiciones-modelo.js";
+import { obtenerResumenCalificaciones, PUNTAJE_MAXIMO } from "./resenas-modelo.js";
 
 export const COLECCION_ESTADISTICAS = "estadisticas";
 export const DOC_ESTADISTICAS = "general";
 export const COLECCION_MARCAS = "estudiantesConCompras";
 
-// Calificación general de la plataforma (RF-18: 4,8 sobre 5).
-// Es un valor fijo definido por el equipo. Cuando exista el sistema de
-// valoraciones (RF-19), se reemplaza por el promedio real de las reseñas.
-export const CALIFICACION_GENERAL = 4.8;
-export const CALIFICACION_MAXIMA = 5;
+// RF-26: la calificación de la portada es el promedio real de las reseñas de
+// los estudiantes que adquirieron cursos (resenas-modelo.js).
+export const CALIFICACION_MAXIMA = PUNTAJE_MAXIMO;
 
-// Cantidad base de estudiantes que muestra la portada, definida por el equipo.
-// No sale de Firestore: se SUMA al conteo real (estudiantesConCursos), así el
-// número sigue creciendo con cada estudiante nuevo. Para mostrar solo el dato
-// real, poner 0.
-export const ESTUDIANTES_BASE = 3467;
+// Cantidad base que se suma al conteo real de estudiantes. En 0: la portada
+// muestra solo datos reales.
+export const ESTUDIANTES_BASE = 0;
 
 const refEstadisticas = () => doc(db, COLECCION_ESTADISTICAS, DOC_ESTADISTICAS);
 const refMarca = (uid) => doc(db, COLECCION_MARCAS, uid);
@@ -50,11 +47,12 @@ const refMarca = (uid) => doc(db, COLECCION_MARCAS, uid);
 /* Lectura pública (portada)                                           */
 /* ------------------------------------------------------------------ */
 
-// Devuelve { estudiantes, servicios, calificacion, calificacionMaxima }.
+// Devuelve { estudiantes, servicios, calificacion, cantidadResenas, calificacionMaxima }.
+// "calificacion" es null si todavía no hay reseñas.
 // "estudiantes" es ESTUDIANTES_BASE más el conteo real (si no se pudo leer, solo la base).
 // Si falla el conteo de servicios, su valor queda en null.
 export async function obtenerEstadisticasPublicas() {
-  const [estudiantes, servicios] = await Promise.all([
+  const [estudiantes, servicios, resenas] = await Promise.all([
     getDoc(refEstadisticas())
       .then((snap) => (snap.exists() ? snap.data().estudiantesConCursos || 0 : 0))
       .catch((error) => {
@@ -66,12 +64,19 @@ export async function obtenerEstadisticasPublicas() {
       .catch((error) => {
         console.error("No se pudieron contar los servicios:", error.code, error.message);
         return null;
+      }),
+    obtenerResumenCalificaciones()
+      .then((r) => r.general)
+      .catch((error) => {
+        console.error("No se pudieron leer las reseñas:", error.code, error.message);
+        return { promedio: null, cantidad: 0 };
       })
   ]);
   return {
     estudiantes: ESTUDIANTES_BASE + (estudiantes ?? 0),
     servicios,
-    calificacion: CALIFICACION_GENERAL,
+    calificacion: resenas.promedio,
+    cantidadResenas: resenas.cantidad,
     calificacionMaxima: CALIFICACION_MAXIMA
   };
 }

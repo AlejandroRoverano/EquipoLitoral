@@ -4,8 +4,9 @@
 // Reemplaza a filtros.js, que filtraba las tarjetas escritas a mano en el HTML.
 // RF-20: tarjetas con imagen, precio y modalidad, buscador por texto y contador de resultados.
 
-import { obtenerServiciosActivos, CATEGORIAS, formatearPrecio } from "../servicios-modelo.js";
-import { imagenDeServicio } from "./imagenes.js";
+import { obtenerServiciosActivos, CATEGORIAS } from "../servicios-modelo.js";
+import { crearTarjeta } from "./tarjeta-servicio.js";
+import { obtenerResumenCalificaciones } from "../resenas-modelo.js";
 
 const lista = document.getElementById("lista-servicios");
 const cargando = document.getElementById("catalogo-cargando");
@@ -17,77 +18,9 @@ const radios = document.querySelectorAll('input[name="categoria"]');
 
 let servicios = [];
 
-function crear(etiqueta, clases, texto) {
-  const el = document.createElement(etiqueta);
-  if (clases) el.className = clases;
-  if (texto !== undefined) el.textContent = texto;
-  return el;
-}
-
-function icono(clase) {
-  const i = crear("i", `bi ${clase} me-1`);
-  i.setAttribute("aria-hidden", "true");
-  return i;
-}
-
 // "Taller de Robótica" -> "taller de robotica" (para buscar sin importar tildes ni mayúsculas)
 function normalizarTexto(texto) {
   return (texto || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-}
-
-function crearTarjeta(s) {
-  const col = crear("div", "col-md-6 col-xl-4");
-  const tarjeta = crear("article", "tarjeta-servicio");
-
-  // Imagen con la categoría y la modalidad encima
-  const contImagen = crear("div", "tarjeta-servicio__imagen");
-  const img = crear("img");
-  img.src = imagenDeServicio(s);
-  img.alt = "";
-  img.loading = "lazy";
-  contImagen.append(img, crear("span", "tarjeta-servicio__categoria", CATEGORIAS[s.categoria] || s.categoria));
-  if (s.modalidad) {
-    const modalidad = crear("span", "tarjeta-servicio__modalidad");
-    modalidad.append(icono(s.modalidad === "Virtual" ? "bi-wifi" : "bi-geo-alt"), s.modalidad);
-    contImagen.append(modalidad);
-  }
-
-  const cuerpo = crear("div", "tarjeta-servicio__cuerpo");
-  const titulo = crear("h3", "h5 fw-bold mb-2", s.nombre);
-  const pie = crear("div", "tarjeta-servicio__pie");
-  const duracion = crear("span", "text-secondary small");
-  duracion.append(icono("bi-clock"), s.duracion || "");
-  const precio = crear("span", "tarjeta-servicio__precio", formatearPrecio(s.precio, s.moneda));
-  if (s.periodo && typeof s.precio === "number") precio.append(crear("small", "", ` / ${s.periodo}`));
-  pie.append(duracion, precio);
-
-  const enlace = crear("a", "btn btn-primary w-100", "Ver detalles");
-  enlace.href = `detalle.html?id=${encodeURIComponent(s.id)}`;
-  enlace.setAttribute("aria-label", `Ver detalles de ${s.nombre}`);
-
-  // RF-22: prueba gratis de un día. El detalle la activa (pide sesión si hace falta).
-  const prueba = crear("a", "btn btn-outline-success w-100 mt-2");
-  prueba.href = `detalle.html?id=${encodeURIComponent(s.id)}&prueba=activar`;
-  prueba.setAttribute("aria-label", `Probar gratis un día ${s.nombre}`);
-  prueba.append(icono("bi-gift"), "Probar gratis 1 día");
-
-  cuerpo.append(
-    crear("p", "small text-secondary fw-medium mb-1", s.institucion || s.prestador || ""),
-    titulo,
-    crear("p", "tarjeta-servicio__descripcion text-secondary small mb-3", s.descripcionCorta || ""),
-    pie,
-    enlace,
-    prueba
-  );
-  if (s.certificado) {
-    const cert = crear("span", "badge text-bg-light border text-success align-self-start mb-2");
-    cert.append(icono("bi-patch-check"), "Con certificado");
-    cuerpo.insertBefore(cert, titulo);
-  }
-
-  tarjeta.append(contImagen, cuerpo);
-  col.append(tarjeta);
-  return col;
 }
 
 function aplicarFiltro() {
@@ -97,13 +30,18 @@ function aplicarFiltro() {
     (seleccionada === "todas" || s.categoria === seleccionada) &&
     (!texto || normalizarTexto(`${s.nombre} ${s.institucion} ${s.prestador} ${s.descripcionCorta} ${CATEGORIAS[s.categoria] || ""}`).includes(texto))
   );
-  lista.replaceChildren(...visibles.map(crearTarjeta));
+  lista.replaceChildren(...visibles.map((s) => crearTarjeta(s)));
   vacio.classList.toggle("hidden", visibles.length > 0);
   contador.textContent = visibles.length === 1 ? "1 servicio encontrado" : `${visibles.length} servicios encontrados`;
 }
 
 // RF-21: búsqueda que viene del buscador de la barra de navegación (?q=...)
 const busquedaInicial = new URLSearchParams(window.location.search).get("q");
+// RF-23: categoría elegida desde la página de inicio (?categoria=robotica)
+const categoriaInicial = new URLSearchParams(window.location.search).get("categoria");
+const radioInicial = categoriaInicial && document.querySelector(`input[name="categoria"][value="${CSS.escape(categoriaInicial)}"]`);
+if (radioInicial) radioInicial.checked = true;
+
 if (busquedaInicial) {
   buscador.value = busquedaInicial;
   const busquedaNav = document.getElementById("busqueda-global");
@@ -119,7 +57,15 @@ document.getElementById("btn-limpiar").addEventListener("click", () => {
 });
 
 try {
-  servicios = await obtenerServiciosActivos();
+  const [lista, calificaciones] = await Promise.all([
+    obtenerServiciosActivos(),
+    // RF-26: si las reseñas no cargan, el catálogo se muestra igual (sin estrellas)
+    obtenerResumenCalificaciones().catch((error) => {
+      console.error("No se pudieron leer las reseñas:", error.code, error.message);
+      return null;
+    })
+  ]);
+  servicios = lista.map((s) => ({ ...s, calificacion: calificaciones?.porServicio.get(s.id) || null }));
   aplicarFiltro();
 } catch (error) {
   console.error("Error al cargar el catálogo:", error.code, error.message);

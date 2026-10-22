@@ -218,5 +218,159 @@ export const CONTENIDO_INICIAL = {
         ]
       }
     ]
+  },
+
+  // RF-23: contenido de los cursos nuevos
+  "inteligencia-artificial": {
+    clasePrueba: {
+      titulo: "Clase 1 (gratuita): ¿qué es la inteligencia artificial?",
+      descripcion:
+        "Qué entendemos por inteligencia artificial, cuáles son sus tipos y dónde la usamos todos los días sin darnos cuenta.",
+      enlace: "https://es.wikipedia.org/wiki/Inteligencia_artificial"
+    },
+    modulos: [
+      {
+        titulo: "Unidad 1 · Fundamentos de la IA",
+        materiales: [
+          { titulo: "Elements of AI: curso gratuito en español", tipo: "enlace", enlace: "https://www.elementsofai.com/es/" },
+          { titulo: "Qué es el aprendizaje automático", tipo: "lectura", enlace: "https://es.wikipedia.org/wiki/Aprendizaje_autom%C3%A1tico" }
+        ]
+      },
+      {
+        titulo: "Unidad 2 · Entrenar tu primer modelo",
+        materiales: [
+          { titulo: "Teachable Machine: entrená un modelo sin programar", tipo: "enlace", enlace: "https://teachablemachine.withgoogle.com/" }
+        ]
+      },
+      {
+        titulo: "Unidad 3 · Ética y uso responsable",
+        materiales: [
+          { titulo: "Recomendación de la UNESCO sobre la ética de la IA", tipo: "lectura", enlace: "https://www.unesco.org/es/artificial-intelligence/recommendation-ethics" }
+        ]
+      }
+    ]
+  },
+
+  "mentoria-proyectos": {
+    clasePrueba: {
+      titulo: "Sesión introductoria (gratuita): organizar un proyecto con Scrum",
+      descripcion:
+        "Qué es Scrum, cómo se divide un proyecto en etapas cortas y qué roles y reuniones propone para trabajar en equipo.",
+      enlace: "https://es.wikipedia.org/wiki/Scrum_(desarrollo_de_software)"
+    },
+    modulos: [
+      {
+        titulo: "Unidad 1 · Planificar y organizar el trabajo",
+        materiales: [
+          { titulo: "Planificación y seguimiento con GitHub Projects", tipo: "lectura", enlace: "https://docs.github.com/es/issues/planning-and-tracking-with-projects" },
+          { titulo: "Scrum (desarrollo de software)", tipo: "lectura", enlace: "https://es.wikipedia.org/wiki/Scrum_(desarrollo_de_software)" }
+        ]
+      },
+      {
+        titulo: "Unidad 2 · Documentar el proyecto",
+        materiales: [
+          { titulo: "Guía de Markdown para el README", tipo: "lectura", enlace: "https://www.markdownguide.org/" },
+          { titulo: "diagrams.net: diagramas gratuitos", tipo: "enlace", enlace: "https://app.diagrams.net/" }
+        ]
+      }
+    ]
+  },
+
+  "tecnologia-educativa": {
+    clasePrueba: {
+      titulo: "Clase introductoria (gratuita): ¿qué es la tecnología educativa?",
+      descripcion:
+        "Primer acercamiento a la tecnología educativa: qué estudia, cómo evolucionó y qué aporta a la enseñanza.",
+      enlace: "https://es.wikipedia.org/wiki/Tecnolog%C3%ADa_educativa"
+    },
+    modulos: [
+      {
+        titulo: "Unidad 1 · Materiales interactivos",
+        materiales: [
+          { titulo: "Genially: presentaciones y actividades interactivas", tipo: "enlace", enlace: "https://genially.com/es/" },
+          { titulo: "Recursos educativos de Plan Ceibal", tipo: "enlace", enlace: "https://www.ceibal.edu.uy/" }
+        ]
+      },
+      {
+        titulo: "Unidad 2 · Recursos abiertos y licencias",
+        materiales: [
+          { titulo: "Recursos educativos abiertos", tipo: "lectura", enlace: "https://es.wikipedia.org/wiki/Recursos_educativos_abiertos" },
+          { titulo: "Licencias Creative Commons", tipo: "lectura", enlace: "https://es.wikipedia.org/wiki/Licencias_Creative_Commons" }
+        ]
+      }
+    ]
+  },
+
+  "videojuegos-scratch": {
+    clasePrueba: {
+      titulo: "Clase 1 (gratuita): ¿qué es Scratch?",
+      descripcion:
+        "Conocé Scratch, el lenguaje de programación por bloques con el que vamos a crear videojuegos, y mirá qué se puede hacer con él.",
+      enlace: "https://es.wikipedia.org/wiki/Scratch_(lenguaje_de_programaci%C3%B3n)"
+    },
+    modulos: [
+      {
+        titulo: "Unidad 1 · Primeros pasos en Scratch",
+        materiales: [
+          { titulo: "Scratch: crear un proyecto", tipo: "enlace", enlace: "https://scratch.mit.edu/" },
+          { titulo: "Ideas y tutoriales de Scratch", tipo: "lectura", enlace: "https://scratch.mit.edu/ideas" }
+        ]
+      },
+      {
+        titulo: "Unidad 2 · Diseñar un videojuego",
+        materiales: [
+          { titulo: "Qué es el diseño de videojuegos", tipo: "lectura", enlace: "https://es.wikipedia.org/wiki/Dise%C3%B1o_de_videojuegos" }
+        ]
+      }
+    ]
+  },
+
+  "domotica-arduino": {
+    clasePrueba: {
+      titulo: "Clase 1 (gratuita): ¿qué es la domótica?",
+      descripcion:
+        "Qué es una casa inteligente, qué tareas se pueden automatizar y qué componentes vamos a usar en el taller.",
+      enlace: "https://es.wikipedia.org/wiki/Dom%C3%B3tica"
+    },
+    modulos: [
+      {
+        titulo: "Unidad 1 · Sensores",
+        materiales: [
+          { titulo: "Qué es un sensor y qué tipos existen", tipo: "lectura", enlace: "https://es.wikipedia.org/wiki/Sensor" },
+          { titulo: "Guía de inicio de Arduino", tipo: "lectura", enlace: "https://docs.arduino.cc/learn/starting-guide/getting-started-arduino/" }
+        ]
+      },
+      {
+        titulo: "Unidad 2 · Simular la casa inteligente",
+        materiales: [
+          { titulo: "Simulador de circuitos Tinkercad", tipo: "enlace", enlace: "https://www.tinkercad.com/circuits" },
+          { titulo: "Referencia del lenguaje de Arduino", tipo: "lectura", enlace: "https://docs.arduino.cc/language-reference/" }
+        ]
+      }
+    ]
+  },
+
+  "pensamiento-computacional": {
+    clasePrueba: {
+      titulo: "Clase introductoria (gratuita): ¿qué es el pensamiento computacional?",
+      descripcion:
+        "Los cuatro pilares del pensamiento computacional y por qué es una habilidad útil en cualquier asignatura.",
+      enlace: "https://es.wikipedia.org/wiki/Pensamiento_computacional"
+    },
+    modulos: [
+      {
+        titulo: "Unidad 1 · Actividades desenchufadas",
+        materiales: [
+          { titulo: "CS Unplugged: informática sin computadora", tipo: "enlace", enlace: "https://www.csunplugged.org/es/" }
+        ]
+      },
+      {
+        titulo: "Unidad 2 · Programación por bloques en el aula",
+        materiales: [
+          { titulo: "Scratch: crear un proyecto", tipo: "enlace", enlace: "https://scratch.mit.edu/" },
+          { titulo: "Recursos educativos de Plan Ceibal", tipo: "enlace", enlace: "https://www.ceibal.edu.uy/" }
+        ]
+      }
+    ]
   }
 };

@@ -8,13 +8,21 @@ import { obtenerEstadisticasPublicas } from "./estadisticas-modelo.js";
 const $ = (id) => document.getElementById(id);
 const entero = (n) => n.toLocaleString("es-UY");
 
-const { estudiantes, servicios, calificacion, calificacionMaxima } = await obtenerEstadisticasPublicas();
+const { estudiantes, servicios, calificacion, cantidadResenas, calificacionMaxima } = await obtenerEstadisticasPublicas();
 
 if (estudiantes !== null) $("estadistica-estudiantes").textContent = entero(estudiantes);
 if (servicios !== null) $("estadistica-servicios").textContent = entero(servicios);
 
-// "4,8" con coma decimal, y las estrellas rellenas en la misma proporción (96%)
-const texto = calificacion.toLocaleString("es-UY", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-$("estadistica-calificacion").textContent = texto;
-$("estadistica-relleno").style.width = `${(calificacion / calificacionMaxima) * 100}%`;
-$("estadistica-estrellas").setAttribute("aria-label", `Calificación: ${texto} de ${calificacionMaxima} estrellas`);
+// RF-26: promedio real de las reseñas. "4,8" con coma decimal, y las estrellas
+// rellenas en la misma proporción (96%). Sin reseñas se muestra "–".
+if (calificacion !== null) {
+  const texto = calificacion.toLocaleString("es-UY", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  $("estadistica-calificacion").textContent = texto;
+  $("estadistica-relleno").style.width = `${(calificacion / calificacionMaxima) * 100}%`;
+  $("estadistica-estrellas").setAttribute("aria-label", `Calificación: ${texto} de ${calificacionMaxima} estrellas`);
+  $("estadistica-calificacion-detalle").textContent =
+    `Calificación de nuestros estudiantes (${entero(cantidadResenas)} ${cantidadResenas === 1 ? "reseña" : "reseñas"})`;
+} else {
+  $("estadistica-estrellas").setAttribute("aria-label", "Todavía no hay reseñas");
+  $("estadistica-calificacion-detalle").textContent = "Todavía no hay reseñas de estudiantes";
+}
