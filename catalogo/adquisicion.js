@@ -28,6 +28,7 @@ import {
 } from "../adquisiciones-modelo.js";
 import { ROLES } from "../acceso.js";
 import { servicioListo } from "./detalle.js";
+import { registrarEstudianteEnEstadisticas } from "../estadisticas-modelo.js";
 
 /* ------------------------------------------------------------------ */
 /* Datos del servicio seleccionado                                     */
@@ -295,6 +296,12 @@ btnConfirmar.addEventListener("click", async () => {
 
     // Pago aprobado: se guardan el pago y la adquisición juntos (todo o nada)
     await registrarAdquisicion(operacion);
+
+    // RF-18: si es su primera adquisición, el estudiante suma 1 a las estadísticas públicas.
+    // No se espera ni se bloquea la compra: si fallara, la adquisición igual quedó registrada.
+    registrarEstudianteEnEstadisticas(user.uid, servicio.id).catch((error) =>
+      console.error("No se pudieron actualizar las estadísticas públicas:", error.code, error.message)
+    );
 
     bloquearPago(false);
     mostrarMensajeModal(

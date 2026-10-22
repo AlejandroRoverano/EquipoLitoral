@@ -178,6 +178,42 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    // ---------- estadísticas públicas (RF-18) ----------
+    // estadisticas/general: solo el TOTAL de estudiantes que adquirieron algún servicio.
+    // Lectura pública (portada), sin datos personales.
+    // Un estudiante solo puede sumar 1, una única vez (cuando crea su marca en el mismo
+    // lote) y únicamente si tiene una adquisición real. El administrador puede recalcular.
+    match /estadisticas/{estadisticaId} {
+      allow read: if true;
+      allow create: if esAdmin()
+        || (esEstudiante()
+          && estadisticaId == 'general'
+          && !exists(/databases/$(database)/documents/estudiantesConCompras/$(request.auth.uid))
+          && existsAfter(/databases/$(database)/documents/estudiantesConCompras/$(request.auth.uid))
+          && request.resource.data.keys().hasOnly(['estudiantesConCursos', 'actualizadoEn'])
+          && request.resource.data.estudiantesConCursos == 1);
+      allow update: if esAdmin()
+        || (esEstudiante()
+          && estadisticaId == 'general'
+          && !exists(/databases/$(database)/documents/estudiantesConCompras/$(request.auth.uid))
+          && existsAfter(/databases/$(database)/documents/estudiantesConCompras/$(request.auth.uid))
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['estudiantesConCursos', 'actualizadoEn'])
+          && request.resource.data.estudiantesConCursos == resource.data.estudiantesConCursos + 1);
+      allow delete: if false;
+    }
+
+    // estudiantesConCompras/{uid}: marca privada de que el estudiante ya fue contado.
+    // La crea el propio estudiante con una adquisición existente, o el administrador al recalcular.
+    match /estudiantesConCompras/{uid} {
+      allow read: if esDueno(uid) || esAdmin();
+      allow create: if esAdmin()
+        || (esDueno(uid)
+          && esEstudiante()
+          && request.resource.data.keys().hasOnly(['servicioId', 'creadoEn'])
+          && exists(/databases/$(database)/documents/adquisiciones/$(uid + '_' + request.resource.data.servicioId)));
+      allow update, delete: if esAdmin();
+    }
+
     // Cualquier otra colección queda cerrada por defecto.
   }
 }

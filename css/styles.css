@@ -78,3 +78,9 @@ h1, h2, h3, h4, h5, h6, .navbar-brand { font-family: "Montserrat", "Inter", sans
 /* RF-17: números de los pasos en "Sobre nosotros" */
 .paso-numero { width: 2.5rem; height: 2.5rem; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
   background: var(--el-green); color: #fff; font-weight: 700; font-family: "Montserrat", "Inter", sans-serif; }
+
+/* RF-18: estrellas de la calificación. El relleno dorado se recorta con "width",
+   así 4,8 de 5 se ve como 96% de las estrellas (sin redondear). */
+.estrellas { position: relative; display: inline-block; white-space: nowrap; letter-spacing: .15em; line-height: 1; }
+.estrellas-base { color: #d3dbe8; }
+.estrellas-relleno { position: absolute; top: 0; left: 0; overflow: hidden; white-space: nowrap; color: #f5b301; }

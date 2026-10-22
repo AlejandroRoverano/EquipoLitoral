@@ -69,6 +69,17 @@
 
                     <div id="admin-error" class="alert alert-danger hidden" role="alert"></div>
 
+                    <!-- RF-18: estadísticas públicas que muestra la página de inicio -->
+                    <section class="card-litoral p-3 mb-4 d-flex flex-wrap align-items-center gap-3" aria-labelledby="titulo-estadisticas-publicas">
+                        <span class="icon-circle flex-shrink-0"><i class="bi bi-globe" aria-hidden="true"></i></span>
+                        <div class="me-auto">
+                            <h3 class="h6 fw-bold mb-1" id="titulo-estadisticas-publicas">Estadísticas públicas de la portada</h3>
+                            <p class="small text-secondary mb-0" id="estadisticas-publicas-texto">Consultando...</p>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-primary" id="btn-recalcular-estadisticas"><i class="bi bi-arrow-repeat me-1" aria-hidden="true"></i>Recalcular estadísticas</button>
+                        <div id="estadisticas-publicas-msg" class="w-100 hidden" role="status" aria-live="polite"></div>
+                    </section>
+
                     <section aria-label="Indicadores" class="mb-4">
                         <div class="row g-3">
                             <div class="col-12 col-md-6 col-xl-4">
