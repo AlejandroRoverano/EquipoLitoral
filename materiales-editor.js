@@ -182,7 +182,7 @@ function filaMaterial(mat) {
   tipo.value = TIPOS_MATERIAL[mat.tipo] ? mat.tipo : "lectura";
   colTipo.append(tipo);
 
-  const colEnlace = crear("div", "col-md-5 col-7");
+  const colEnlace = crear("div", "col-md-5 col");
   const enlace = crear("input", "form-control form-control-sm campo-enlace");
   enlace.type = "url";
   enlace.placeholder = "https://...";
@@ -190,7 +190,7 @@ function filaMaterial(mat) {
   enlace.value = mat.enlace || "";
   colEnlace.append(enlace);
 
-  const colQuitar = crear("div", "col-md-1 text-end");
+  const colQuitar = crear("div", "col-md-1 col-auto text-end");
   const quitar = botonIcono("bi-x-lg", "Quitar material", "btn-outline-danger");
   quitar.addEventListener("click", () => {
     fila.remove();
