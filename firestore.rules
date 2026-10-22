@@ -100,25 +100,51 @@ service cloud.firestore {
       // servicios/{servicioId}/clasePrueba/contenido
       // La lee cualquier usuario con sesión iniciada (no hace falta adquirir el servicio).
       // La modifican el administrador o el prestador dueño del servicio.
-      // Se usa getAfter() porque la clase se guarda en el mismo lote que el servicio
-      // (al crear un servicio nuevo, el documento todavía no existe antes del lote).
       match /clasePrueba/{claseId} {
         allow read: if autenticado();
-        allow create, update: if puedeEditarClase(servicioId)
+        allow create, update: if puedeEditarContenido(servicioId)
           && request.resource.data.keys().hasOnly(['titulo', 'descripcion', 'enlace', 'actualizadoEn'])
           && request.resource.data.titulo is string
           && request.resource.data.descripcion is string
           && request.resource.data.enlace is string
           && request.resource.data.enlace.matches('https://.+');
-        allow delete: if puedeEditarClase(servicioId);
+        allow delete: if puedeEditarContenido(servicioId);
+      }
+
+      // ---------- materiales de estudio (RF-16) ----------
+      // servicios/{servicioId}/materiales/contenido
+      // Los leen quien adquirió el servicio, el prestador dueño y el administrador.
+      // Los modifican el prestador dueño y el administrador.
+      match /materiales/{materialesId} {
+        allow read: if esAdmin() || esPrestadorDueno(servicioId) || adquirio(servicioId);
+        allow create, update: if puedeEditarContenido(servicioId)
+          && request.resource.data.keys().hasOnly(['modulos', 'actualizadoEn'])
+          && request.resource.data.modulos is list
+          && request.resource.data.modulos.size() <= 30;
+        allow delete: if puedeEditarContenido(servicioId);
       }
     }
 
-    // RF-15: administrador, o prestador dueño del servicio después del cambio
-    function puedeEditarClase(servicioId) {
+    // RF-15 / RF-16: administrador, o prestador dueño del servicio después del cambio.
+    // Se usa getAfter() porque el contenido se guarda en el mismo lote que el servicio
+    // (al crear un servicio nuevo, el documento todavía no existe antes del lote).
+    function puedeEditarContenido(servicioId) {
       return esAdmin()
         || (esPrestador()
           && getAfter(/databases/$(database)/documents/servicios/$(servicioId)).data.prestadorUid == request.auth.uid);
+    }
+
+    // RF-16: prestador dueño del servicio (para lecturas)
+    function esPrestadorDueno(servicioId) {
+      return esPrestador()
+        && get(/databases/$(database)/documents/servicios/$(servicioId)).data.prestadorUid == request.auth.uid;
+    }
+
+    // RF-16: el usuario tiene una adquisición confirmada de este servicio
+    function adquirio(servicioId) {
+      return autenticado()
+        && exists(/databases/$(database)/documents/adquisiciones/$(request.auth.uid + '_' + servicioId))
+        && get(/databases/$(database)/documents/adquisiciones/$(request.auth.uid + '_' + servicioId)).data.estado == 'confirmada';
     }
 
     // ---------- adquisiciones ----------

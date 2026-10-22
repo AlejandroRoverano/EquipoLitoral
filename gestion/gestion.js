@@ -244,8 +244,9 @@ function crearTarjetaPanel(a) {
   const tarjeta = crearElemento("article", "card-litoral p-4 h-100 d-flex flex-column");
   const estado = crearElemento("span", "badge badge-accent align-self-start mb-2",
     a.estado === ESTADOS_ADQUISICION.CONFIRMADA ? "Confirmada" : a.estado);
-  const enlace = crearElemento("a", "mt-auto", "Ver detalle del servicio");
-  enlace.href = `../catalogo/detalle.html?id=${encodeURIComponent(a.servicioId)}`;
+  // RF-16: acceso directo a los materiales del servicio adquirido
+  const enlace = crearElemento("a", "mt-auto", "Ver materiales");
+  enlace.href = `materiales.html?id=${encodeURIComponent(a.servicioId)}`;
 
   tarjeta.append(
     estado,
