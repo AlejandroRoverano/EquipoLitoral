@@ -22,8 +22,17 @@
                         <li class="nav-item"><a class="nav-link" href="../index.html">Inicio</a></li>
                         <li class="nav-item"><a class="nav-link" href="../catalogo/catalogo-general.html">Catálogo</a></li>
                         <li class="nav-item"><a class="nav-link" href="../sobre-nosotros.html">Sobre nosotros</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../contacto.html">Contacto</a></li>
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="panel.html">Administración</a></li>
                     </ul>
+                    <!-- RF-21: buscador de cursos y servicios (muestra los resultados en el catálogo) -->
+                    <form class="buscador-nav me-lg-3 mb-2 mb-lg-0" role="search" action="../catalogo/catalogo-general.html" method="get">
+                        <label for="busqueda-global" class="visually-hidden">Buscar cursos y servicios</label>
+                        <div class="input-group input-group-sm">
+                            <input class="form-control" type="search" id="busqueda-global" name="q" placeholder="Buscar cursos..." autocomplete="off" required>
+                            <button class="btn btn-accent" type="submit" aria-label="Buscar"><i class="bi bi-search" aria-hidden="true"></i></button>
+                        </div>
+                    </form>
                     <div id="nav-guest" class="d-flex gap-2">
                         <a href="../login/login.html" class="btn btn-outline-light btn-sm">Iniciar sesión</a>
                         <a href="../login/registro.html" class="btn btn-accent btn-sm">Registrarse</a>
@@ -95,7 +104,7 @@
                         <div id="servicios-vacio" class="card-litoral p-5 text-center hidden">
                             <i class="bi bi-collection display-5 text-secondary" aria-hidden="true"></i>
                             <h3 class="h5 fw-bold mt-3">Todavía no hay servicios en Firestore</h3>
-                            <p class="text-secondary">Podés crear uno nuevo o cargar los cinco servicios que el catálogo mostraba antes.</p>
+                            <p class="text-secondary">Podés crear uno nuevo o cargar los servicios iniciales del catálogo.</p>
                             <button type="button" id="btn-cargar-iniciales" class="btn btn-primary"><i class="bi bi-cloud-upload me-1" aria-hidden="true"></i>Cargar servicios iniciales</button>
                         </div>
 

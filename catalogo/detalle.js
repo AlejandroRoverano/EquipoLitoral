@@ -11,6 +11,19 @@ import {
   formatearPrecio,
   formatearFechaInicio
 } from "../servicios-modelo.js";
+import { auth } from "../firebase-config.js";
+import { obtenerRol, ROLES } from "../acceso.js";
+import { obtenerAdquisicion, ESTADOS_ADQUISICION } from "../adquisiciones-modelo.js";
+import { obtenerMateriales, contarMateriales } from "../materiales-modelo.js";
+import { crearModulo } from "../materiales-vista.js";
+import {
+  obtenerPrueba,
+  activarPrueba,
+  pruebaVigente,
+  vencimientoPrueba,
+  tiempoRestante,
+  formatearVencimiento
+} from "../pruebas-modelo.js";
 
 const $ = (id) => document.getElementById(id);
 
@@ -57,6 +70,9 @@ async function cargar() {
 
   renderizar(servicio);
   cargarRelacionados(servicio);
+  cargarContenido(servicio);
+  // Si lo adquiere desde esta misma página, se muestra el contenido sin recargar
+  document.addEventListener("servicio-adquirido", () => cargarContenido(servicio));
 
   // Datos que usa el flujo de adquisición (resumen y registro)
   return {
@@ -137,6 +153,197 @@ function renderizar(s) {
   $("detalle-cargando").classList.add("hidden");
   $("detalle-contenido").classList.remove("hidden");
 }
+
+/* ------------------------------------------------------------------ */
+/* RF-21: contenido del curso · RF-22: prueba gratis de un día         */
+/* ------------------------------------------------------------------ */
+
+const ESTADOS_CONTENIDO = ["contenido-cargando", "contenido-bloqueado", "contenido-vacio", "contenido-modulos"];
+const MENSAJE_PRUEBA_ROL = "La prueba gratis es para cuentas de estudiante.";
+
+function mostrarContenido(id) {
+  ESTADOS_CONTENIDO.forEach((e) => $(e).classList.toggle("hidden", e !== id));
+}
+
+function mostrarBloqueado(titulo, texto, textoAccion, enlace, conPrueba = false) {
+  $("bloqueado-titulo").textContent = titulo;
+  $("bloqueado-texto").textContent = texto;
+  const accion = $("bloqueado-accion");
+  accion.textContent = textoAccion;
+  accion.href = enlace;
+  accion.classList.toggle("hidden", !textoAccion);
+  $("bloqueado-prueba").classList.toggle("hidden", !conPrueba);
+  mostrarContenido("contenido-bloqueado");
+}
+
+// Mensaje debajo del botón de la prueba, en el bloque de adquisición
+function mostrarEstadoPrueba(texto, tipo = "success") {
+  const caja = $("estado-prueba");
+  caja.className = `alert alert-${tipo} small mt-3 mb-0`;
+  caja.textContent = texto;
+}
+
+// Qué puede hacer el usuario actual con este curso
+async function obtenerAccesoCurso(user, servicio) {
+  if (!user) return { rol: null, puedeVer: false, adquirido: false, prueba: null };
+  const rol = await obtenerRol(user.uid);
+  if (rol === ROLES.ADMINISTRADOR || (rol === ROLES.PRESTADOR && servicio.prestadorUid === user.uid)) {
+    return { rol, puedeVer: true, adquirido: false, prueba: null };
+  }
+  const adquisicion = await obtenerAdquisicion(user.uid, servicio.id);
+  const adquirido = adquisicion?.estado === ESTADOS_ADQUISICION.CONFIRMADA;
+  const prueba = rol === ROLES.ESTUDIANTE ? await obtenerPrueba(user.uid, servicio.id) : null;
+  return { rol, puedeVer: adquirido || pruebaVigente(prueba), adquirido, prueba };
+}
+
+let servicioActual = null;
+let temporizadorPrueba = null;
+
+async function cargarContenido(servicio) {
+  servicioActual = servicio;
+  clearTimeout(temporizadorPrueba);
+  mostrarContenido("contenido-cargando");
+  $("contenido-resumen").classList.add("hidden");
+  $("btn-prueba-dia").classList.add("hidden");
+  $("estado-prueba").classList.add("hidden");
+
+  await auth.authStateReady();
+  const user = auth.currentUser;
+
+  try {
+    const acceso = await obtenerAccesoCurso(user, servicio);
+    const { rol, puedeVer, adquirido, prueba } = acceso;
+
+    // RF-22: la prueba se ofrece si nunca la usó, no compró el curso y el curso está activo
+    // (sin sesión también se muestra: al tocarla se le pide iniciar sesión)
+    const ofrecerPrueba = servicio.activo && !adquirido && !prueba && (!user || rol === ROLES.ESTUDIANTE);
+    $("btn-prueba-dia").classList.toggle("hidden", !ofrecerPrueba);
+
+    if (prueba && !adquirido) {
+      if (pruebaVigente(prueba)) {
+        mostrarEstadoPrueba(`Prueba gratis activa: te quedan ${tiempoRestante(prueba)} (vence el ${formatearVencimiento(prueba)}).`);
+        // Cuando vence, se vuelve a bloquear el contenido sin recargar
+        const restanteMs = vencimientoPrueba(prueba) - new Date();
+        if (restanteMs < 2 ** 31) temporizadorPrueba = setTimeout(() => cargarContenido(servicio), restanteMs + 1000);
+      } else {
+        mostrarEstadoPrueba(`Tu prueba gratis terminó el ${formatearVencimiento(prueba)}.`, "secondary");
+      }
+    }
+
+    if (!user) {
+      const urlLogin = `../login/login.html?volver=${encodeURIComponent(window.location.href)}`;
+      mostrarBloqueado(
+        "Contenido exclusivo para estudiantes del curso",
+        "Iniciá sesión y adquirí el servicio (o probalo gratis un día) para acceder a todas las unidades y materiales.",
+        "Iniciar sesión",
+        urlLogin,
+        ofrecerPrueba
+      );
+      return;
+    }
+
+    if (!puedeVer) {
+      let texto = "Adquirí el servicio para acceder a todas las unidades y materiales de estudio.";
+      if (!servicio.activo) texto = "Este servicio ya no está disponible para nuevas adquisiciones.";
+      else if (prueba) texto = "Tu prueba gratis de un día ya terminó. Adquirí el servicio para seguir accediendo a todas las unidades.";
+      else if (ofrecerPrueba) texto = "Adquirí el servicio o probalo gratis durante un día para acceder a todas las unidades y materiales.";
+      mostrarBloqueado(
+        "Contenido exclusivo para estudiantes del curso",
+        texto,
+        servicio.activo ? "Adquirir el servicio" : "",
+        "#bloque-adquisicion",
+        ofrecerPrueba
+      );
+      return;
+    }
+
+    const modulos = await obtenerMateriales(servicio.id);
+    if (modulos.length === 0) {
+      mostrarContenido("contenido-vacio");
+      return;
+    }
+    const total = contarMateriales(modulos);
+    const resumen = $("contenido-resumen");
+    resumen.textContent = `${modulos.length} ${modulos.length === 1 ? "unidad" : "unidades"} · ${total} ${total === 1 ? "material" : "materiales"}`;
+    resumen.classList.remove("hidden");
+    $("contenido-modulos").replaceChildren(...modulos.map((m, i) => crearModulo(m, i, "contenido-unidad")));
+    mostrarContenido("contenido-modulos");
+  } catch (error) {
+    console.error("Error al cargar el contenido del curso:", error.code, error.message);
+    mostrarBloqueado(
+      error.code === "permission-denied" ? "Contenido exclusivo para estudiantes del curso" : "No pudimos cargar el contenido",
+      error.code === "permission-denied"
+        ? "Adquirí el servicio para acceder a todas las unidades y materiales de estudio."
+        : "Revisá tu conexión y recargá la página.",
+      "",
+      "#"
+    );
+  }
+}
+
+// RF-22: activa la prueba gratis de un día del curso actual
+async function activarPruebaDia() {
+  const servicio = servicioActual;
+  if (!servicio) return;
+
+  await auth.authStateReady();
+  const user = auth.currentUser;
+  if (!user) {
+    // Después de iniciar sesión vuelve acá y la prueba se activa sola
+    const url = new URL(window.location.href);
+    url.searchParams.set("prueba", "activar");
+    window.location.href = `../login/login.html?volver=${encodeURIComponent(url.href)}`;
+    return;
+  }
+
+  const botones = [$("btn-prueba-dia"), $("bloqueado-prueba")];
+  botones.forEach((b) => { b.disabled = true; });
+  try {
+    const { rol, adquirido, prueba } = await obtenerAccesoCurso(user, servicio);
+    if (rol !== ROLES.ESTUDIANTE) {
+      mostrarEstadoPrueba(MENSAJE_PRUEBA_ROL, "warning");
+    } else if (adquirido) {
+      mostrarEstadoPrueba("Ya adquiriste este servicio: tenés acceso completo al contenido.", "info");
+    } else if (prueba) {
+      mostrarEstadoPrueba("Ya usaste la prueba gratis de este curso.", "secondary");
+    } else if (!servicio.activo) {
+      mostrarEstadoPrueba("Este servicio ya no está disponible.", "secondary");
+    } else {
+      await activarPrueba(user.uid, servicio);
+      await cargarContenido(servicio);
+      $("seccion-contenido").scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    $("btn-prueba-dia").classList.add("hidden");
+    $("bloqueado-prueba").classList.add("hidden");
+  } catch (error) {
+    console.error("Error al activar la prueba gratis:", error.code, error.message);
+    mostrarEstadoPrueba(
+      error.code === "permission-denied"
+        ? "No pudimos activar la prueba. Puede que ya la hayas usado para este curso."
+        : "No pudimos activar la prueba. Revisá tu conexión e intentá de nuevo.",
+      "danger"
+    );
+  } finally {
+    botones.forEach((b) => { b.disabled = false; });
+  }
+}
+
+$("btn-prueba-dia").addEventListener("click", activarPruebaDia);
+$("bloqueado-prueba").addEventListener("click", activarPruebaDia);
+
+// Si viene del botón "Probar gratis 1 día" del catálogo (?prueba=activar), se activa al cargar
+async function activarDesdeEnlace() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("prueba") !== "activar") return;
+  const servicio = await servicioListo;
+  if (!servicio) return;
+  // Se quita el parámetro para que recargar la página no lo repita
+  params.delete("prueba");
+  history.replaceState(null, "", `${window.location.pathname}?${params}`);
+  activarPruebaDia();
+}
+activarDesdeEnlace();
 
 // Hasta 2 servicios activos, priorizando los de la misma categoría
 async function cargarRelacionados(actual) {

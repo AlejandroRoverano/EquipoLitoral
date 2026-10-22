@@ -130,5 +130,93 @@ export const CONTENIDO_INICIAL = {
         ]
       }
     ]
+  },
+
+  // RF-21: contenido de los cursos nuevos
+  "desarrollo-web": {
+    clasePrueba: {
+      titulo: "Clase 1 (gratuita): ¿cómo funciona la web?",
+      descripcion:
+        "Qué pasa cuando abrimos una página, qué hacen HTML, CSS y JavaScript y qué herramientas vamos a usar en el curso. No necesitás instalar nada.",
+      enlace: "https://developer.mozilla.org/es/docs/Learn_web_development"
+    },
+    modulos: [
+      {
+        titulo: "Unidad 1 · Estructura con HTML",
+        materiales: [
+          { titulo: "Guía de HTML de MDN", tipo: "lectura", enlace: "https://developer.mozilla.org/es/docs/Web/HTML" },
+          { titulo: "Validador de HTML del W3C", tipo: "enlace", enlace: "https://validator.w3.org/" }
+        ]
+      },
+      {
+        titulo: "Unidad 2 · Estilos con CSS",
+        materiales: [
+          { titulo: "Guía de CSS de MDN", tipo: "lectura", enlace: "https://developer.mozilla.org/es/docs/Web/CSS" },
+          { titulo: "Flexbox Froggy: aprendé Flexbox jugando", tipo: "enlace", enlace: "https://flexboxfroggy.com/#es" }
+        ]
+      },
+      {
+        titulo: "Unidad 3 · Interactividad con JavaScript",
+        materiales: [
+          { titulo: "El Tutorial de JavaScript Moderno", tipo: "lectura", enlace: "https://es.javascript.info/" },
+          { titulo: "Guía de JavaScript de MDN", tipo: "lectura", enlace: "https://developer.mozilla.org/es/docs/Web/JavaScript" }
+        ]
+      }
+    ]
+  },
+
+  "ciberseguridad-basica": {
+    clasePrueba: {
+      titulo: "Clase 1 (gratuita): ¿qué es la seguridad informática?",
+      descripcion:
+        "Conceptos básicos de la seguridad de la información: confidencialidad, integridad y disponibilidad, y los riesgos más comunes al usar internet.",
+      enlace: "https://es.wikipedia.org/wiki/Seguridad_inform%C3%A1tica"
+    },
+    modulos: [
+      {
+        titulo: "Unidad 1 · Contraseñas y cuentas seguras",
+        materiales: [
+          { titulo: "Autenticación de múltiples factores", tipo: "lectura", enlace: "https://es.wikipedia.org/wiki/Autenticaci%C3%B3n_de_m%C3%BAltiples_factores" },
+          { titulo: "Have I Been Pwned: ¿se filtró tu correo?", tipo: "enlace", enlace: "https://haveibeenpwned.com/" }
+        ]
+      },
+      {
+        titulo: "Unidad 2 · Reconocer el phishing",
+        materiales: [
+          { titulo: "Qué es el phishing", tipo: "lectura", enlace: "https://es.wikipedia.org/wiki/Phishing" },
+          { titulo: "Test de phishing de Google (Jigsaw)", tipo: "enlace", enlace: "https://phishingquiz.withgoogle.com/" }
+        ]
+      },
+      {
+        titulo: "Unidad 3 · Privacidad y buenos hábitos",
+        materiales: [
+          { titulo: "INCIBE: ciberseguridad para la ciudadanía", tipo: "enlace", enlace: "https://www.incibe.es/ciudadania" }
+        ]
+      }
+    ]
+  },
+
+  "robotica-principiantes": {
+    clasePrueba: {
+      titulo: "Clase 1 (gratuita): ¿qué es la micro:bit?",
+      descripcion:
+        "Conocé la placa micro:bit: sus luces, botones y sensores, y todo lo que se puede crear con ella. No necesitás tener la placa para esta clase.",
+      enlace: "https://microbit.org/es-es/get-started/what-is-the-microbit/"
+    },
+    modulos: [
+      {
+        titulo: "Unidad 1 · Programar con bloques",
+        materiales: [
+          { titulo: "Editor MakeCode para micro:bit", tipo: "enlace", enlace: "https://makecode.microbit.org/" },
+          { titulo: "¿Qué es la micro:bit?", tipo: "lectura", enlace: "https://microbit.org/es-es/get-started/what-is-the-microbit/" }
+        ]
+      },
+      {
+        titulo: "Unidad 2 · Proyectos paso a paso",
+        materiales: [
+          { titulo: "Proyectos \"Make it: code it\"", tipo: "lectura", enlace: "https://microbit.org/es-es/projects/make-it-code-it/" }
+        ]
+      }
+    ]
   }
 };

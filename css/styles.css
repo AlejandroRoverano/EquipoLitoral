@@ -121,3 +121,15 @@ h1, h2, h3, h4, h5, h6, .navbar-brand { font-family: "Montserrat", "Inter", sans
 @media (prefers-reduced-motion: reduce) {
   .tarjeta-servicio, .tarjeta-servicio__imagen img, .tarjeta-esqueleto { transition: none; animation: none; }
 }
+
+/* RF-21: buscador de la barra de navegación */
+.buscador-nav .form-control { min-width: 11rem; background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.25); color: #fff;
+  border-radius: 999px 0 0 999px; padding-left: .9rem; }
+.buscador-nav .form-control::placeholder { color: rgba(255,255,255,.65); }
+.buscador-nav .form-control:focus { background: #fff; color: var(--el-ink); border-color: var(--el-mint); box-shadow: none; }
+.buscador-nav .btn { border-radius: 0 999px 999px 0; padding-inline: .8rem; }
+@media (max-width: 991.98px) { .buscador-nav { width: 100%; } }
+
+/* RF-21: contenido del curso bloqueado en el detalle */
+.contenido-bloqueado { background: linear-gradient(135deg, var(--el-surface) 0%, #fff 100%); border-style: dashed; }
+.contenido-bloqueado:hover { transform: none; box-shadow: none; }
