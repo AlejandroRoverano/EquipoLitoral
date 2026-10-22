@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sobre nosotros | Equipo Litoral</title>
+    <meta name="description" content="Conocé al Equipo Litoral y los servicios educativos que ofrece la plataforma: cursos, talleres de robótica, mentorías y formación docente.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-litoral sticky-top" aria-label="Navegación principal">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="index.html"><i class="bi bi-mortarboard-fill me-2" aria-hidden="true"></i>Equipo Litoral</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal" aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menú de navegación">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="menuPrincipal">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="catalogo/catalogo-general.html">Catálogo</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="sobre-nosotros.html">Sobre nosotros</a></li>
+                    </ul>
+                    <div id="nav-guest" class="d-flex gap-2">
+                        <a href="login/login.html" class="btn btn-outline-light btn-sm">Iniciar sesión</a>
+                        <a href="login/registro.html" class="btn btn-accent btn-sm">Registrarse</a>
+                    </div>
+                    <div id="nav-user" class="d-flex align-items-center gap-2 hidden">
+                        <a href="gestion/detalle-gestion.html" class="btn btn-outline-light btn-sm"><i class="bi bi-person-circle me-1" aria-hidden="true"></i><span id="nav-user-name"></span></a>
+                        <button id="btn-logout" type="button" class="btn btn-accent btn-sm">Cerrar sesión</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-grow-1">
+        <!-- RF-17: página "Sobre nosotros" -->
+        <section class="hero text-white">
+            <div class="container py-5">
+                <div class="py-lg-4 mx-auto text-center" style="max-width: 760px;">
+                    <span class="badge badge-accent mb-3 px-3 py-2">Sobre nosotros</span>
+                    <h1 class="display-5 fw-bold mb-3">Somos Equipo Litoral</h1>
+                    <p class="lead mb-0">Una plataforma que acerca cursos, talleres de robótica, mentorías y formación docente a estudiantes e instituciones, en un solo lugar y de forma simple.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="container py-5" aria-labelledby="tituloQuienes">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-6">
+                    <h2 class="fw-bold" id="tituloQuienes">Quiénes somos</h2>
+                    <p class="text-secondary">Equipo Litoral nace como proyecto académico del Taller Integrador. Somos un grupo de estudiantes que quiso resolver un problema concreto: la oferta educativa en tecnología suele estar dispersa, y para estudiantes y docentes no siempre es fácil encontrar, comparar y acceder a buenos cursos.</p>
+                    <p class="text-secondary mb-0">Por eso creamos una plataforma que reúne servicios educativos de distintos prestadores, con información clara, una clase de prueba gratuita y materiales organizados para cada curso.</p>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card-litoral p-4">
+                        <h3 class="h5 fw-bold"><i class="bi bi-bullseye text-success me-2" aria-hidden="true"></i>Nuestro objetivo</h3>
+                        <p class="text-secondary mb-0">Facilitar el acceso a una educación tecnológica de calidad, conectando a quienes quieren aprender con quienes saben enseñar.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white border-top border-bottom py-5" aria-labelledby="tituloOfrecemos">
+            <div class="container">
+                <div class="text-center mx-auto mb-5" style="max-width: 640px;">
+                    <h2 class="fw-bold" id="tituloOfrecemos">Qué ofrecemos</h2>
+                    <p class="text-secondary mb-0">Servicios educativos para estudiantes, docentes e instituciones.</p>
+                </div>
+                <div class="row g-4">
+                <div class="col-sm-6 col-lg-3"><article class="card-litoral p-4 h-100">
+                    <span class="icon-circle mb-3"><i class="bi bi-laptop" aria-hidden="true"></i></span>
+                    <h3 class="h5 fw-bold">Cursos</h3>
+                    <p class="text-secondary mb-0">Formación en programación, diseño y tecnologías actuales, con contenidos organizados por módulos.</p>
+                </article></div>
+                <div class="col-sm-6 col-lg-3"><article class="card-litoral p-4 h-100">
+                    <span class="icon-circle mb-3"><i class="bi bi-robot" aria-hidden="true"></i></span>
+                    <h3 class="h5 fw-bold">Talleres de robótica</h3>
+                    <p class="text-secondary mb-0">Experiencias prácticas para aprender electrónica, mecánica y programación construyendo robots.</p>
+                </article></div>
+                <div class="col-sm-6 col-lg-3"><article class="card-litoral p-4 h-100">
+                    <span class="icon-circle mb-3"><i class="bi bi-person-video3" aria-hidden="true"></i></span>
+                    <h3 class="h5 fw-bold">Mentorías</h3>
+                    <p class="text-secondary mb-0">Acompañamiento individual para resolver dudas, revisar proyectos y planificar el aprendizaje.</p>
+                </article></div>
+                <div class="col-sm-6 col-lg-3"><article class="card-litoral p-4 h-100">
+                    <span class="icon-circle mb-3"><i class="bi bi-easel" aria-hidden="true"></i></span>
+                    <h3 class="h5 fw-bold">Formación docente</h3>
+                    <p class="text-secondary mb-0">Propuestas para que los docentes incorporen nuevas estrategias y herramientas en el aula.</p>
+                </article></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container py-5" aria-labelledby="tituloComoFunciona">
+            <div class="text-center mx-auto mb-5" style="max-width: 640px;">
+                <h2 class="fw-bold" id="tituloComoFunciona">Cómo funciona</h2>
+                <p class="text-secondary mb-0">De la curiosidad al aprendizaje, en cuatro pasos.</p>
+            </div>
+            <ol class="row g-4 list-unstyled mb-0">
+                <li class="col-sm-6 col-lg-3">
+                    <div class="d-flex gap-3">
+                        <span class="paso-numero flex-shrink-0" aria-hidden="true">1</span>
+                        <div>
+                            <h3 class="h6 fw-bold mb-1">Elegí un servicio</h3>
+                            <p class="text-secondary small mb-0">Explorá el catálogo y filtrá por categoría.</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="col-sm-6 col-lg-3">
+                    <div class="d-flex gap-3">
+                        <span class="paso-numero flex-shrink-0" aria-hidden="true">2</span>
+                        <div>
+                            <h3 class="h6 fw-bold mb-1">Probá una clase gratis</h3>
+                            <p class="text-secondary small mb-0">Muchos servicios tienen una clase de prueba sin costo.</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="col-sm-6 col-lg-3">
+                    <div class="d-flex gap-3">
+                        <span class="paso-numero flex-shrink-0" aria-hidden="true">3</span>
+                        <div>
+                            <h3 class="h6 fw-bold mb-1">Adquirilo</h3>
+                            <p class="text-secondary small mb-0">Completá la adquisición con el pago simulado.</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="col-sm-6 col-lg-3">
+                    <div class="d-flex gap-3">
+                        <span class="paso-numero flex-shrink-0" aria-hidden="true">4</span>
+                        <div>
+                            <h3 class="h6 fw-bold mb-1">Accedé a los materiales</h3>
+                            <p class="text-secondary small mb-0">Encontrá todo el contenido en Mis Adquisiciones.</p>
+                        </div>
+                    </div>
+                </li>
+            </ol>
+        </section>
+
+        <section class="bg-white border-top border-bottom py-5" aria-labelledby="tituloEquipo">
+            <div class="container">
+                <div class="text-center mx-auto mb-5" style="max-width: 640px;">
+                    <h2 class="fw-bold" id="tituloEquipo">El equipo</h2>
+                    <p class="text-secondary mb-0">Las personas detrás de Equipo Litoral.</p>
+                </div>
+                <div class="row g-4 justify-content-center">
+                <div class="col-6 col-md-3"><article class="card-litoral p-4 h-100 text-center">
+                    <span class="icon-circle mb-3 fs-4 fw-bold" style="width:4rem;height:4rem;" aria-hidden="true">A</span>
+                    <h3 class="h6 fw-bold mb-0">Alejandro</h3>
+                </article></div>
+                <div class="col-6 col-md-3"><article class="card-litoral p-4 h-100 text-center">
+                    <span class="icon-circle mb-3 fs-4 fw-bold" style="width:4rem;height:4rem;" aria-hidden="true">R</span>
+                    <h3 class="h6 fw-bold mb-0">Ronny</h3>
+                </article></div>
+                <div class="col-6 col-md-3"><article class="card-litoral p-4 h-100 text-center">
+                    <span class="icon-circle mb-3 fs-4 fw-bold" style="width:4rem;height:4rem;" aria-hidden="true">E</span>
+                    <h3 class="h6 fw-bold mb-0">Emanuel</h3>
+                </article></div>
+                <div class="col-6 col-md-3"><article class="card-litoral p-4 h-100 text-center">
+                    <span class="icon-circle mb-3 fs-4 fw-bold" style="width:4rem;height:4rem;" aria-hidden="true">S</span>
+                    <h3 class="h6 fw-bold mb-0">Sebastián</h3>
+                </article></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container py-5 text-center">
+            <h2 class="fw-bold">¿Empezamos?</h2>
+            <p class="text-secondary">Conocé todos los servicios disponibles en la plataforma.</p>
+            <a class="btn btn-accent btn-lg" href="catalogo/catalogo-general.html">Explorar catálogo</a>
+        </section>
+    </main>
+
+    <footer class="footer-litoral py-4 mt-auto">
+        <div class="container">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-6">
+                    <strong class="text-white">Equipo Litoral</strong>
+                    <div class="small">Alejandro, Ronny, Emanuel y Sebastián · Proyecto académico del Taller Integrador</div>
+                </div>
+                <div class="col-md-6 text-md-end small">
+                    <a href="catalogo/catalogo-general.html" class="me-3">Catálogo</a>
+                    <a href="login/login.html">Iniciar sesión</a>
+                    <div class="mt-1">© 2026 Equipo Litoral. Todos los derechos reservados.</div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="session.js"></script>
+</body>
+</html>

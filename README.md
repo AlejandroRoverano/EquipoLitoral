@@ -15,6 +15,7 @@ Plataforma web de servicios educativos (cursos, talleres y mentorías). Proyecto
 | Carpeta o archivo | Contenido |
 |---|---|
 | `index.html` | Página de inicio. |
+| `sobre-nosotros.html` | Página "Sobre nosotros": quiénes somos, qué ofrecemos y el equipo (RF-17). |
 | `catalogo/` | Catálogo de servicios, detalle, clase de prueba gratuita y flujo de adquisición. |
 | `login/` | Registro, inicio de sesión y recuperación de contraseña. |
 | `gestion/` | Panel del usuario, historial de adquisiciones, materiales de los servicios adquiridos y "Mis servicios" del prestador. |
