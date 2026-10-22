@@ -275,6 +275,31 @@
         </div>
     </div>
 
+    <!-- RF-16: editor de materiales del servicio -->
+    <div class="modal fade" id="modal-materiales" tabindex="-1" aria-labelledby="titulo-modal-materiales" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 fw-bold" id="titulo-modal-materiales">Materiales</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-secondary small">Organizá los materiales en módulos. Cada material necesita un título, un tipo y un enlace que empiece con <code>https://</code> (por ejemplo, un PDF en Drive o un video de YouTube). Solo los ven quienes adquirieron el servicio.</p>
+                    <div id="materiales-msg" class="hidden" role="alert"></div>
+                    <div id="materiales-modulos"></div>
+                    <button type="button" class="btn btn-outline-primary" id="btn-agregar-modulo"><i class="bi bi-plus-lg me-1" aria-hidden="true"></i>Agregar módulo</button>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <span class="small text-secondary" id="materiales-resumen"></span>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-accent" id="btn-guardar-materiales">Guardar materiales</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer class="footer-litoral py-4 mt-auto">
         <div class="container">
             <div class="row g-3 align-items-center">

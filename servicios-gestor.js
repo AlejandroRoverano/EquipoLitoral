@@ -20,6 +20,7 @@ import {
   formatearPrecio,
   obtenerClasePrueba
 } from "./servicios-modelo.js";
+import { abrirEditorMateriales } from "./materiales-editor.js";
 
 /**
  * Inicia la gestión de servicios en la página.
@@ -161,6 +162,8 @@ export function iniciarGestionServicios(opciones) {
     const celdaNombre = crear("td");
     const nombre = crear("div", "fw-semibold", s.nombre);
     if (s.tieneClasePrueba) nombre.append(crear("span", "badge text-bg-info ms-2", "Clase de prueba"));
+    // RF-16: todo servicio activo debería tener al menos el material del módulo inicial
+    if (!s.tieneMateriales) nombre.append(crear("span", "badge text-bg-warning ms-2", "Sin materiales"));
     celdaNombre.append(nombre, crear("div", "small text-secondary", textoResponsable(s)));
 
     const celdaEstado = crear("td");
@@ -186,7 +189,26 @@ export function iniciarGestionServicios(opciones) {
     estado.type = "button";
     estado.addEventListener("click", () => pedirCambioEstado(s));
 
-    acciones.append(ver, editar, estado);
+    // RF-16: materiales de estudio del servicio
+    const materiales = crear("button", "btn btn-sm btn-outline-primary me-1");
+    materiales.type = "button";
+    materiales.title = "Materiales";
+    materiales.setAttribute("aria-label", `Materiales de ${s.nombre}`);
+    materiales.append(crear("i", "bi bi-journal-text"));
+    materiales.addEventListener("click", () =>
+      abrirEditorMateriales(s, async (modulos) => {
+        mostrarMensaje(
+          mensaje,
+          modulos.length
+            ? `Se guardaron los materiales de "${s.nombre}" (${modulos.length} ${modulos.length === 1 ? "módulo" : "módulos"}).`
+            : `Se quitaron todos los materiales de "${s.nombre}".`,
+          "success"
+        );
+        await cargar();
+      })
+    );
+
+    acciones.append(ver, editar, materiales, estado);
 
     fila.append(
       celdaNombre,
