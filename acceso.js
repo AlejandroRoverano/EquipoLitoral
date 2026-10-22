@@ -49,7 +49,8 @@ export async function protegerPagina({ roles = null } = {}) {
   const user = await esperarUsuario();
 
   if (!user) {
-    window.location.href = URL_LOGIN;
+    // Después de iniciar sesión, el login vuelve a esta página
+    window.location.href = `${URL_LOGIN}?volver=${encodeURIComponent(window.location.href)}`;
     return null;
   }
 

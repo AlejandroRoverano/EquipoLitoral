@@ -33,6 +33,8 @@ El rol se guarda en el campo `rol` del documento `usuarios/{uid}` en Firestore.
 | Asignar el prestador responsable de un servicio (RD-04) | ❌ | ❌ | ❌ | ✅ |
 | Página "Mis servicios" (`gestion/mis-servicios.html`) | ➡️ | ❌ Acceso denegado | ✅ | ❌ Acceso denegado (usa el panel) |
 | Ver un servicio dado de baja en el catálogo | ❌ | ❌ | ❌ | ✅ solo en el panel |
+| Ver la clase de prueba gratuita (`catalogo/clase-prueba.html`, RF-15) | ❌ invitación a registrarse | ✅ | ✅ | ✅ |
+| Cargar o editar la clase de prueba (RF-15) | ❌ | ❌ | ✅ solo de sus servicios | ✅ |
 | Ver los indicadores del estado general de la plataforma en `admin/panel.html` (RF-14) | ❌ | ❌ | ❌ | ✅ |
 | Ver el listado de usuarios: nombre, correo, rol, fecha de registro y cantidad de adquisiciones (RF-12) | ❌ | ❌ | ❌ | ✅ |
 | Cambiar el rol de otro usuario (RF-12) | ❌ | ❌ | ❌ | ✅ |
@@ -57,6 +59,7 @@ Las reglas están en **`firestore.rules`**, en la raíz del repositorio. Son la 
 |---|---|---|---|---|
 | `usuarios/{uid}` | El propio usuario o un administrador. | El propio usuario, solo con rol `estudiante` o `prestador`. | El propio usuario, **sin cambiar su rol**. Un administrador puede cambiar **solo el rol** de otro usuario, nunca el suyo. | Solo un administrador. |
 | `servicios/{id}` | Todos, incluidos los visitantes. | Un administrador, o un prestador **a su propio nombre** (`prestadorUid` = su uid). | Un administrador, o el **prestador dueño**, sin poder pasarle el servicio a otro. | Solo un administrador (en la práctica se usa la baja lógica, `activo: false`). |
+| `servicios/{id}/clasePrueba/{doc}` (RF-15) | Cualquier usuario con sesión iniciada. | El administrador o el prestador dueño del servicio. | El administrador o el prestador dueño del servicio. | El administrador o el prestador dueño del servicio. |
 | `adquisiciones/{uid}_{servicioId}` | El dueño (`uid == request.auth.uid`) o un administrador. | Solo un estudiante, a su propio nombre, de un servicio activo y con el precio del catálogo. | Solo un administrador. | Solo un administrador. |
 | `pagos/{id}` | El dueño o un administrador. | Solo un estudiante, a su nombre y con `simulado: true`. | Nadie. | Nadie. |
 | Cualquier otra colección | Nadie. | Nadie. | Nadie. | Nadie. |

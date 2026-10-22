@@ -117,6 +117,13 @@ function renderizar(s) {
     })
   );
 
+  // RF-15: acceso a la clase de prueba gratuita (solo servicios activos que la tengan)
+  if (s.tieneClasePrueba && s.activo) {
+    const claseBtn = $("btn-clase-prueba");
+    claseBtn.href = `clase-prueba.html?id=${encodeURIComponent(s.id)}`;
+    claseBtn.classList.remove("hidden");
+  }
+
   // Servicio dado de baja: se puede ver, pero no adquirir
   if (!s.activo) {
     const boton = $("btn-adquirir");
