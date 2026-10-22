@@ -65,12 +65,19 @@ function crearTarjeta(s) {
   enlace.href = `detalle.html?id=${encodeURIComponent(s.id)}`;
   enlace.setAttribute("aria-label", `Ver detalles de ${s.nombre}`);
 
+  // RF-22: prueba gratis de un día. El detalle la activa (pide sesión si hace falta).
+  const prueba = crear("a", "btn btn-outline-success w-100 mt-2");
+  prueba.href = `detalle.html?id=${encodeURIComponent(s.id)}&prueba=activar`;
+  prueba.setAttribute("aria-label", `Probar gratis un día ${s.nombre}`);
+  prueba.append(icono("bi-gift"), "Probar gratis 1 día");
+
   cuerpo.append(
     crear("p", "small text-secondary fw-medium mb-1", s.institucion || s.prestador || ""),
     titulo,
     crear("p", "tarjeta-servicio__descripcion text-secondary small mb-3", s.descripcionCorta || ""),
     pie,
-    enlace
+    enlace,
+    prueba
   );
   if (s.certificado) {
     const cert = crear("span", "badge text-bg-light border text-success align-self-start mb-2");
@@ -88,11 +95,19 @@ function aplicarFiltro() {
   const texto = normalizarTexto(buscador.value.trim());
   const visibles = servicios.filter((s) =>
     (seleccionada === "todas" || s.categoria === seleccionada) &&
-    (!texto || normalizarTexto(`${s.nombre} ${s.institucion} ${s.prestador}`).includes(texto))
+    (!texto || normalizarTexto(`${s.nombre} ${s.institucion} ${s.prestador} ${s.descripcionCorta} ${CATEGORIAS[s.categoria] || ""}`).includes(texto))
   );
   lista.replaceChildren(...visibles.map(crearTarjeta));
   vacio.classList.toggle("hidden", visibles.length > 0);
   contador.textContent = visibles.length === 1 ? "1 servicio encontrado" : `${visibles.length} servicios encontrados`;
+}
+
+// RF-21: búsqueda que viene del buscador de la barra de navegación (?q=...)
+const busquedaInicial = new URLSearchParams(window.location.search).get("q");
+if (busquedaInicial) {
+  buscador.value = busquedaInicial;
+  const busquedaNav = document.getElementById("busqueda-global");
+  if (busquedaNav) busquedaNav.value = busquedaInicial;
 }
 
 radios.forEach((r) => r.addEventListener("change", aplicarFiltro));

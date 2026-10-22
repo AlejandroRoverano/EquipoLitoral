@@ -4,8 +4,8 @@
 
 import { protegerPagina, ROLES } from "../acceso.js";
 import { db } from "../firebase-config.js";
-import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
-import { obtenerServicio, obtenerClasePrueba, COLECCION_SERVICIOS } from "../servicios-modelo.js";
+import { doc, setDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+import { obtenerServicio, obtenerClasePrueba, cargarServiciosIniciales, COLECCION_SERVICIOS } from "../servicios-modelo.js";
 import { guardarMateriales, obtenerMateriales } from "../materiales-modelo.js";
 import { CONTENIDO_INICIAL } from "../contenido-inicial.js";
 
@@ -25,6 +25,16 @@ if (acceso) {
     const sobrescribir = document.getElementById("chk-sobrescribir").checked;
     let cargados = 0;
 
+    // RF-21: primero se crean los cursos del catálogo inicial que todavía no existan
+    // (por ejemplo, los cursos nuevos). Los que ya existen no se modifican.
+    try {
+      const creados = await cargarServiciosIniciales(acceso.user.uid);
+      log(creados > 0 ? `- ${creados} curso(s) nuevo(s) agregado(s) al catálogo` : "- No hay cursos nuevos para agregar al catálogo");
+    } catch (error) {
+      console.error(error);
+      log(`- ERROR al agregar cursos nuevos: ${error.code || ""} ${error.message}`);
+    }
+
     for (const [id, contenido] of Object.entries(CONTENIDO_INICIAL)) {
       try {
         const servicio = await obtenerServicio(id);
@@ -38,6 +48,8 @@ if (acceso) {
             ...contenido.clasePrueba,
             actualizadoEn: serverTimestamp()
           });
+          // Así el detalle muestra el botón de la clase de prueba (RF-15)
+          await updateDoc(doc(db, COLECCION_SERVICIOS, id), { tieneClasePrueba: true, actualizadoEn: serverTimestamp() });
           log(`- ${servicio.nombre}: clase de prueba cargada`);
         } else {
           log(`- ${servicio.nombre}: ya tiene clase de prueba (no se modifica)`);

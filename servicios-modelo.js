@@ -409,6 +409,83 @@ export const SERVICIOS_INICIALES = [
     moneda: "UYU",
     periodo: "mes",
     certificado: false
+  },
+  // RF-21: cursos nuevos
+  {
+    id: "desarrollo-web",
+    nombre: "Desarrollo Web desde Cero",
+    categoria: "cursos",
+    modalidad: "Virtual",
+    institucion: "Equipo Litoral",
+    prestador: "Equipo Litoral",
+    prestadorDetalle: "",
+    descripcionCorta: "Creá tu primera página web con HTML, CSS y JavaScript, paso a paso y sin experiencia previa.",
+    descripcion: "Curso introductorio al desarrollo web pensado para quienes nunca programaron.\n\nSe aprende a estructurar el contenido con HTML, darle estilo con CSS y agregar interactividad con JavaScript, construyendo un sitio personal que cada estudiante publica al terminar el curso.",
+    objetivos: [
+      "Estructurar páginas web con HTML semántico.",
+      "Diseñar páginas adaptables a celulares con CSS y Flexbox.",
+      "Agregar interactividad con JavaScript.",
+      "Publicar un sitio web propio."
+    ],
+    requisitos: "Computadora con acceso a internet. No se requiere experiencia previa en programación.",
+    duracion: "10 semanas",
+    cargaHoraria: "3 hs por semana",
+    cupo: 25,
+    fechaInicio: "",
+    precio: 3500,
+    moneda: "UYU",
+    periodo: "mes",
+    certificado: true
+  },
+  {
+    id: "ciberseguridad-basica",
+    nombre: "Introducción a la Ciberseguridad",
+    categoria: "cursos",
+    modalidad: "Virtual",
+    institucion: "Equipo Litoral",
+    prestador: "Equipo Litoral",
+    prestadorDetalle: "",
+    descripcionCorta: "Aprendé a proteger tus cuentas, reconocer estafas en línea y cuidar tu información personal.",
+    descripcion: "Curso práctico sobre los riesgos más comunes al usar internet y cómo prevenirlos.\n\nSe trabajan las contraseñas seguras y la verificación en dos pasos, el reconocimiento de correos y mensajes fraudulentos (phishing) y el cuidado de la privacidad en redes sociales y dispositivos.",
+    objetivos: [
+      "Crear y administrar contraseñas seguras.",
+      "Reconocer intentos de phishing y otras estafas en línea.",
+      "Configurar la privacidad de cuentas y dispositivos."
+    ],
+    requisitos: "Manejo básico de computadora y correo electrónico.",
+    duracion: "6 semanas",
+    cargaHoraria: "2 hs por semana",
+    cupo: null,
+    fechaInicio: "",
+    precio: 2800,
+    moneda: "UYU",
+    periodo: "mes",
+    certificado: true
+  },
+  {
+    id: "robotica-principiantes",
+    nombre: "Robótica para Principiantes con micro:bit",
+    categoria: "robotica",
+    modalidad: "Híbrida",
+    institucion: "Equipo Litoral",
+    prestador: "Equipo Litoral",
+    prestadorDetalle: "",
+    descripcionCorta: "Programá con bloques una placa micro:bit y construí proyectos con luces, sonidos y sensores.",
+    descripcion: "Taller de iniciación a la robótica y la programación para principiantes, a partir de 10 años.\n\nCon la placa micro:bit y el editor de bloques MakeCode, los participantes crean proyectos que usan su matriz de luces, sus botones y sus sensores, y terminan armando un pequeño robot.",
+    objetivos: [
+      "Programar con bloques en el editor MakeCode.",
+      "Usar los botones, las luces y los sensores de la placa.",
+      "Diseñar y construir un proyecto robótico sencillo."
+    ],
+    requisitos: "No se requieren conocimientos previos. La placa se presta durante las clases presenciales.",
+    duracion: "8 semanas",
+    cargaHoraria: "2 hs por semana",
+    cupo: 15,
+    fechaInicio: "",
+    precio: 2200,
+    moneda: "UYU",
+    periodo: "mes",
+    certificado: false
   }
 ];
 

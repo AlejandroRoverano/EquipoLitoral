@@ -36,6 +36,8 @@ El rol se guarda en el campo `rol` del documento `usuarios/{uid}` en Firestore.
 | Ver la clase de prueba gratuita (`catalogo/clase-prueba.html`, RF-15) | ❌ invitación a registrarse | ✅ | ✅ | ✅ |
 | Cargar o editar la clase de prueba (RF-15) | ❌ | ❌ | ✅ solo de sus servicios | ✅ |
 | Ver los materiales de un servicio (`gestion/materiales.html`, RF-16) | ➡️ | ✅ si lo adquirió | ✅ solo de sus servicios | ✅ |
+| Ver el contenido del curso en el detalle (RF-21) | ❌ bloqueado | ✅ si lo adquirió o tiene la prueba de un día vigente | ✅ solo de sus servicios | ✅ |
+| Activar la prueba gratis de un día (RF-22) | ➡️ | ✅ una vez por curso, si no lo adquirió | ❌ aviso | ❌ aviso |
 | Cargar o editar materiales (RF-16) | ❌ | ❌ | ✅ solo de sus servicios | ✅ |
 | Ver las estadísticas de la portada (RF-18) | ✅ | ✅ | ✅ | ✅ |
 | Recalcular las estadísticas públicas (RF-18) | ❌ | ❌ | ❌ | ✅ |
@@ -65,8 +67,9 @@ Las reglas están en **`firestore.rules`**, en la raíz del repositorio. Son la 
 | `servicios/{id}` | Todos, incluidos los visitantes. | Un administrador, o un prestador **a su propio nombre** (`prestadorUid` = su uid). | Un administrador, o el **prestador dueño**, sin poder pasarle el servicio a otro. | Solo un administrador (en la práctica se usa la baja lógica, `activo: false`). |
 | `estadisticas/{id}` (RF-18) | Todos, incluidos los visitantes (solo contiene el total). | El administrador, o un estudiante que suma 1 una única vez con su primera adquisición. | Igual que crear. | Nadie. |
 | `estudiantesConCompras/{uid}` (RF-18) | El propio estudiante o el administrador. | El propio estudiante con una adquisición existente, o el administrador. | El administrador. | El administrador. |
-| `servicios/{id}/materiales/{doc}` (RF-16) | Quien adquirió el servicio (adquisición confirmada), el prestador dueño o el administrador. | El administrador o el prestador dueño. | El administrador o el prestador dueño. | El administrador o el prestador dueño. |
+| `servicios/{id}/materiales/{doc}` (RF-16) | Quien adquirió el servicio (adquisición confirmada), quien tiene la prueba gratis de un día vigente (RF-22), el prestador dueño o el administrador. | El administrador o el prestador dueño. | El administrador o el prestador dueño. | El administrador o el prestador dueño. |
 | `servicios/{id}/clasePrueba/{doc}` (RF-15) | Cualquier usuario con sesión iniciada. | El administrador o el prestador dueño del servicio. | El administrador o el prestador dueño del servicio. | El administrador o el prestador dueño del servicio. |
+| `pruebas/{uid}_{servicioId}` (RF-22) | El dueño o un administrador. | Solo un estudiante, a su nombre, de un servicio activo y con la hora del servidor. Una vez por curso. | Solo un administrador. | Solo un administrador. |
 | `adquisiciones/{uid}_{servicioId}` | El dueño (`uid == request.auth.uid`) o un administrador. | Solo un estudiante, a su propio nombre, de un servicio activo y con el precio del catálogo. | Solo un administrador. | Solo un administrador. |
 | `pagos/{id}` | El dueño o un administrador. | Solo un estudiante, a su nombre y con `simulado: true`. | Nadie. | Nadie. |
 | Cualquier otra colección | Nadie. | Nadie. | Nadie. | Nadie. |

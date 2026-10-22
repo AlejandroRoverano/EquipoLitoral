@@ -24,6 +24,14 @@
                         <li class="nav-item"><a class="nav-link" href="../sobre-nosotros.html">Sobre nosotros</a></li>
                         <li class="nav-item"><a class="nav-link" href="../contacto.html">Contacto</a></li>
                     </ul>
+                    <!-- RF-21: buscador de cursos y servicios (muestra los resultados en el catálogo) -->
+                    <form class="buscador-nav me-lg-3 mb-2 mb-lg-0" role="search" action="../catalogo/catalogo-general.html" method="get">
+                        <label for="busqueda-global" class="visually-hidden">Buscar cursos y servicios</label>
+                        <div class="input-group input-group-sm">
+                            <input class="form-control" type="search" id="busqueda-global" name="q" placeholder="Buscar cursos..." autocomplete="off" required>
+                            <button class="btn btn-accent" type="submit" aria-label="Buscar"><i class="bi bi-search" aria-hidden="true"></i></button>
+                        </div>
+                    </form>
                     <div id="nav-guest" class="d-flex gap-2">
                         <a href="../login/login.html" class="btn btn-outline-light btn-sm">Iniciar sesión</a>
                         <a href="../login/registro.html" class="btn btn-accent btn-sm">Registrarse</a>
@@ -93,6 +101,29 @@
                         <p class="mb-0" id="detalle-prestador-detalle"></p>
                     </section>
                 </div>
+
+                <!-- RF-21: contenido del curso. Lo ven quien lo adquirió, el prestador dueño y el administrador
+                     (las reglas de Firestore lo verifican); al resto se le muestra bloqueado. -->
+                <section class="mt-5" aria-labelledby="titulo-contenido-curso" id="seccion-contenido">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                        <h2 class="h4 fw-bold mb-0" id="titulo-contenido-curso"><i class="bi bi-journal-bookmark me-2 text-success" aria-hidden="true"></i>Contenido del curso</h2>
+                        <span class="badge text-bg-light border hidden" id="contenido-resumen"></span>
+                    </div>
+                    <div id="contenido-cargando" class="text-secondary small" role="status">
+                        <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Cargando contenido...
+                    </div>
+                    <div id="contenido-bloqueado" class="contenido-bloqueado card-litoral p-4 text-center hidden">
+                        <span class="icon-circle mb-3"><i class="bi bi-lock-fill" aria-hidden="true"></i></span>
+                        <h3 class="h5 fw-bold" id="bloqueado-titulo">Contenido exclusivo para estudiantes del curso</h3>
+                        <p class="text-secondary mb-3" id="bloqueado-texto">Adquirí el servicio para acceder a todas las unidades y materiales de estudio.</p>
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            <a href="#bloque-adquisicion" class="btn btn-accent" id="bloqueado-accion">Adquirir el servicio</a>
+                            <button type="button" class="btn btn-outline-success hidden" id="bloqueado-prueba"><i class="bi bi-gift me-2" aria-hidden="true"></i>Probar gratis 1 día</button>
+                        </div>
+                    </div>
+                    <div id="contenido-vacio" class="alert alert-info hidden" role="status">Este curso todavía no tiene unidades cargadas.</div>
+                    <div class="accordion hidden" id="contenido-modulos"></div>
+                </section>
             </div>
 
             <aside class="col-lg-4" aria-label="Adquisición del servicio">
@@ -103,6 +134,9 @@
                     <button type="button" id="btn-adquirir" class="btn btn-accent btn-lg w-100">Adquirir Servicio</button>
                     <!-- RF-15: solo se muestra si el servicio tiene clase de prueba -->
                     <a href="#" id="btn-clase-prueba" class="btn btn-outline-primary w-100 mt-2 hidden"><i class="bi bi-play-circle me-2" aria-hidden="true"></i>Clase de prueba gratuita</a>
+                    <!-- RF-22: prueba gratis de un día (acceso a todo el contenido durante 24 horas) -->
+                    <button type="button" id="btn-prueba-dia" class="btn btn-outline-success w-100 mt-2 hidden"><i class="bi bi-gift me-2" aria-hidden="true"></i>Probar gratis 1 día</button>
+                    <div id="estado-prueba" class="hidden" role="status" aria-live="polite"></div>
                     <div id="aviso-adquisicion" class="hidden" role="status" aria-live="polite"></div>
                 </div>
             </aside>

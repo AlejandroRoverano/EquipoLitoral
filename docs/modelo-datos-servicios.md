@@ -113,6 +113,25 @@ Límites: hasta 30 módulos y 30 materiales por módulo. Cada módulo necesita a
 - Los materiales y el campo `tieneMateriales` del servicio se guardan en el mismo lote.
 - La página solo abre enlaces que empiezan con `https://`, como protección adicional.
 
+## Prueba gratis de un día (RF-22)
+
+Cada estudiante puede activar, una sola vez por curso, una prueba gratis que le da acceso a **todas las unidades**
+del curso durante 24 horas. Se activa con el botón **"Probar gratis 1 día"** del catálogo o del detalle.
+
+Colección `pruebas/{uid}_{servicioId}` (`pruebas-modelo.js`):
+
+| Campo | Tipo | Descripción |
+|---|---|---|
+| `uid` | string | Estudiante que activó la prueba. |
+| `servicioId` | string | Curso de la prueba. |
+| `servicioNombre` | string | Nombre del curso al momento de activarla. |
+| `inicio` | timestamp | Hora del servidor en que se activó (`serverTimestamp`). Vence 24 horas después. |
+
+- Las reglas solo aceptan `inicio == request.time`, así nadie puede adelantar ni estirar la prueba.
+- El documento no se puede modificar ni volver a crear (solo el administrador puede borrarlo), por eso hay una prueba por curso.
+- La regla de lectura de `materiales` acepta la prueba mientras `request.time < inicio + 24 h` (`pruebaVigente()` en `firestore.rules`).
+- Es independiente de la clase de prueba gratuita (RF-15), que es una sola clase y no vence.
+
 ## Baja lógica
 
 Dar de baja un servicio **no lo borra**: cambia `activo` a `false`.
@@ -152,5 +171,5 @@ Las funciones de los materiales están en **`materiales-modelo.js`**: `obtenerMa
 | `crearServicio(datos, uidCreador)` | Crea un servicio y devuelve su ID. |
 | `actualizarServicio(id, datos)` | Edita un servicio. |
 | `cambiarEstadoServicio(id, activo)` | Da de baja (`false`) o reactiva (`true`). |
-| `cargarServiciosIniciales(uidAdmin)` | Crea los cinco servicios iniciales que falten. |
+| `cargarServiciosIniciales(uidAdmin)` | Crea los servicios iniciales que falten (cinco originales y tres de RF-21). |
 | `validarServicio(datos)` | Devuelve la lista de errores del formulario (vacía si está bien). |

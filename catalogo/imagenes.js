@@ -12,7 +12,11 @@ const POR_SERVICIO = {
   "mentoria-software": "mentoria-software.svg",
   "didactica-docentes": "didactica-docentes.svg",
   "python-cientificos": "python-cientificos.svg",
-  "impresion-3d": "impresion-3d.svg"
+  "impresion-3d": "impresion-3d.svg",
+  // RF-21: cursos nuevos
+  "desarrollo-web": "desarrollo-web.svg",
+  "ciberseguridad-basica": "ciberseguridad.svg",
+  "robotica-principiantes": "robotica-principiantes.svg"
 };
 
 const POR_CATEGORIA = {
