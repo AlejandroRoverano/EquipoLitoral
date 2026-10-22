@@ -21,6 +21,7 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="../index.html">Inicio</a></li>
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="../catalogo/catalogo-general.html">Catálogo</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../sobre-nosotros.html">Sobre nosotros</a></li>
                     </ul>
                     <div id="nav-guest" class="d-flex gap-2">
                         <a href="../login/login.html" class="btn btn-outline-light btn-sm">Iniciar sesión</a>
@@ -99,6 +100,8 @@
                     <p class="text-secondary" id="detalle-periodo"></p>
                     <ul class="list-unstyled mb-4" id="detalle-datos"></ul>
                     <button type="button" id="btn-adquirir" class="btn btn-accent btn-lg w-100">Adquirir Servicio</button>
+                    <!-- RF-15: solo se muestra si el servicio tiene clase de prueba -->
+                    <a href="#" id="btn-clase-prueba" class="btn btn-outline-primary w-100 mt-2 hidden"><i class="bi bi-play-circle me-2" aria-hidden="true"></i>Clase de prueba gratuita</a>
                     <div id="aviso-adquisicion" class="hidden" role="status" aria-live="polite"></div>
                 </div>
             </aside>

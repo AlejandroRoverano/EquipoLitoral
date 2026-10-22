@@ -28,6 +28,7 @@ import {
 } from "../adquisiciones-modelo.js";
 import { ROLES } from "../acceso.js";
 import { servicioListo } from "./detalle.js";
+import { registrarEstudianteEnEstadisticas } from "../estadisticas-modelo.js";
 
 /* ------------------------------------------------------------------ */
 /* Datos del servicio seleccionado                                     */
@@ -175,11 +176,13 @@ btnAdquirir.addEventListener("click", () => {
 
   // Sin sesión: no puede adquirir, se le invita a iniciar sesión
   if (!usuarioActual) {
+    // Después de entrar, el login trae al usuario de vuelta a este servicio
+    const volver = `?volver=${encodeURIComponent(window.location.href)}`;
     mostrarAviso(
       'Para adquirir este servicio necesitás iniciar sesión.' +
       '<div class="d-flex gap-2 mt-2">' +
-      '<a href="../login/login.html" class="btn btn-primary btn-sm">Iniciar sesión</a>' +
-      '<a href="../login/registro.html" class="btn btn-outline-primary btn-sm">Registrarse</a>' +
+      `<a href="../login/login.html${volver}" class="btn btn-primary btn-sm">Iniciar sesión</a>` +
+      `<a href="../login/registro.html${volver}" class="btn btn-outline-primary btn-sm">Registrarse</a>` +
       '</div>',
       "warning"
     );
@@ -293,6 +296,12 @@ btnConfirmar.addEventListener("click", async () => {
 
     // Pago aprobado: se guardan el pago y la adquisición juntos (todo o nada)
     await registrarAdquisicion(operacion);
+
+    // RF-18: si es su primera adquisición, el estudiante suma 1 a las estadísticas públicas.
+    // No se espera ni se bloquea la compra: si fallara, la adquisición igual quedó registrada.
+    registrarEstudianteEnEstadisticas(user.uid, servicio.id).catch((error) =>
+      console.error("No se pudieron actualizar las estadísticas públicas:", error.code, error.message)
+    );
 
     bloquearPago(false);
     mostrarMensajeModal(

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Clase de prueba gratuita | Equipo Litoral</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-litoral sticky-top" aria-label="Navegación principal">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="../index.html"><i class="bi bi-mortarboard-fill me-2" aria-hidden="true"></i>Equipo Litoral</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal" aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menú de navegación">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="menuPrincipal">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="../index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="../catalogo/catalogo-general.html">Catálogo</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../sobre-nosotros.html">Sobre nosotros</a></li>
+                    </ul>
+                    <div id="nav-guest" class="d-flex gap-2">
+                        <a href="../login/login.html" class="btn btn-outline-light btn-sm">Iniciar sesión</a>
+                        <a href="../login/registro.html" class="btn btn-accent btn-sm">Registrarse</a>
+                    </div>
+                    <div id="nav-user" class="d-flex align-items-center gap-2 hidden">
+                        <a href="../gestion/detalle-gestion.html" class="btn btn-outline-light btn-sm"><i class="bi bi-person-circle me-1" aria-hidden="true"></i><span id="nav-user-name"></span></a>
+                        <button id="btn-logout" type="button" class="btn btn-accent btn-sm">Cerrar sesión</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container py-4 flex-grow-1">
+        <nav aria-label="Ruta de navegación">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="../index.html">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="catalogo-general.html">Catálogo</a></li>
+                <li class="breadcrumb-item"><a href="#" id="migas-servicio">Servicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Clase de prueba</li>
+            </ol>
+        </nav>
+
+        <!-- RF-15: el contenido se carga desde Firestore (clase-prueba.js) -->
+        <div id="clase-cargando" class="text-center py-5" role="status">
+            <div class="spinner-border text-primary" aria-hidden="true"></div>
+            <p class="text-secondary mt-3 mb-0">Cargando la clase de prueba...</p>
+        </div>
+
+        <!-- Visitante sin sesión: invitación a registrarse -->
+        <div id="clase-invitacion" class="card-litoral p-5 text-center mx-auto hidden" style="max-width: 640px;">
+            <i class="bi bi-play-circle display-5 text-success" aria-hidden="true"></i>
+            <h1 class="h4 fw-bold mt-3">Probá una clase gratis</h1>
+            <p class="text-secondary" id="invitacion-texto">Creá una cuenta gratuita o iniciá sesión para ver la clase de prueba. No tenés que pagar nada.</p>
+            <div class="d-flex flex-wrap justify-content-center gap-2">
+                <a href="../login/registro.html" class="btn btn-accent" id="invitacion-registro">Crear cuenta gratis</a>
+                <a href="../login/login.html" class="btn btn-outline-primary" id="invitacion-login">Ya tengo cuenta</a>
+            </div>
+        </div>
+
+        <!-- Error o servicio sin clase de prueba -->
+        <div id="clase-no-disponible" class="card-litoral p-5 text-center hidden" role="alert">
+            <i class="bi bi-camera-video-off display-5 text-secondary" aria-hidden="true"></i>
+            <h1 class="h4 fw-bold mt-3" id="no-disponible-titulo">Este servicio no tiene clase de prueba</h1>
+            <p class="text-secondary" id="no-disponible-texto">Podés ver la información completa del servicio en su detalle.</p>
+            <a href="catalogo-general.html" class="btn btn-primary" id="no-disponible-enlace">Ver catálogo</a>
+        </div>
+
+        <!-- Contenido de la clase -->
+        <article id="clase-contenido" class="row g-4 hidden">
+            <div class="col-lg-8">
+                <header class="mb-3">
+                    <span class="badge badge-accent mb-2"><i class="bi bi-gift me-1" aria-hidden="true"></i>Clase de prueba gratuita</span>
+                    <h1 class="fw-bold mb-1" id="clase-titulo"></h1>
+                    <p class="text-secondary mb-0" id="clase-servicio"></p>
+                </header>
+
+                <div id="clase-recurso" class="mb-4"></div>
+
+                <section class="card-litoral p-4" aria-labelledby="titulo-descripcion-clase">
+                    <h2 class="h5 fw-bold" id="titulo-descripcion-clase">Sobre esta clase</h2>
+                    <div id="clase-descripcion"></div>
+                </section>
+            </div>
+
+            <aside class="col-lg-4" aria-label="Adquirir el servicio completo">
+                <div class="card-litoral p-4 sticky-lg-top" style="top: 5rem;">
+                    <h2 class="h5 fw-bold">¿Te gustó la clase?</h2>
+                    <p class="text-secondary" id="cta-texto">Adquirí el servicio completo para acceder a todas las clases y materiales.</p>
+                    <p class="h3 fw-bold mb-3" id="cta-precio"></p>
+                    <a href="#" id="cta-adquirir" class="btn btn-accent btn-lg w-100">Ver servicio y adquirir</a>
+                </div>
+            </aside>
+        </article>
+    </main>
+
+    <footer class="footer-litoral py-4 mt-auto">
+        <div class="container">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-6">
+                    <strong class="text-white">Equipo Litoral</strong>
+                    <div class="small">Alejandro, Ronny, Emanuel y Sebastián · Proyecto académico del Taller Integrador</div>
+                </div>
+                <div class="col-md-6 text-md-end small">
+                    <a href="../catalogo/catalogo-general.html" class="me-3">Catálogo</a>
+                    <a href="../login/login.html">Iniciar sesión</a>
+                    <div class="mt-1">© 2026 Equipo Litoral. Todos los derechos reservados.</div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="../session.js"></script>
+    <script type="module" src="clase-prueba.js"></script>
+</body>
+</html>

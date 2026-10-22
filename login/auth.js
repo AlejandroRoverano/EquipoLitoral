@@ -72,6 +72,23 @@ function traducirError(codigo) {
   }
 }
 
+// RF-15: a dónde ir después de iniciar sesión o registrarse.
+// Si la página de origen mandó "?volver=...", se vuelve ahí (por ejemplo, a la
+// clase de prueba). Solo se aceptan páginas de este mismo sitio, para que el
+// parámetro no se pueda usar para mandar al usuario a otra web.
+function destinoTrasIngreso() {
+  const volver = new URLSearchParams(window.location.search).get("volver");
+  if (volver) {
+    try {
+      const url = new URL(volver, window.location.href);
+      if (url.origin === window.location.origin) return url.href;
+    } catch {
+      // parámetro inválido: se usa el destino por defecto
+    }
+  }
+  return "../gestion/detalle-gestion.html";
+}
+
 /* ------------------------------------------------------------------ */
 /* Registro de usuarios                                                */
 /* ------------------------------------------------------------------ */
@@ -137,7 +154,7 @@ if (formRegistro) {
       );
 
       setTimeout(() => {
-        window.location.href = "../gestion/detalle-gestion.html";
+        window.location.href = destinoTrasIngreso();
       }, 1500);
     } catch (error) {
       console.error("Error en el registro:", error.code, error.message);
@@ -175,7 +192,7 @@ if (formLogin) {
       await signInWithEmailAndPassword(auth, email, password);
       mostrarMensaje("login-msg", "Sesión iniciada. Redirigiendo...", "exito");
       setTimeout(() => {
-        window.location.href = "../gestion/detalle-gestion.html";
+        window.location.href = destinoTrasIngreso();
       }, 1000);
     } catch (error) {
       console.error("Error en el login:", error.code, error.message);

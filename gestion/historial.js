@@ -129,6 +129,18 @@ function crearTarjeta(a) {
     dato("Código de operación", a.codigoOperacion || "-")
   );
 
-  tarjeta.append(encabezado, datos);
+  // RF-16: acceso a los materiales del servicio adquirido
+  if (confirmada) {
+    const acciones = crear("div", "mt-3 pt-3 border-top");
+    const materiales = crear("a", "btn btn-sm btn-primary");
+    materiales.href = `materiales.html?id=${encodeURIComponent(a.servicioId)}`;
+    const icono = crear("i", "bi bi-journal-text me-1");
+    icono.setAttribute("aria-hidden", "true");
+    materiales.append(icono, "Ver materiales");
+    acciones.append(materiales);
+    tarjeta.append(encabezado, datos, acciones);
+  } else {
+    tarjeta.append(encabezado, datos);
+  }
   return tarjeta;
 }

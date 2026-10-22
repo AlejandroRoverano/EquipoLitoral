@@ -95,6 +95,56 @@ service cloud.firestore {
           && request.resource.data.prestadorUid == request.auth.uid
           && request.resource.data.creadoPor == resource.data.creadoPor);
       allow delete: if esAdmin();
+
+      // ---------- clase de prueba gratuita (RF-15) ----------
+      // servicios/{servicioId}/clasePrueba/contenido
+      // La lee cualquier usuario con sesión iniciada (no hace falta adquirir el servicio).
+      // La modifican el administrador o el prestador dueño del servicio.
+      match /clasePrueba/{claseId} {
+        allow read: if autenticado();
+        allow create, update: if puedeEditarContenido(servicioId)
+          && request.resource.data.keys().hasOnly(['titulo', 'descripcion', 'enlace', 'actualizadoEn'])
+          && request.resource.data.titulo is string
+          && request.resource.data.descripcion is string
+          && request.resource.data.enlace is string
+          && request.resource.data.enlace.matches('https://.+');
+        allow delete: if puedeEditarContenido(servicioId);
+      }
+
+      // ---------- materiales de estudio (RF-16) ----------
+      // servicios/{servicioId}/materiales/contenido
+      // Los leen quien adquirió el servicio, el prestador dueño y el administrador.
+      // Los modifican el prestador dueño y el administrador.
+      match /materiales/{materialesId} {
+        allow read: if esAdmin() || esPrestadorDueno(servicioId) || adquirio(servicioId);
+        allow create, update: if puedeEditarContenido(servicioId)
+          && request.resource.data.keys().hasOnly(['modulos', 'actualizadoEn'])
+          && request.resource.data.modulos is list
+          && request.resource.data.modulos.size() <= 30;
+        allow delete: if puedeEditarContenido(servicioId);
+      }
+    }
+
+    // RF-15 / RF-16: administrador, o prestador dueño del servicio después del cambio.
+    // Se usa getAfter() porque el contenido se guarda en el mismo lote que el servicio
+    // (al crear un servicio nuevo, el documento todavía no existe antes del lote).
+    function puedeEditarContenido(servicioId) {
+      return esAdmin()
+        || (esPrestador()
+          && getAfter(/databases/$(database)/documents/servicios/$(servicioId)).data.prestadorUid == request.auth.uid);
+    }
+
+    // RF-16: prestador dueño del servicio (para lecturas)
+    function esPrestadorDueno(servicioId) {
+      return esPrestador()
+        && get(/databases/$(database)/documents/servicios/$(servicioId)).data.prestadorUid == request.auth.uid;
+    }
+
+    // RF-16: el usuario tiene una adquisición confirmada de este servicio
+    function adquirio(servicioId) {
+      return autenticado()
+        && exists(/databases/$(database)/documents/adquisiciones/$(request.auth.uid + '_' + servicioId))
+        && get(/databases/$(database)/documents/adquisiciones/$(request.auth.uid + '_' + servicioId)).data.estado == 'confirmada';
     }
 
     // ---------- adquisiciones ----------
@@ -126,6 +176,42 @@ service cloud.firestore {
         && request.resource.data.uid == request.auth.uid
         && request.resource.data.simulado == true;
       allow update, delete: if false;
+    }
+
+    // ---------- estadísticas públicas (RF-18) ----------
+    // estadisticas/general: solo el TOTAL de estudiantes que adquirieron algún servicio.
+    // Lectura pública (portada), sin datos personales.
+    // Un estudiante solo puede sumar 1, una única vez (cuando crea su marca en el mismo
+    // lote) y únicamente si tiene una adquisición real. El administrador puede recalcular.
+    match /estadisticas/{estadisticaId} {
+      allow read: if true;
+      allow create: if esAdmin()
+        || (esEstudiante()
+          && estadisticaId == 'general'
+          && !exists(/databases/$(database)/documents/estudiantesConCompras/$(request.auth.uid))
+          && existsAfter(/databases/$(database)/documents/estudiantesConCompras/$(request.auth.uid))
+          && request.resource.data.keys().hasOnly(['estudiantesConCursos', 'actualizadoEn'])
+          && request.resource.data.estudiantesConCursos == 1);
+      allow update: if esAdmin()
+        || (esEstudiante()
+          && estadisticaId == 'general'
+          && !exists(/databases/$(database)/documents/estudiantesConCompras/$(request.auth.uid))
+          && existsAfter(/databases/$(database)/documents/estudiantesConCompras/$(request.auth.uid))
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['estudiantesConCursos', 'actualizadoEn'])
+          && request.resource.data.estudiantesConCursos == resource.data.estudiantesConCursos + 1);
+      allow delete: if false;
+    }
+
+    // estudiantesConCompras/{uid}: marca privada de que el estudiante ya fue contado.
+    // La crea el propio estudiante con una adquisición existente, o el administrador al recalcular.
+    match /estudiantesConCompras/{uid} {
+      allow read: if esDueno(uid) || esAdmin();
+      allow create: if esAdmin()
+        || (esDueno(uid)
+          && esEstudiante()
+          && request.resource.data.keys().hasOnly(['servicioId', 'creadoEn'])
+          && exists(/databases/$(database)/documents/adquisiciones/$(uid + '_' + request.resource.data.servicioId)));
+      allow update, delete: if esAdmin();
     }
 
     // Cualquier otra colección queda cerrada por defecto.

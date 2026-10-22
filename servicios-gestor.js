@@ -17,8 +17,10 @@ import {
   actualizarServicio,
   cambiarEstadoServicio,
   validarServicio,
-  formatearPrecio
+  formatearPrecio,
+  obtenerClasePrueba
 } from "./servicios-modelo.js";
+import { abrirEditorMateriales } from "./materiales-editor.js";
 
 /**
  * Inicia la gestión de servicios en la página.
@@ -64,6 +66,7 @@ export function iniciarGestionServicios(opciones) {
   buscador.addEventListener("input", renderizar);
   filtroEstado.addEventListener("change", renderizar);
   $("btn-nuevo-servicio").addEventListener("click", () => abrirFormulario(null));
+  let aperturaFormulario = 0; // evita mezclar datos si se abren dos formularios seguidos
   form.addEventListener("submit", guardar);
   $("btn-confirmar-estado").addEventListener("click", confirmarCambioEstado);
   cargar();
@@ -157,7 +160,11 @@ export function iniciarGestionServicios(opciones) {
     const fila = crear("tr", s.activo ? "" : "table-secondary");
 
     const celdaNombre = crear("td");
-    celdaNombre.append(crear("div", "fw-semibold", s.nombre), crear("div", "small text-secondary", textoResponsable(s)));
+    const nombre = crear("div", "fw-semibold", s.nombre);
+    if (s.tieneClasePrueba) nombre.append(crear("span", "badge text-bg-info ms-2", "Clase de prueba"));
+    // RF-16: todo servicio activo debería tener al menos el material del módulo inicial
+    if (!s.tieneMateriales) nombre.append(crear("span", "badge text-bg-warning ms-2", "Sin materiales"));
+    celdaNombre.append(nombre, crear("div", "small text-secondary", textoResponsable(s)));
 
     const celdaEstado = crear("td");
     celdaEstado.append(crear("span", `badge ${s.activo ? "text-bg-success" : "text-bg-secondary"}`, s.activo ? "Activo" : "Dado de baja"));
@@ -182,7 +189,26 @@ export function iniciarGestionServicios(opciones) {
     estado.type = "button";
     estado.addEventListener("click", () => pedirCambioEstado(s));
 
-    acciones.append(ver, editar, estado);
+    // RF-16: materiales de estudio del servicio
+    const materiales = crear("button", "btn btn-sm btn-outline-primary me-1");
+    materiales.type = "button";
+    materiales.title = "Materiales";
+    materiales.setAttribute("aria-label", `Materiales de ${s.nombre}`);
+    materiales.append(crear("i", "bi bi-journal-text"));
+    materiales.addEventListener("click", () =>
+      abrirEditorMateriales(s, async (modulos) => {
+        mostrarMensaje(
+          mensaje,
+          modulos.length
+            ? `Se guardaron los materiales de "${s.nombre}" (${modulos.length} ${modulos.length === 1 ? "módulo" : "módulos"}).`
+            : `Se quitaron todos los materiales de "${s.nombre}".`,
+          "success"
+        );
+        await cargar();
+      })
+    );
+
+    acciones.append(ver, editar, materiales, estado);
 
     fila.append(
       celdaNombre,
@@ -196,7 +222,7 @@ export function iniciarGestionServicios(opciones) {
 
   /* ---------------- Alta y edición ---------------- */
 
-  function abrirFormulario(servicio) {
+  async function abrirFormulario(servicio) {
     editando = servicio;
     ocultarMensaje(formMsg);
     form.reset();
@@ -223,8 +249,41 @@ export function iniciarGestionServicios(opciones) {
     $("srv-moneda").value = valores.moneda || MONEDAS[0];
     $("srv-periodo").value = valores.periodo || PERIODOS[0];
     if (selectPrestador) selectPrestador.value = valores.prestadorUid || "";
-
+    btnGuardar.disabled = false;
     modalServicio.show();
+
+    // RF-15: la clase de prueba se guarda aparte, así que se consulta al editar
+    const camposClase = ["srv-clase-titulo", "srv-clase-descripcion", "srv-clase-enlace"].map($);
+    camposClase.forEach((campo) => {
+      campo.value = "";
+      campo.disabled = false;
+    });
+    const apertura = ++aperturaFormulario;
+    if (servicio?.tieneClasePrueba) {
+      camposClase.forEach((campo) => (campo.disabled = true));
+      btnGuardar.disabled = true;
+      $("srv-clase-titulo").placeholder = "Cargando la clase de prueba...";
+      try {
+        const clase = await obtenerClasePrueba(servicio.id);
+        if (apertura !== aperturaFormulario) return;
+        if (clase) {
+          $("srv-clase-titulo").value = clase.titulo || "";
+          $("srv-clase-descripcion").value = clase.descripcion || "";
+          $("srv-clase-enlace").value = clase.enlace || "";
+        }
+        camposClase.forEach((campo) => (campo.disabled = false));
+        btnGuardar.disabled = false;
+      } catch (error) {
+        if (apertura !== aperturaFormulario) return;
+        console.error("No se pudo cargar la clase de prueba:", error.code, error.message);
+        // Guardar sin la clase cargada la borraría, así que se bloquea el guardado
+        mostrarMensaje(formMsg, "No se pudo cargar la clase de prueba. Cerrá esta ventana y volvé a intentar.", "warning");
+      } finally {
+        if (apertura === aperturaFormulario) {
+          $("srv-clase-titulo").placeholder = "Ej: Clase 1 - Tu primer circuito";
+        }
+      }
+    }
   }
 
   function leerFormulario() {
@@ -254,7 +313,12 @@ export function iniciarGestionServicios(opciones) {
       precio: precio === "" ? NaN : Number(precio),
       moneda: $("srv-moneda").value,
       periodo: $("srv-periodo").value,
-      prestadorUid
+      prestadorUid,
+      clasePrueba: {
+        titulo: $("srv-clase-titulo").value,
+        descripcion: $("srv-clase-descripcion").value,
+        enlace: $("srv-clase-enlace").value
+      }
     };
   }
 

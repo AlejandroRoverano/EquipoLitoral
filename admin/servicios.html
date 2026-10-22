@@ -21,6 +21,7 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="../index.html">Inicio</a></li>
                         <li class="nav-item"><a class="nav-link" href="../catalogo/catalogo-general.html">Catálogo</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../sobre-nosotros.html">Sobre nosotros</a></li>
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="panel.html">Administración</a></li>
                     </ul>
                     <div id="nav-guest" class="d-flex gap-2">
@@ -227,6 +228,25 @@
                             <select id="srv-periodo" class="form-select" required></select>
                         </div>
                     </div>
+
+                    <h3 class="h6 fw-bold text-uppercase text-secondary mt-4 mb-1">Clase de prueba gratuita</h3>
+                    <p class="form-text mt-0 mb-3">Opcional. Si la completás, el detalle del servicio muestra el botón "Clase de prueba gratuita" y cualquier usuario con sesión iniciada la puede ver sin adquirir el servicio.</p>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="srv-clase-titulo" class="form-label">Título de la clase</label>
+                            <input type="text" id="srv-clase-titulo" class="form-control" maxlength="100" placeholder="Ej: Clase 1 - Tu primer circuito">
+                        </div>
+                        <div class="col-12">
+                            <label for="srv-clase-descripcion" class="form-label">Descripción</label>
+                            <textarea id="srv-clase-descripcion" class="form-control" rows="3"></textarea>
+                            <div class="form-text">Qué se va a ver en la clase. Dejá una línea en blanco para separar párrafos.</div>
+                        </div>
+                        <div class="col-12">
+                            <label for="srv-clase-enlace" class="form-label">Enlace al video o material</label>
+                            <input type="url" id="srv-clase-enlace" class="form-control" placeholder="https://www.youtube.com/watch?v=...">
+                            <div class="form-text">Si es un video de YouTube, se va a ver dentro de la página. Si no, se muestra un botón para abrir el enlace.</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancelar</button>
@@ -251,6 +271,31 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-danger" id="btn-confirmar-estado">Dar de baja</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RF-16: editor de materiales del servicio -->
+    <div class="modal fade" id="modal-materiales" tabindex="-1" aria-labelledby="titulo-modal-materiales" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 fw-bold" id="titulo-modal-materiales">Materiales</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-secondary small">Organizá los materiales en módulos. Cada material necesita un título, un tipo y un enlace que empiece con <code>https://</code> (por ejemplo, un PDF en Drive o un video de YouTube). Solo los ven quienes adquirieron el servicio.</p>
+                    <div id="materiales-msg" class="hidden" role="alert"></div>
+                    <div id="materiales-modulos"></div>
+                    <button type="button" class="btn btn-outline-primary" id="btn-agregar-modulo"><i class="bi bi-plus-lg me-1" aria-hidden="true"></i>Agregar módulo</button>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <span class="small text-secondary" id="materiales-resumen"></span>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-accent" id="btn-guardar-materiales">Guardar materiales</button>
+                    </div>
                 </div>
             </div>
         </div>
