@@ -74,3 +74,7 @@ h1, h2, h3, h4, h5, h6, .navbar-brand { font-family: "Montserrat", "Inter", sans
 .footer-litoral { background: var(--el-navy); color: rgba(255,255,255,.8); }
 .footer-litoral a { color: rgba(255,255,255,.8); text-decoration: none; }
 .footer-litoral a:hover { color: var(--el-mint); }
+
+/* RF-17: números de los pasos en "Sobre nosotros" */
+.paso-numero { width: 2.5rem; height: 2.5rem; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+  background: var(--el-green); color: #fff; font-weight: 700; font-family: "Montserrat", "Inter", sans-serif; }
