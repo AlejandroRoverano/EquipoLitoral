@@ -1,336 +1,121 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mi Panel | Equipo Litoral</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-litoral sticky-top" aria-label="Navegación principal">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="../index.html"><i class="bi bi-mortarboard-fill me-2" aria-hidden="true"></i>Equipo Litoral</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal" aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menú de navegación">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="menuPrincipal">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="../index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../catalogo/catalogo-general.html">Catálogo</a></li>
+                        <li class="nav-item"><a class="nav-link" href="historial.html">Mis Adquisiciones</a></li>
+                    </ul>
+                    <div id="nav-user" class="d-flex align-items-center gap-2 hidden">
+                        <a href="detalle-gestion.html" class="btn btn-outline-light btn-sm"><i class="bi bi-person-circle me-1" aria-hidden="true"></i><span id="nav-user-name"></span></a>
+                        <button id="btn-logout" type="button" class="btn btn-accent btn-sm">Cerrar sesión</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-<html class="light" lang="es">
-        <head>
-                <meta charset="utf-8"/>
-                <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-                <title>Panel de Usuario - Equipo Litoral</title>
-                <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-                <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-                <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Montserrat:wght@600;700&amp;display=swap" rel="stylesheet"/>
-                <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-                <script id="tailwind-config">
-                        tailwind.config = {
-                        darkMode: "class",
-                        theme: {
-                        extend: {
-                        "colors": {
-                                "on-primary-fixed-variant": "#264778",
-                                "secondary-fixed-dim": "#2cdebf",
-                                "on-error-container": "#93000a",
-                                "on-secondary-fixed": "#00201a",
-                                "primary-container": "#002b5b",
-                                "surface-dim": "#cbdbf5",
-                                "tertiary-container": "#002c54",
-                                "on-tertiary-fixed-variant": "#004883",
-                                "surface-container-low": "#eff4ff",
-                                "outline-variant": "#c4c6d0",
-                                "secondary": "#006b5a",
-                                "primary-fixed": "#d6e3ff",
-                                "on-error": "#ffffff",
-                                "inverse-surface": "#213145",
-                                "surface-bright": "#f8f9ff",
-                                "tertiary-fixed-dim": "#a4c9ff",
-                                "surface-container": "#e5eeff",
-                                "on-secondary-container": "#00705e",
-                                "on-secondary-fixed-variant": "#005143",
-                                "primary-fixed-dim": "#a9c7ff",
-                                "on-secondary": "#ffffff",
-                                "on-primary-fixed": "#001b3d",
-                                "surface-tint": "#405f91",
-                                "error": "#ba1a1a",
-                                "tertiary-fixed": "#d4e3ff",
-                                "surface-container-highest": "#d3e4fe",
-                                "on-tertiary-fixed": "#001c39",
-                                "primary": "#001736",
-                                "on-surface": "#0b1c30",
-                                "error-container": "#ffdad6",
-                                "surface-container-lowest": "#ffffff",
-                                "on-tertiary": "#ffffff",
-                                "outline": "#747780",
-                                "on-surface-variant": "#43474f",
-                                "surface": "#f8f9ff",
-                                "secondary-container": "#54f8d7",
-                                "surface-container-high": "#dce9ff",
-                                "inverse-primary": "#a9c7ff",
-                                "tertiary": "#001731",
-                                "on-background": "#0b1c30",
-                                "on-primary": "#ffffff",
-                                "on-tertiary-container": "#5095e7",
-                                "background": "#f8f9ff",
-                                "secondary-fixed": "#58fbda",
-                                "surface-variant": "#d3e4fe",
-                                "on-primary-container": "#7594ca",
-                                "inverse-on-surface": "#eaf1ff"
-                        },
-                        "borderRadius": {
-                                "DEFAULT": "0.125rem",
-                                "lg": "0.25rem",
-                                "xl": "0.5rem",
-                                "full": "0.75rem"
-                        },
-                        "spacing": {
-                                "container-max": "1280px",
-                                "margin-mobile": "16px",
-                                "gutter": "24px",
-                                "margin-desktop": "48px",
-                                "unit": "4px"
-                        },
-                        "fontFamily": {
-                                "headline-xl": [
-                                        "Montserrat"
-                                ],
-                                "body-sm": [
-                                        "Inter"
-                                ],
-                                "headline-md": [
-                                        "Montserrat"
-                                ],
-                                "headline-lg-mobile": [
-                                        "Montserrat"
-                                ],
-                                "body-md": [
-                                        "Inter"
-                                ],
-                                "label-md": [
-                                        "Inter"
-                                ],
-                                "headline-lg": [
-                                        "Montserrat"
-                                ],
-                                "body-lg": [
-                                        "Inter"
-                                ],
-                                "label-sm": [
-                                        "Inter"
-                                ]
-                        },
-                        "fontSize": {
-                                "headline-xl": [
-                                        "48px",
-                                        {
-                                                "lineHeight": "56px",
-                                                "letterSpacing": "-0.02em",
-                                                "fontWeight": "700"
-                                        }
-                                ],
-                                "body-sm": [
-                                        "14px",
-                                        {
-                                                "lineHeight": "20px",
-                                                "fontWeight": "400"
-                                        }
-                                ],
-                                "headline-md": [
-                                        "24px",
-                                        {
-                                                "lineHeight": "32px",
-                                                "fontWeight": "600"
-                                        }
-                                ],
-                                "headline-lg-mobile": [
-                                        "24px",
-                                        {
-                                                "lineHeight": "32px",
-                                                "fontWeight": "700"
-                                        }
-                                ],
-                                "body-md": [
-                                        "16px",
-                                        {
-                                                "lineHeight": "24px",
-                                                "fontWeight": "400"
-                                        }
-                                ],
-                                "label-md": [
-                                        "14px",
-                                        {
-                                                "lineHeight": "16px",
-                                                "letterSpacing": "0.05em",
-                                                "fontWeight": "600"
-                                        }
-                                ],
-                                "headline-lg": [
-                                        "32px",
-                                        {
-                                                "lineHeight": "40px",
-                                                "letterSpacing": "-0.01em",
-                                                "fontWeight": "700"
-                                        }
-                                ],
-                                "body-lg": [
-                                        "18px",
-                                        {
-                                                "lineHeight": "28px",
-                                                "fontWeight": "400"
-                                        }
-                                ],
-                                "label-sm": [
-                                        "12px",
-                                        {
-                                                "lineHeight": "14px",
-                                                "fontWeight": "500"
-                                        }
-                                ]
-                        }
-                        }
-                        }
-                        }
-                </script>
-                <style>
-                        body { background-color: theme('colors.background'); color: theme('colors.on-background'); }
-                </style>
-        </head>
-        <body class="flex min-h-screen">
-        <!-- SideNavBar (Desktop Only) -->
-                <nav class="hidden md:flex h-screen w-64 fixed left-0 top-0 bg-surface-container-low dark:bg-primary-container text-primary dark:text-on-primary-container font-label-md text-label-md flex-col py-8 px-4 gap-2 border-r border-outline-variant/30">
-                        <div class="mb-8 px-4">
-                                <h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-on-primary-container">Mi Panel</h1>
-                                <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Gestión Educativa</p>
+    <main class="container py-4 flex-grow-1">
+        <header class="mb-4">
+            <h1 class="fw-bold mb-1">Mi Panel</h1>
+            <p class="text-secondary mb-0" id="panel-subtitulo">Gestión Educativa</p>
+        </header>
+
+        <div class="row g-4">
+            <aside class="col-lg-3" aria-label="Accesos del panel">
+                <div class="card-litoral p-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a class="nav-link" href="historial.html"><i class="bi bi-journal-check me-2" aria-hidden="true"></i>Mis Adquisiciones</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../catalogo/catalogo-general.html"><i class="bi bi-search me-2" aria-hidden="true"></i>Explorar catálogo</a></li>
+                        <li class="nav-item hidden" id="link-mis-servicios"><a class="nav-link" href="mis-servicios.html"><i class="bi bi-collection me-2" aria-hidden="true"></i>Mis servicios</a></li>
+                        <li class="nav-item hidden" id="link-panel-admin"><a class="nav-link" href="../admin/panel.html"><i class="bi bi-shield-lock me-2" aria-hidden="true"></i>Panel de administración</a></li>
+                    </ul>
+                    <a href="mis-servicios.html" id="btn-nuevo-servicio" class="btn btn-accent w-100 mt-3 hidden">
+                        <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>Nuevo Servicio
+                    </a>
+                </div>
+            </aside>
+
+            <div class="col-lg-9">
+                <section class="card-litoral p-4 mb-4" aria-labelledby="tituloPerfil">
+                    <h2 class="h5 fw-bold mb-3" id="tituloPerfil">Perfil de Usuario</h2>
+
+                    <div id="perfil-view">
+                        <div class="d-flex flex-wrap align-items-center gap-3">
+                            <span class="icon-circle fs-3" style="width:4rem;height:4rem;"><i class="bi bi-person" aria-hidden="true"></i></span>
+                            <div class="me-auto">
+                                <span class="badge badge-accent mb-1" id="badge-rol">Usuario Registrado</span>
+                                <h3 class="h4 fw-bold mb-0" id="nombre-usuario"></h3>
+                                <p class="text-secondary mb-0"><i class="bi bi-envelope me-1" aria-hidden="true"></i><span id="email-usuario"></span></p>
+                            </div>
+                            <button type="button" id="btn-editar-perfil" class="btn btn-outline-primary"><i class="bi bi-pencil me-1" aria-hidden="true"></i>Editar Perfil</button>
                         </div>
-                        <ul class="flex flex-col gap-2 flex-grow">
-                                <li>
-                                <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-primary-fixed-dim rounded-full transition-all hover:bg-surface-container-highest dark:hover:bg-primary-fixed" href="#">
-                                        <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-                                                Dashboard
-                                                </a>
-                                </li>
-                                <li>
-                                <a class="flex items-center gap-3 px-4 py-3 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full font-bold active:translate-x-1 duration-200" href="#">
-                                        <span class="material-symbols-outlined" data-icon="school" style="font-variation-settings: 'FILL' 1;">school</span>
-                                                Mis Cursos
-                                        </a>
-                                </li>
-                                <li>
-                                <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-primary-fixed-dim rounded-full transition-all hover:bg-surface-container-highest dark:hover:bg-primary-fixed" href="#">
-                                        <span class="material-symbols-outlined" data-icon="diversity_3">diversity_3</span>
-                                                Mentorías
-                                        </a>
-                                </li>
-                                <li>
-                                        <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-primary-fixed-dim rounded-full transition-all hover:bg-surface-container-highest dark:hover:bg-primary-fixed" href="#">
-                                        <span class="material-symbols-outlined" data-icon="precision_manufacturing">precision_manufacturing</span>
-                                                Servicios
-                                        </a>
-                                </li>
-                                <li class="mt-auto">
-                                        <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-primary-fixed-dim rounded-full transition-all hover:bg-surface-container-highest dark:hover:bg-primary-fixed" href="#">
-                                                <span class="material-symbols-outlined" data-icon="settings">settings</span>
-                                                Ajustes
-                                        </a>
-                                </li>
-                        </ul>
-                        <button class="mt-4 bg-secondary text-on-secondary px-4 py-3 rounded-full font-label-md hover:bg-secondary/90 transition-colors flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined" data-icon="add">add</span>
-                                Nuevo Servicio
-                        </button>
-                </nav>
-        <!-- Main Content Area -->
-                <main class="flex-grow md:ml-64 p-margin-mobile md:p-margin-desktop w-full max-w-container-max mx-auto overflow-y-auto">
-                        <!-- Header Mobile -->
-                        <div class="md:hidden flex justify-between items-center mb-8">
-                                <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary">Perfil</h1>
-                                <button class="p-2 bg-surface-container rounded-full text-primary">
-                                <span class="material-symbols-outlined" data-icon="menu">menu</span>
-                                </button>
+                    </div>
+
+                    <div id="perfil-edit" class="hidden">
+                        <div id="editar-perfil-msg" class="hidden" role="alert" aria-live="polite"></div>
+                        <label for="input-nombre-editar" class="form-label">Nombre completo</label>
+                        <input type="text" id="input-nombre-editar" class="form-control" autocomplete="name">
+                        <p class="form-text">El correo no se puede editar acá.</p>
+                        <div class="d-flex gap-2">
+                            <button type="button" id="btn-guardar-perfil" class="btn btn-primary">Guardar</button>
+                            <button type="button" id="btn-cancelar-editar" class="btn btn-outline-secondary">Cancelar</button>
                         </div>
-                        <div class="md:hidden mb-8">
-                                <h1 class="font-headline-lg text-headline-lg text-primary hidden md:block mb-8">Perfil de Usuario</h1>
-                        </div>
-                        <h1 class="font-headline-lg text-headline-lg text-primary hidden md:block mb-8">Perfil de Usuario</h1>
-                        <!-- Profile Header Bento -->
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
-                                <!-- User Info Card -->
-                                <div class="lg:col-span-2 bg-surface border border-outline-variant/30 rounded-xl p-8 shadow-sm flex flex-col md:flex-row gap-8 items-center md:items-start relative overflow-hidden">
-                                        <div class="absolute -right-16 -top-16 w-64 h-64 bg-primary-fixed/20 rounded-full blur-3xl pointer-events-none"></div>
-                                        <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-surface shadow-md flex-shrink-0 z-10">
-                                                <img alt="Usuario Logueado" class="w-full h-full object-cover" data-alt="A professional headshot of an educator in a bright, modern academic setting. The person is looking slightly off-camera with a confident, welcoming expression. Soft, natural daylight illuminates the scene, highlighting the clean, institutional background with subtle hints of blue and gray. The overall mood is approachable yet authoritative." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqZiywasXxJGi4zZr6Tt86R7eMst2jhn7Lk4Nf_pecj_W2jXizMCqqdf2LLJfx5zd4vtq06R3LPaYkIohGIQz3f05h210UAPER-9KZxtj6jJmDN4-d3tWg738Dym6DW3fiHTQhBvdYYwodr_Kqf4Ay1Gljta8djGZRrCw3wykjssz5xKKrqresSXXIyc1kYwglAZbqF8UXTk8M7Hi34DGWk3v1VBXD_TL-BYjZVlgSVjlAsmf6THfI"/>
-                                        </div>
-                                        <div class="flex flex-col gap-2 z-10 text-center md:text-left">
-                                                <div class="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-sm text-label-sm self-center md:self-start mb-2">
-                                                <span class="material-symbols-outlined text-[16px]" data-icon="verified">verified</span>
-                                                                        Usuario Registrado
-                                                                </div>
-                                                <h2 class="font-headline-md text-headline-md text-on-surface">Ana García</h2>
-                                                <p class="font-body-md text-body-md text-on-surface-variant flex items-center justify-center md:justify-start gap-2">
-                                                <span class="material-symbols-outlined text-[18px]" data-icon="mail">mail</span>
-                                                                        ana.garcia@institucion.edu
-                                                                </p>
-                                                <div class="mt-4 flex gap-3 justify-center md:justify-start">
-                                                <button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-md hover:bg-primary/90 transition-colors shadow-sm">
-                                                                        Editar Perfil
-                                                                        </button>
-                                                </div>
-                                        </div>
-                                </div>
-                                <!-- Stats/Activity Snapshot -->
-                                <div class="bg-surface border border-outline-variant/30 rounded-xl p-8 shadow-sm flex flex-col justify-center gap-6">
-                                        <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Resumen de Actividad</h3>
-                                        <div class="grid grid-cols-2 gap-4">
-                                                <div class="bg-surface-container-lowest p-4 rounded-lg border border-outline-variant/20 flex flex-col gap-1 items-center justify-center text-center">
-                                                        <span class="font-headline-lg text-headline-lg text-primary">4</span>
-                                                        <span class="font-body-sm text-body-sm text-on-surface-variant">Cursos Activos</span>
-                                                </div>
-                                                <div class="bg-surface-container-lowest p-4 rounded-lg border border-outline-variant/20 flex flex-col gap-1 items-center justify-center text-center">
-                                                        <span class="font-headline-lg text-headline-lg text-secondary">12</span>
-                                                        <span class="font-body-sm text-body-sm text-on-surface-variant">Mentorías</span>
-                                                </div>
-                                        </div>
-                                </div>
-                        </div>
-                        <!-- My Acquisitions Section -->
-                        <section class="mb-12">
-                                <div class="flex justify-between items-end mb-6">
-                                        <h2 class="font-headline-md text-headline-md text-on-surface">Mis Adquisiciones</h2>
-                                        <a class="font-label-md text-label-md text-primary hover:underline flex items-center gap-1" href="#">Ver todo <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span></a>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                <!-- Course Card 1 -->
-                                        <div class="bg-surface border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group flex flex-col h-full">
-                                                <div class="h-48 relative overflow-hidden">
-                                                        <img alt="Taller de Robótica" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A close-up shot of a modern educational robotics kit being assembled on a clean, white laboratory table. The lighting is bright and clinical, emphasizing the precise engineering of the components. Small LED lights on the robot glow softly in blue. The atmosphere is academic, focused, and technologically advanced, fitting a sterile learning environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAulIvSqLsLbc5PRd3yC_Uj6TqrpL3fF48fKZv_sJnYLU5PwGrAdhl9f18zrD4RYF63WW1ZgJ22j1sLDBDoP0DSHl_OPK52qIU8wcSluyk-FjwM2lMqaBmuB3xPG8NQ25KEg4Hj5eJOKL6YYX91DhDG7GOHnwR_5BsAXwiR21ngeTMPqXUswSQgorDLzo2R4zHnZISTjfrBYT0e3V8c8qa4V8lkAWo7YN-lyblcgeDIl59nME63LVEr"/>
-                                                        <div class="absolute top-4 left-4 bg-primary text-on-primary px-3 py-1 rounded-md font-label-sm text-label-sm backdrop-blur-sm bg-opacity-90">
-                                                                Robótica
-                                                        </div>
-                                                </div>
-                                                <div class="p-6 flex flex-col flex-grow">
-                                                        <h3 class="font-headline-md text-headline-md text-on-surface mb-2">Introducción a la Robótica Educativa</h3>
-                                                        <p class="font-body-sm text-body-sm text-on-surface-variant mb-6 flex-grow">Aprende los fundamentos para integrar la robótica en el aula de clases.</p>
-                                                        <div class="flex flex-col gap-3">
-                                                                <div class="w-full bg-surface-container-highest rounded-full h-2">
-                                                                        <div class="bg-secondary h-2 rounded-full" style="width: 75%"></div>
-                                                                </div>
-                                                                <div class="flex justify-between items-center">
-                                                                        <span class="font-label-sm text-label-sm text-on-surface-variant">75% Completado</span>
-                                                                        <button class="text-secondary font-label-md text-label-md hover:underline">Continuar</button>
-                                                                </div>
-                                                        </div>
-                                                </div>
-                                        </div>
-                                <!-- Course Card 2 -->
-                                        <div class="bg-surface border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group flex flex-col h-full">
-                                                <div class="h-48 relative overflow-hidden">
-                                                        <img alt="Gestión Educativa" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clean, minimalist digital dashboard displayed on a sleek laptop screen. The screen shows charts and graphs related to educational metrics in a cool blue and white color palette. The laptop rests on a light oak desk in a bright, modern office space. The lighting is natural and soft, creating a calm, professional atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9-s4bU1jiyQ5LsRH6hNBZ9VrTXwZFcnxhI09kNtCrkf2Wd7ZRPP2wzJyD4b2jZ6aE009o1b46FjEhywHQfFKRBTw56cIe6BxCkNrrOCLbpc7Y_Qbs2780NMMIPwY_7y4QnQhLDO5iqbbx-AmNkvoI9NBIIwoGxCsvexyP80GFxmwfBfjFQp8I21GYEXnixbVsUSZgyjxsVUvmd6HMqHffgyJHzf0gT0Bhgps1caNwCXke4-1J6MOs"/>
-                                                        <div class="absolute top-4 left-4 bg-primary text-on-primary px-3 py-1 rounded-md font-label-sm text-label-sm backdrop-blur-sm bg-opacity-90">
-                                                                Gestión
-                                                        </div>
-                                                </div>
-                                                <div class="p-6 flex flex-col flex-grow">
-                                                        <h3 class="font-headline-md text-headline-md text-on-surface mb-2">Herramientas Digitales para el Aula</h3>
-                                                        <p class="font-body-sm text-body-sm text-on-surface-variant mb-6 flex-grow">Optimiza tu tiempo y mejora la interacción con tus estudiantes.</p>
-                                                        <div class="flex flex-col gap-3">
-                                                                <div class="w-full bg-surface-container-highest rounded-full h-2">
-                                                                        <div class="bg-secondary h-2 rounded-full" style="width: 30%"></div>
-                                                                </div>
-                                                                <div class="flex justify-between items-center">
-                                                                        <span class="font-label-sm text-label-sm text-on-surface-variant">30% Completado</span>
-                                                                        <button class="text-secondary font-label-md text-label-md hover:underline">Continuar</button>
-                                                                </div>
-                                                        </div>
-                                                </div>
-                                        </div>
-                                </div>
-                        </section>
-                </main>
-        </body>
+                    </div>
+                </section>
+
+                <section class="card-litoral p-4 mb-4" aria-labelledby="tituloActividad">
+                    <h2 class="h5 fw-bold mb-3" id="tituloActividad">Resumen de Actividad</h2>
+                    <p class="display-6 fw-bold mb-0" id="total-cursos-activos">-</p>
+                    <p class="text-secondary mb-0">Servicios Adquiridos</p>
+                </section>
+
+                <section aria-labelledby="titulo-adquisiciones">
+                    <div class="d-flex justify-content-between align-items-end mb-3">
+                        <h2 class="h5 fw-bold mb-0" id="titulo-adquisiciones">Mis Adquisiciones</h2>
+                        <a href="historial.html" id="link-ver-todo">Ver todo <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                    </div>
+                    <div class="row g-3" id="lista-adquisiciones-panel">
+                        <div class="col-12"><p class="text-secondary mb-0">Cargando tus adquisiciones...</p></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer-litoral py-4 mt-auto">
+        <div class="container">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-6">
+                    <strong class="text-white">Equipo Litoral</strong>
+                    <div class="small">Alejandro, Ronny, Emanuel y Sebastián · Proyecto académico del Taller Integrador</div>
+                </div>
+                <div class="col-md-6 text-md-end small">
+                    <a href="../catalogo/catalogo-general.html">Catálogo</a>
+                    <div class="mt-1">© 2026 Equipo Litoral. Todos los derechos reservados.</div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="gestion.js"></script>
+</body>
 </html>

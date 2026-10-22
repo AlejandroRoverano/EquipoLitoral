@@ -1,0 +1,133 @@
+rules_version = '2';
+
+// RNF-10: Reglas de seguridad de Firestore del proyecto Equipo Litoral.
+// Matriz de permisos completa: docs/matriz-de-permisos.md
+//
+// Para publicarlas: firebase deploy --only firestore:rules
+// (o copiar este archivo en la consola de Firebase: Firestore Database > Reglas)
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- Funciones auxiliares ----------
+
+    function autenticado() {
+      return request.auth != null;
+    }
+
+    function esDueno(uid) {
+      return autenticado() && request.auth.uid == uid;
+    }
+
+    function tienePerfil() {
+      return autenticado()
+        && exists(/databases/$(database)/documents/usuarios/$(request.auth.uid));
+    }
+
+    // Rol guardado en usuarios/{uid}. Lo lee el servidor, el usuario no lo puede falsear.
+    function rol() {
+      return get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.rol;
+    }
+
+    function esAdmin() {
+      return tienePerfil() && rol() == 'administrador';
+    }
+
+    function esEstudiante() {
+      return tienePerfil() && rol() == 'estudiante';
+    }
+
+    function esPrestador() {
+      return tienePerfil() && rol() == 'prestador';
+    }
+
+    // RF-11: datos del servicio en la colección servicios
+    function servicio(servicioId) {
+      return get(/databases/$(database)/documents/servicios/$(servicioId)).data;
+    }
+
+    function servicioDisponible(servicioId) {
+      return exists(/databases/$(database)/documents/servicios/$(servicioId))
+        && servicio(servicioId).activo == true;
+    }
+
+    // ---------- usuarios ----------
+    // Cada usuario lee y edita su propio perfil. Nadie puede asignarse un rol
+    // administrativo: al registrarse solo puede elegir estudiante o prestador,
+    // y después no puede cambiarlo.
+    // RF-12: el administrador lista todos los usuarios y puede cambiar SOLO el rol
+    // de otro usuario (no su nombre ni su correo). Nadie se quita a sí mismo el rol
+    // de administrador, así la plataforma nunca queda sin administradores.
+    // El primer administrador se asigna desde la consola de Firebase.
+    match /usuarios/{uid} {
+      allow read: if esDueno(uid) || esAdmin();
+      allow create: if esDueno(uid)
+        && request.resource.data.uid == uid
+        && request.resource.data.rol in ['estudiante', 'prestador'];
+      allow update: if (esDueno(uid)
+          && request.resource.data.rol == resource.data.rol
+          && request.resource.data.uid == resource.data.uid)
+        || (esAdmin()
+          && request.resource.data.diff(resource.data).affectedKeys()
+               .hasOnly(['rol', 'rolActualizadoPor', 'rolActualizadoEn'])
+          && request.resource.data.rol in ['estudiante', 'prestador', 'administrador']
+          && request.resource.data.rolActualizadoPor == request.auth.uid
+          && (uid != request.auth.uid || request.resource.data.rol == 'administrador'));
+      allow delete: if esAdmin();
+    }
+
+    // ---------- servicios ----------
+    // El catálogo es público (visitantes incluidos).
+    // El administrador puede crear, editar y borrar cualquier servicio.
+    // RD-04: un prestador puede crear servicios a su nombre y editar, dar de baja o
+    // reactivar SOLO los suyos (prestadorUid == su uid). No puede pasarle un servicio
+    // a otro prestador ni borrarlo.
+    // La baja es lógica (activo = false), así las adquisiciones conservan su referencia.
+    match /servicios/{servicioId} {
+      allow read: if true;
+      allow create: if esAdmin()
+        || (esPrestador()
+          && request.resource.data.prestadorUid == request.auth.uid
+          && request.resource.data.creadoPor == request.auth.uid);
+      allow update: if esAdmin()
+        || (esPrestador()
+          && resource.data.prestadorUid == request.auth.uid
+          && request.resource.data.prestadorUid == request.auth.uid
+          && request.resource.data.creadoPor == resource.data.creadoPor);
+      allow delete: if esAdmin();
+    }
+
+    // ---------- adquisiciones ----------
+    // Cada usuario lee solo las suyas (campo uid == request.auth.uid); el administrador lee todas
+    // (RF-13: listado y detalle de adquisiciones en admin/adquisiciones.html).
+    // "resource == null" permite comprobar si una adquisición existe antes de crearla.
+    // Solo un estudiante crea adquisiciones, únicamente a su nombre, de un servicio
+    // activo y con el precio que figura en el catálogo (RF-11).
+    match /adquisiciones/{adquisicionId} {
+      allow read: if autenticado()
+        && (resource == null || resource.data.uid == request.auth.uid || esAdmin());
+      allow create: if esEstudiante()
+        && request.resource.data.uid == request.auth.uid
+        && adquisicionId == request.auth.uid + '_' + request.resource.data.servicioId
+        && request.resource.data.estado == 'confirmada'
+        && servicioDisponible(request.resource.data.servicioId)
+        && request.resource.data.precio == servicio(request.resource.data.servicioId).precio
+        && request.resource.data.moneda == servicio(request.resource.data.servicioId).moneda;
+      allow update, delete: if esAdmin();
+    }
+
+    // ---------- pagos (simulados, RNF-09) ----------
+    // Cada usuario lee solo sus pagos; el administrador lee todos (RF-13: detalle de la adquisición).
+    // Son un registro histórico: nadie los modifica ni los borra.
+    match /pagos/{pagoId} {
+      allow read: if autenticado()
+        && (resource.data.uid == request.auth.uid || esAdmin());
+      allow create: if esEstudiante()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.simulado == true;
+      allow update, delete: if false;
+    }
+
+    // Cualquier otra colección queda cerrada por defecto.
+  }
+}
