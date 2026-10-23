@@ -246,3 +246,29 @@ h1, h2, h3, h4, h5, h6, .navbar-brand { font-family: "Montserrat", "Inter", sans
 [data-bs-theme="dark"] .badge.text-bg-light { background-color: #1d3050 !important; color: #e3eaf5 !important; }
 [data-bs-theme="dark"] .buscador-catalogo .bi { color: #6b7a90; }
 [data-bs-theme="dark"] .certificado { box-shadow: 0 1rem 2.5rem rgba(0,0,0,.5); }
+
+/* Modo oscuro: textos y botones con más contraste */
+[data-bs-theme="dark"] { --el-muted: #a9b6c9; }
+[data-bs-theme="dark"] .tarjeta-servicio__precio,
+[data-bs-theme="dark"] .linea-tiempo__fecha,
+[data-bs-theme="dark"] .chip-filtro:hover { color: #5fe0b5; }
+[data-bs-theme="dark"] .btn-primary {
+  --bs-btn-bg: #2b5fa8; --bs-btn-border-color: #2b5fa8;
+  --bs-btn-hover-bg: #3a72c4; --bs-btn-hover-border-color: #3a72c4;
+  --bs-btn-active-bg: #3a72c4; --bs-btn-active-border-color: #3a72c4;
+  --bs-btn-disabled-bg: #2b5fa8; --bs-btn-disabled-border-color: #2b5fa8;
+}
+[data-bs-theme="dark"] .btn-outline-success { --bs-btn-color: #5fe0b5; --bs-btn-border-color: #3fae8c; }
+
+/* Detalle del curso: en el celular el bloque de compra va después del encabezado,
+   y en pantallas grandes queda fijo a la derecha durante toda la página */
+.detalle-grid { display: grid; gap: 1.5rem; grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "cabecera" "compra" "extra"; }
+.detalle-cabecera { grid-area: cabecera; min-width: 0; }
+.detalle-compra { grid-area: compra; min-width: 0; }
+.detalle-extra { grid-area: extra; min-width: 0; }
+.detalle-extra > section:first-child { margin-top: 0 !important; }
+@media (min-width: 992px) {
+  .detalle-grid { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); grid-template-areas: "cabecera compra" "extra compra"; column-gap: 1.5rem; }
+  .detalle-extra > section:first-child { margin-top: 1.5rem !important; }
+}
