@@ -69,8 +69,8 @@
             <a href="catalogo-general.html" class="btn btn-primary">Ver catálogo</a>
         </div>
 
-        <div id="detalle-contenido" class="row g-4 hidden">
-            <div class="col-lg-8">
+        <div id="detalle-contenido" class="detalle-grid hidden">
+            <div class="detalle-cabecera">
                 <header class="mb-4">
                     <div class="mb-2" id="detalle-badges"></div>
                     <h1 class="fw-bold" id="detalle-nombre"></h1>
@@ -103,7 +103,24 @@
                         <p class="mb-0" id="detalle-prestador-detalle"></p>
                     </section>
                 </div>
+            </div>
 
+            <aside class="detalle-compra" aria-label="Adquisición del servicio">
+                <div class="card-litoral p-4 sticky-lg-top" style="top: 5rem;" id="bloque-adquisicion">
+                    <p class="display-6 fw-bold mb-0" id="detalle-precio"></p>
+                    <p class="text-secondary" id="detalle-periodo"></p>
+                    <ul class="list-unstyled mb-4" id="detalle-datos"></ul>
+                    <button type="button" id="btn-adquirir" class="btn btn-accent btn-lg w-100">Adquirir Servicio</button>
+                    <!-- RF-15: solo se muestra si el servicio tiene clase de prueba -->
+                    <a href="#" id="btn-clase-prueba" class="btn btn-outline-primary w-100 mt-2 hidden"><i class="bi bi-play-circle me-2" aria-hidden="true"></i>Clase de prueba gratuita</a>
+                    <!-- RF-22: prueba gratis de un día (acceso a todo el contenido durante 24 horas) -->
+                    <button type="button" id="btn-prueba-dia" class="btn btn-outline-success w-100 mt-2 hidden"><i class="bi bi-gift me-2" aria-hidden="true"></i>Probar gratis 1 día</button>
+                    <div id="estado-prueba" class="hidden" role="status" aria-live="polite"></div>
+                    <div id="aviso-adquisicion" class="hidden" role="status" aria-live="polite"></div>
+                </div>
+            </aside>
+
+            <div class="detalle-extra">
                 <!-- RF-21: contenido del curso. Lo ven quien lo adquirió, el prestador dueño y el administrador
                      (las reglas de Firestore lo verifican); al resto se le muestra bloqueado. -->
                 <section class="mt-5" aria-labelledby="titulo-contenido-curso" id="seccion-contenido">
@@ -164,20 +181,6 @@
                 </section>
             </div>
 
-            <aside class="col-lg-4" aria-label="Adquisición del servicio">
-                <div class="card-litoral p-4 sticky-lg-top" style="top: 5rem;" id="bloque-adquisicion">
-                    <p class="display-6 fw-bold mb-0" id="detalle-precio"></p>
-                    <p class="text-secondary" id="detalle-periodo"></p>
-                    <ul class="list-unstyled mb-4" id="detalle-datos"></ul>
-                    <button type="button" id="btn-adquirir" class="btn btn-accent btn-lg w-100">Adquirir Servicio</button>
-                    <!-- RF-15: solo se muestra si el servicio tiene clase de prueba -->
-                    <a href="#" id="btn-clase-prueba" class="btn btn-outline-primary w-100 mt-2 hidden"><i class="bi bi-play-circle me-2" aria-hidden="true"></i>Clase de prueba gratuita</a>
-                    <!-- RF-22: prueba gratis de un día (acceso a todo el contenido durante 24 horas) -->
-                    <button type="button" id="btn-prueba-dia" class="btn btn-outline-success w-100 mt-2 hidden"><i class="bi bi-gift me-2" aria-hidden="true"></i>Probar gratis 1 día</button>
-                    <div id="estado-prueba" class="hidden" role="status" aria-live="polite"></div>
-                    <div id="aviso-adquisicion" class="hidden" role="status" aria-live="polite"></div>
-                </div>
-            </aside>
         </div>
 
         <section class="mt-5 hidden" aria-labelledby="tituloRelacionados" id="seccion-relacionados">
